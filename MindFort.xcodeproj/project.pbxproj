@@ -1,0 +1,617 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		30FD057C2A1BDD5C006AB9CC /* MindFortApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */; };
+		30FD057E2A1BDD5C006AB9CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD057D2A1BDD5C006AB9CC /* ContentView.swift */; };
+		30FD05802A1BDD5F006AB9CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */; };
+		30FD05842A1BDD5F006AB9CC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30FD05832A1BDD5F006AB9CC /* Preview Assets.xcassets */; };
+		30FD058E2A1BDD5F006AB9CC /* MindFortTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD058D2A1BDD5F006AB9CC /* MindFortTests.swift */; };
+		30FD05982A1BDD5F006AB9CC /* MindFortUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05972A1BDD5F006AB9CC /* MindFortUITests.swift */; };
+		30FD059A2A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05992A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		30FD058A2A1BDD5F006AB9CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30FD05702A1BDD5C006AB9CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 30FD05772A1BDD5C006AB9CC;
+			remoteInfo = MindFort;
+		};
+		30FD05942A1BDD5F006AB9CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30FD05702A1BDD5C006AB9CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 30FD05772A1BDD5C006AB9CC;
+			remoteInfo = MindFort;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		30FD05782A1BDD5C006AB9CC /* MindFort.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MindFort.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortApp.swift; sourceTree = "<group>"; };
+		30FD057D2A1BDD5C006AB9CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		30FD05812A1BDD5F006AB9CC /* MindFort.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MindFort.entitlements; sourceTree = "<group>"; };
+		30FD05832A1BDD5F006AB9CC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		30FD05892A1BDD5F006AB9CC /* MindFortTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MindFortTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		30FD058D2A1BDD5F006AB9CC /* MindFortTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortTests.swift; sourceTree = "<group>"; };
+		30FD05932A1BDD5F006AB9CC /* MindFortUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MindFortUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		30FD05972A1BDD5F006AB9CC /* MindFortUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortUITests.swift; sourceTree = "<group>"; };
+		30FD05992A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		30FD05752A1BDD5C006AB9CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		30FD05862A1BDD5F006AB9CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		30FD05902A1BDD5F006AB9CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		30FD056F2A1BDD5C006AB9CC = {
+			isa = PBXGroup;
+			children = (
+				30FD057A2A1BDD5C006AB9CC /* MindFort */,
+				30FD058C2A1BDD5F006AB9CC /* MindFortTests */,
+				30FD05962A1BDD5F006AB9CC /* MindFortUITests */,
+				30FD05792A1BDD5C006AB9CC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		30FD05792A1BDD5C006AB9CC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				30FD05782A1BDD5C006AB9CC /* MindFort.app */,
+				30FD05892A1BDD5F006AB9CC /* MindFortTests.xctest */,
+				30FD05932A1BDD5F006AB9CC /* MindFortUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		30FD057A2A1BDD5C006AB9CC /* MindFort */ = {
+			isa = PBXGroup;
+			children = (
+				30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */,
+				30FD057D2A1BDD5C006AB9CC /* ContentView.swift */,
+				30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */,
+				30FD05812A1BDD5F006AB9CC /* MindFort.entitlements */,
+				30FD05822A1BDD5F006AB9CC /* Preview Content */,
+			);
+			path = MindFort;
+			sourceTree = "<group>";
+		};
+		30FD05822A1BDD5F006AB9CC /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				30FD05832A1BDD5F006AB9CC /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		30FD058C2A1BDD5F006AB9CC /* MindFortTests */ = {
+			isa = PBXGroup;
+			children = (
+				30FD058D2A1BDD5F006AB9CC /* MindFortTests.swift */,
+			);
+			path = MindFortTests;
+			sourceTree = "<group>";
+		};
+		30FD05962A1BDD5F006AB9CC /* MindFortUITests */ = {
+			isa = PBXGroup;
+			children = (
+				30FD05972A1BDD5F006AB9CC /* MindFortUITests.swift */,
+				30FD05992A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift */,
+			);
+			path = MindFortUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		30FD05772A1BDD5C006AB9CC /* MindFort */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 30FD059D2A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "MindFort" */;
+			buildPhases = (
+				30FD05742A1BDD5C006AB9CC /* Sources */,
+				30FD05752A1BDD5C006AB9CC /* Frameworks */,
+				30FD05762A1BDD5C006AB9CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MindFort;
+			productName = MindFort;
+			productReference = 30FD05782A1BDD5C006AB9CC /* MindFort.app */;
+			productType = "com.apple.product-type.application";
+		};
+		30FD05882A1BDD5F006AB9CC /* MindFortTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 30FD05A02A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "MindFortTests" */;
+			buildPhases = (
+				30FD05852A1BDD5F006AB9CC /* Sources */,
+				30FD05862A1BDD5F006AB9CC /* Frameworks */,
+				30FD05872A1BDD5F006AB9CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				30FD058B2A1BDD5F006AB9CC /* PBXTargetDependency */,
+			);
+			name = MindFortTests;
+			productName = MindFortTests;
+			productReference = 30FD05892A1BDD5F006AB9CC /* MindFortTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		30FD05922A1BDD5F006AB9CC /* MindFortUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 30FD05A32A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "MindFortUITests" */;
+			buildPhases = (
+				30FD058F2A1BDD5F006AB9CC /* Sources */,
+				30FD05902A1BDD5F006AB9CC /* Frameworks */,
+				30FD05912A1BDD5F006AB9CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				30FD05952A1BDD5F006AB9CC /* PBXTargetDependency */,
+			);
+			name = MindFortUITests;
+			productName = MindFortUITests;
+			productReference = 30FD05932A1BDD5F006AB9CC /* MindFortUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		30FD05702A1BDD5C006AB9CC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					30FD05772A1BDD5C006AB9CC = {
+						CreatedOnToolsVersion = 14.3;
+					};
+					30FD05882A1BDD5F006AB9CC = {
+						CreatedOnToolsVersion = 14.3;
+						TestTargetID = 30FD05772A1BDD5C006AB9CC;
+					};
+					30FD05922A1BDD5F006AB9CC = {
+						CreatedOnToolsVersion = 14.3;
+						TestTargetID = 30FD05772A1BDD5C006AB9CC;
+					};
+				};
+			};
+			buildConfigurationList = 30FD05732A1BDD5C006AB9CC /* Build configuration list for PBXProject "MindFort" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 30FD056F2A1BDD5C006AB9CC;
+			productRefGroup = 30FD05792A1BDD5C006AB9CC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				30FD05772A1BDD5C006AB9CC /* MindFort */,
+				30FD05882A1BDD5F006AB9CC /* MindFortTests */,
+				30FD05922A1BDD5F006AB9CC /* MindFortUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		30FD05762A1BDD5C006AB9CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30FD05842A1BDD5F006AB9CC /* Preview Assets.xcassets in Resources */,
+				30FD05802A1BDD5F006AB9CC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		30FD05872A1BDD5F006AB9CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		30FD05912A1BDD5F006AB9CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		30FD05742A1BDD5C006AB9CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30FD057E2A1BDD5C006AB9CC /* ContentView.swift in Sources */,
+				30FD057C2A1BDD5C006AB9CC /* MindFortApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		30FD05852A1BDD5F006AB9CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30FD058E2A1BDD5F006AB9CC /* MindFortTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		30FD058F2A1BDD5F006AB9CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30FD059A2A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift in Sources */,
+				30FD05982A1BDD5F006AB9CC /* MindFortUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		30FD058B2A1BDD5F006AB9CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 30FD05772A1BDD5C006AB9CC /* MindFort */;
+			targetProxy = 30FD058A2A1BDD5F006AB9CC /* PBXContainerItemProxy */;
+		};
+		30FD05952A1BDD5F006AB9CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 30FD05772A1BDD5C006AB9CC /* MindFort */;
+			targetProxy = 30FD05942A1BDD5F006AB9CC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		30FD059B2A1BDD5F006AB9CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		30FD059C2A1BDD5F006AB9CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		30FD059E2A1BDD5F006AB9CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MindFort/MindFort.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"MindFort/Preview Content\"";
+				DEVELOPMENT_TEAM = Z6P9UD2GQT;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFort;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		30FD059F2A1BDD5F006AB9CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MindFort/MindFort.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"MindFort/Preview Content\"";
+				DEVELOPMENT_TEAM = Z6P9UD2GQT;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFort;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		30FD05A12A1BDD5F006AB9CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z6P9UD2GQT;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFortTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MindFort.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MindFort";
+			};
+			name = Debug;
+		};
+		30FD05A22A1BDD5F006AB9CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z6P9UD2GQT;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFortTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MindFort.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MindFort";
+			};
+			name = Release;
+		};
+		30FD05A42A1BDD5F006AB9CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z6P9UD2GQT;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFortUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MindFort;
+			};
+			name = Debug;
+		};
+		30FD05A52A1BDD5F006AB9CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z6P9UD2GQT;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFortUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MindFort;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		30FD05732A1BDD5C006AB9CC /* Build configuration list for PBXProject "MindFort" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				30FD059B2A1BDD5F006AB9CC /* Debug */,
+				30FD059C2A1BDD5F006AB9CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		30FD059D2A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "MindFort" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				30FD059E2A1BDD5F006AB9CC /* Debug */,
+				30FD059F2A1BDD5F006AB9CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		30FD05A02A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "MindFortTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				30FD05A12A1BDD5F006AB9CC /* Debug */,
+				30FD05A22A1BDD5F006AB9CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		30FD05A32A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "MindFortUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				30FD05A42A1BDD5F006AB9CC /* Debug */,
+				30FD05A52A1BDD5F006AB9CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 30FD05702A1BDD5C006AB9CC /* Project object */;
+}
