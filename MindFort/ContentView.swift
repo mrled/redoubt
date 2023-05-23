@@ -10,14 +10,8 @@ import CryptoKit
 
 
 struct ContentView: View {
-    @Binding var secrets: [HashedSecret]
-//    @Binding var showingAddSecret: Bool
-    
-    @State var showingAddSecret: Bool = false
-
+//    @State private var secrets: [HashedSecret]
     var body: some View {
-        HashedSecretView(secrets: $secrets)
+        HashedSecretView()
     }
-
-
 }

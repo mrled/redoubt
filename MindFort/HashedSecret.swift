@@ -9,25 +9,61 @@ import Foundation
 import CryptoKit
 
 enum HashedSecretError: Error {
-    case invalidData
+    case invalidInputValue
+    case invalidDictValue
 }
 
-struct HashedSecret: Identifiable {
+
+enum SupportedDigestType: String, Codable {
+    case SHA512 = "SHA512"
+}
+
+
+struct HashedSecret: Identifiable, Codable {
     let id = UUID()
     var name: String
-    var digest: any Digest
+    var digest: Data
+    var digestType: SupportedDigestType
     var h4xx0rcode: String {
         return digest.map { String(format: "%02hhx", $0) }.joined()
     }
     
+    enum CodingKeys: String, CodingKey {
+        case name, digest, digestType
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+        let digestString = digest.base64EncodedString()
+        try container.encode(digestString, forKey: .digest)
+        try container.encode(digestType, forKey: .digestType)
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        let digestTypeString = try container.decode(String.self, forKey: .name)
+        digestType = SupportedDigestType(rawValue: digestTypeString)!
+        let digestString = try container.decode(String.self, forKey: .digest)
+        guard let digestData = Data(base64Encoded: digestString) else {
+            throw DecodingError.dataCorruptedError(forKey: .digest, in: container, debugDescription: "Expected base64 encoded string")
+        }
+        digest = digestData
+    }
+    
     /// Create a HashedSecret by value
     /// Hash the value and return only the computed hash, not the secret
-    static func fromValue(_ value: String, name: String) -> Result<HashedSecret, HashedSecretError> {
-        guard let data = value.data(using: .utf8) else {
-            return .failure(.invalidData)
+    init(name nameIn: String, value: String) throws {
+        name = nameIn
+        guard let valueData = value.data(using: .utf8) else {
+            throw HashedSecretError.invalidInputValue
         }
-        let digest = SHA512.hash(data: data)
-        let secret = HashedSecret(name: name, digest: digest)
-        return .success(secret)
+        let rawDigest = SHA512.hash(data: valueData)
+        let digestData = Data(rawDigest.withUnsafeBytes { pointer in
+            return Data(bytes: pointer.baseAddress!, count: SHA512.Digest.byteCount)
+        })
+        digest = digestData
+        digestType = .SHA512
     }
 }

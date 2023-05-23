@@ -17,6 +17,7 @@
 		30FD05B52A1C23CF006AB9CC /* HashedSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05B42A1C23CF006AB9CC /* HashedSecret.swift */; };
 		30FD05B72A1C2BAD006AB9CC /* HashedSecretView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05B62A1C2BAD006AB9CC /* HashedSecretView.swift */; };
 		30FD05B92A1C2DC9006AB9CC /* MindFortUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */; };
+		30FD05BB2A1C6CA7006AB9CC /* HashedSecretViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05BA2A1C6CA7006AB9CC /* HashedSecretViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		30FD05B42A1C23CF006AB9CC /* HashedSecret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashedSecret.swift; sourceTree = "<group>"; };
 		30FD05B62A1C2BAD006AB9CC /* HashedSecretView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashedSecretView.swift; sourceTree = "<group>"; };
 		30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortUtilities.swift; sourceTree = "<group>"; };
+		30FD05BA2A1C6CA7006AB9CC /* HashedSecretViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashedSecretViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */,
 				30FD057D2A1BDD5C006AB9CC /* ContentView.swift */,
 				30FD05B62A1C2BAD006AB9CC /* HashedSecretView.swift */,
+				30FD05BA2A1C6CA7006AB9CC /* HashedSecretViewModel.swift */,
 				30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */,
 				30FD05B42A1C23CF006AB9CC /* HashedSecret.swift */,
 				30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */,
@@ -273,6 +276,7 @@
 				30FD057C2A1BDD5C006AB9CC /* MindFortApp.swift in Sources */,
 				30FD05B72A1C2BAD006AB9CC /* HashedSecretView.swift in Sources */,
 				30FD05B92A1C2DC9006AB9CC /* MindFortUtilities.swift in Sources */,
+				30FD05BB2A1C6CA7006AB9CC /* HashedSecretViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

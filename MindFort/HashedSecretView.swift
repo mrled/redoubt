@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HashedSecretView: View {
-    @Binding var secrets: [HashedSecret]
+    @State var secrets: [HashedSecret] = []
     @State private var isPresentingAddSheet = false
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
@@ -39,7 +39,7 @@ struct HashedSecretView: View {
     }
     private var createSecretSheet: some View {
         VStack {
-            TextField("Secret Name", text: $newSecretName)
+            TextField("Secret Name?", text: $newSecretName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             TextField("Secret Value", text: $newSecretValue)
@@ -73,11 +73,12 @@ struct HashedSecretView: View {
             error = "Secret Name and Value must not be empty"
             return
         }
-        let newSecret = HashedSecret.fromValue(newSecretValue, name: newSecretName)
-        debugPrint("Creating secret \(newSecretName) with value \(newSecretValue)")
-        switch newSecret {
-        case .success(let value): secrets.append(value)
-        case .failure(let error): debugPrint(error)
+        
+        do {
+            let newSecret = try HashedSecret(name: newSecretName, value: newSecretValue)
+            secrets.append(newSecret)
+        } catch {
+            print("Error loading items: \(error)")
         }
     }
     
@@ -102,11 +103,11 @@ struct SecretDetailView: View {
     }
 }
 
-struct HashedSecretView_Previews: PreviewProvider {
-    static var previews: some View {
-        HashedSecretView(secrets: .constant([
-            unwrappedValue(HashedSecret.fromValue("password", name: "Secure passphrase")),
-            unwrappedValue(HashedSecret.fromValue("showmethemoney", name: "Bitcoin wallet passphrase")),
-        ]))
-    }
-}
+//struct HashedSecretView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HashedSecretView(secrets: .constant([
+//            unwrappedValue(HashedSecret.fromValue("password", name: "Secure passphrase")),
+//            unwrappedValue(HashedSecret.fromValue("showmethemoney", name: "Bitcoin wallet passphrase")),
+//        ]))
+//    }
+//}
