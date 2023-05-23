@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct MindFortApp: App {
+    @State private var secrets: [HashedSecret] = []
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(secrets: $secrets)
         }
     }
 }
