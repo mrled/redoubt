@@ -16,11 +16,11 @@ struct HashedSecretView: View {
     
     var body: some View {
         NavigationView {
-            List(viewModel.secrets) { secret in
-                VStack(alignment: .leading) {
-                    Text(secret.name)
-                    Text(secret.digestType.rawValue)
-                    Text(secret.digest.base64EncodedString())
+            List {
+                ForEach(viewModel.secrets) { secret in
+                    NavigationLink(destination: SecretDetailView(secret: secret)) {
+                        Text(secret.name)
+                    }
                 }
             }
             .navigationBarTitle("Secrets")
@@ -39,6 +39,7 @@ struct HashedSecretView: View {
             }
         }
     }
+    
     private var createSecretSheet: some View {
         VStack {
             TextField("Secret Name?", text: $newSecretName)
@@ -68,7 +69,6 @@ struct HashedSecretView: View {
         .shadow(radius: 4)
         .frame(minWidth: 300, minHeight: 200) // Set a minimum size for the sheet
     }
-
     
     private func addSecret() {
         if !validSecret {
