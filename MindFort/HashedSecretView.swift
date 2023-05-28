@@ -93,18 +93,6 @@ struct HashedSecretView: View {
     }
 }
 
-struct SecretDetailView: View {
-    let secret: HashedSecret
-    
-    var body: some View {
-        VStack {
-            Text("Secret Name: \(secret.name)")
-            Text("Hash: \(secret.h4xx0rcode)")
-        }
-        .navigationBarTitle(secret.name)
-    }
-}
-
 //struct HashedSecretView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        HashedSecretView(secrets: .constant([

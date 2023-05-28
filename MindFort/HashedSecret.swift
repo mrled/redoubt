@@ -67,3 +67,27 @@ struct HashedSecret: Identifiable, Codable {
         digestType = .SHA512
     }
 }
+
+
+/// Given a SHA512 hash binary value, return a list of number groups
+func prettyHashBlock(digest: Data, perGroup: Int = 4, perLine: Int = 8) -> String {
+    let hexString = digest.map { String(format: "%02x", $0) }.joined()
+
+    var result = ""
+    var count = 0
+    
+    for (index, char) in hexString.enumerated() {
+        result.append(char)
+        
+        if (index + 1) % perGroup == 0 {
+            result.append(" ")
+            count += 1
+        }
+        
+        if count == perLine {
+            result.append("\n")
+            count = 0
+        }
+    }
+    return result
+}
