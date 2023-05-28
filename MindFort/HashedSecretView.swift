@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HashedSecretView: View {
-    @State var secrets: [HashedSecret] = []
+    @ObservedObject var viewModel = HashedSecretViewModel()
     @State private var isPresentingAddSheet = false
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
@@ -16,13 +16,12 @@ struct HashedSecretView: View {
     
     var body: some View {
         NavigationView {
-            List {
-                ForEach(secrets) { secret in
-                    NavigationLink(destination: SecretDetailView(secret: secret)) {
-                        Text(secret.name)
-                    }
+            List(viewModel.secrets) { secret in
+                VStack(alignment: .leading) {
+                    Text(secret.name)
+                    Text(secret.digestType.rawValue)
+                    Text(secret.digest.base64EncodedString())
                 }
-                .onDelete(perform: removeSecrets)
             }
             .navigationBarTitle("Secrets")
             .toolbar {
@@ -34,6 +33,9 @@ struct HashedSecretView: View {
             }
             .sheet(isPresented: $isPresentingAddSheet) {
                 createSecretSheet
+            }
+            .onAppear {
+                viewModel.loadItems()
             }
         }
     }
@@ -73,10 +75,10 @@ struct HashedSecretView: View {
             error = "Secret Name and Value must not be empty"
             return
         }
-        
+
         do {
             let newSecret = try HashedSecret(name: newSecretName, value: newSecretValue)
-            secrets.append(newSecret)
+            viewModel.addItem(newSecret)
         } catch {
             print("Error loading items: \(error)")
         }
@@ -87,7 +89,7 @@ struct HashedSecretView: View {
     }
     
     func removeSecrets(at offsets: IndexSet) {
-        secrets.remove(atOffsets: offsets)
+        viewModel.secrets.remove(atOffsets: offsets)
     }
 }
 

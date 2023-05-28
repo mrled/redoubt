@@ -38,6 +38,7 @@ class HashedSecretViewModel: ObservableObject {
         do {
             let data = try Data(contentsOf: plistURL)
             secrets = try decoder.decode([HashedSecret].self, from: data)
+            print("When loading, found secrets: \(secrets)")
         } catch {
             print("Error loading items: \(error)")
         }
