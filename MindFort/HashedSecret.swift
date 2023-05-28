@@ -66,6 +66,17 @@ struct HashedSecret: Identifiable, Codable {
         digest = digestData
         digestType = .SHA512
     }
+    
+    func validate(input: String) -> Bool {
+        guard let inputData = input.data(using: .utf8) else {
+            return false
+        }
+        let rawDigest = SHA512.hash(data: inputData)
+        let inputDigest = Data(rawDigest.withUnsafeBytes { pointer in
+            return Data(bytes: pointer.baseAddress!, count: SHA512.Digest.byteCount)
+        })
+        return digest == inputDigest
+    }
 }
 
 

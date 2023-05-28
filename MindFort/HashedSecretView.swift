@@ -45,7 +45,7 @@ struct HashedSecretView: View {
             TextField("Secret Name?", text: $newSecretName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-            TextField("Secret Value", text: $newSecretValue)
+            SecureField("Secret Value", text: $newSecretValue)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             if let error = error {

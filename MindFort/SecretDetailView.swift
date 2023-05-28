@@ -10,13 +10,25 @@ import SwiftUI
 struct SecretDetailView: View {
     let secret: HashedSecret
     @State private var passphrase = ""
+    @State private var passphraseValid: Bool = false
     @FocusState private var isFocused: Bool
     
     var body: some View {
         VStack {
-            TextField("Passphrase", text: $passphrase)
+            SecureField("Passphrase", text: $passphrase, onCommit: validatePassphrase)
                 .keyboardType(.default)
                 .focused($isFocused)
+                .onChange(of: passphrase) { _ in
+                    validatePassphrase()
+                }
+                .padding()
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(boxColor)
+                .frame(height: 50)
+                .overlay(
+                    Text(validationText)
+                        .foregroundColor(.white)
+                )
                 .padding()
             Spacer()
             Text("H4XX0R C0D3")
@@ -32,6 +44,30 @@ struct SecretDetailView: View {
             DispatchQueue.main.async {
                 isFocused = true
             }
+        }
+    }
+    
+    private func validatePassphrase() {
+        passphraseValid = secret.validate(input: passphrase)
+    }
+    
+    private var boxColor: Color {
+        if passphrase.isEmpty {
+            return .gray
+        } else if passphraseValid {
+            return .green
+        } else {
+            return .red
+        }
+    }
+    
+    private var validationText: String {
+        if passphrase.isEmpty {
+            return "Enter passphrase..."
+        } else if passphraseValid {
+            return "Correct!"
+        } else {
+            return "Incorrect!"
         }
     }
 }
