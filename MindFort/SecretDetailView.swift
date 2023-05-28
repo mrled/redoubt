@@ -9,9 +9,11 @@ import SwiftUI
 
 struct SecretDetailView: View {
     let secret: HashedSecret
+    let index: Int
     @State private var passphrase = ""
     @State private var passphraseValid: Bool = false
     @FocusState private var isFocused: Bool
+    @EnvironmentObject var viewModel: HashedSecretViewModel
     
     var body: some View {
         VStack {
@@ -31,6 +33,16 @@ struct SecretDetailView: View {
                 )
                 .padding()
             Spacer()
+            Button(action: {
+                viewModel.deleteItem(secret)
+            }) {
+                Text("Delete")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .foregroundColor(.white)
+                    .background(Color.red)
+                    .cornerRadius(10)
+            }
             Text("H4XX0R C0D3")
                 .font(.headline)
             Text(prettyHashBlock(digest: secret.digest, perLine: 4))
@@ -76,6 +88,6 @@ struct SecretDetailView: View {
 struct HashedSecretDetailView_Previews: PreviewProvider {
     static let secret = try! HashedSecret(name: "Test Secret", value: "hunter2")
     static var previews: some View {
-        SecretDetailView(secret: secret)
+        SecretDetailView(secret: secret, index: 1)
     }
 }

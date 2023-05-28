@@ -25,6 +25,13 @@ class HashedSecretViewModel: ObservableObject {
         saveItems()
     }
     
+    func deleteItem(_ item: HashedSecret) {
+        if let index = secrets.firstIndex(of: item) {
+            secrets.remove(at: index)
+            saveItems()
+        }
+    }
+    
     func saveItems() {
         do {
             let data = try encoder.encode(secrets)

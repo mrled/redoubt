@@ -17,11 +17,13 @@ struct HashedSecretView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.secrets) { secret in
-                    NavigationLink(destination: SecretDetailView(secret: secret)) {
+                ForEach(Array(viewModel.secrets.enumerated()), id: \.element.id) { index, secret in
+                    NavigationLink(destination: SecretDetailView(secret: secret, index: index)
+                        .environmentObject(viewModel)) {
                         Text(secret.name)
                     }
                 }
+                .onDelete(perform: removeSecrets)
             }
             .navigationBarTitle("Secrets")
             .toolbar {

@@ -19,7 +19,7 @@ enum SupportedDigestType: String, Codable {
 }
 
 
-struct HashedSecret: Identifiable, Codable {
+struct HashedSecret: Identifiable, Codable, Equatable {
     let id = UUID()
     var name: String
     var digest: Data
@@ -76,6 +76,10 @@ struct HashedSecret: Identifiable, Codable {
             return Data(bytes: pointer.baseAddress!, count: SHA512.Digest.byteCount)
         })
         return digest == inputDigest
+    }
+    
+    static func == (left: HashedSecret, right: HashedSecret) -> Bool {
+        return left.id == right.id
     }
 }
 
