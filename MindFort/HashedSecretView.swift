@@ -95,11 +95,14 @@ struct HashedSecretView: View {
     }
 }
 
-//struct HashedSecretView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        HashedSecretView(secrets: .constant([
-//            unwrappedValue(HashedSecret.fromValue("password", name: "Secure passphrase")),
-//            unwrappedValue(HashedSecret.fromValue("showmethemoney", name: "Bitcoin wallet passphrase")),
-//        ]))
-//    }
-//}
+struct HashedSecretView_Previews: PreviewProvider {
+    static var previews: some View {
+        let viewModel = HashedSecretViewModel()
+        viewModel.secrets = [
+            try! HashedSecret(name: "Secure passphrase", value: "password"),
+            try! HashedSecret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
+        ]
+        return HashedSecretView()
+            .environmentObject(viewModel)
+    }
+}
