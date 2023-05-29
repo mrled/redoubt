@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HashedSecretView: View {
-    @ObservedObject var viewModel = HashedSecretViewModel()
+    @EnvironmentObject var viewModel: HashedSecretViewModel
     @State private var isPresentingAddSheet = false
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
@@ -97,11 +97,11 @@ struct HashedSecretView: View {
 
 struct HashedSecretView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = HashedSecretViewModel()
-        viewModel.secrets = [
+        let exampleSecrets = [
             try! HashedSecret(name: "Secure passphrase", value: "password"),
             try! HashedSecret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
         ]
+        let viewModel = HashedSecretViewModel(dataLoader: PreviewDataLoader(secrets: exampleSecrets))
         return HashedSecretView()
             .environmentObject(viewModel)
     }

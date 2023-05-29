@@ -7,17 +7,68 @@
 
 import Foundation
 
-class HashedSecretViewModel: ObservableObject {
-    @Published var secrets: [HashedSecret] = []
-    
+protocol DataLoader {
+    func load() -> [HashedSecret]
+    func save(secrets: [HashedSecret]) -> ()
+}
+
+class PlistDataLoader: DataLoader {
     let encoder = PropertyListEncoder()
     let decoder = PropertyListDecoder()
+    
+    init() {}
     
     private var plistURL: URL {
         guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             fatalError("Unable to access documents directory.")
         }
         return documentsURL.appendingPathComponent("HashedSecrets.plist")
+    }
+    
+
+    
+    func load() -> [HashedSecret] {
+        do {
+            let data = try Data(contentsOf: plistURL)
+            let secrets = try decoder.decode([HashedSecret].self, from: data)
+            print("When loading, found secrets: \(secrets)")
+            return secrets
+        } catch {
+            print("Error loading items: \(error)")
+            return []
+        }
+    }
+    
+    func save(secrets: [HashedSecret]) {
+        do {
+            let data = try encoder.encode(secrets)
+            try data.write(to: plistURL)
+        } catch {
+            print("Error saving items: \(error)")
+        }
+    }
+}
+
+class PreviewDataLoader: DataLoader {
+    var secrets: [HashedSecret]
+    init(secrets: [HashedSecret]) {
+        self.secrets = secrets
+    }
+    func load() -> [HashedSecret] {
+        return secrets
+    }
+    func save(secrets secretsIn: [HashedSecret]) {
+        secrets = secretsIn
+    }
+}
+
+class HashedSecretViewModel: ObservableObject {
+    @Published var secrets: [HashedSecret] = []
+    
+    private var dataLoader: DataLoader
+    
+    init(dataLoader: DataLoader) {
+        self.dataLoader = dataLoader
     }
     
     func addItem(_ item: HashedSecret) {
@@ -33,21 +84,10 @@ class HashedSecretViewModel: ObservableObject {
     }
     
     func saveItems() {
-        do {
-            let data = try encoder.encode(secrets)
-            try data.write(to: plistURL)
-        } catch {
-            print("Error saving items: \(error)")
-        }
+        dataLoader.save(secrets: secrets)
     }
     
     func loadItems() {
-        do {
-            let data = try Data(contentsOf: plistURL)
-            secrets = try decoder.decode([HashedSecret].self, from: data)
-            print("When loading, found secrets: \(secrets)")
-        } catch {
-            print("Error loading items: \(error)")
-        }
+        secrets = dataLoader.load()
     }
 }
