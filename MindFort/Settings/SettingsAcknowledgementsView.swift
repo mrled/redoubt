@@ -11,7 +11,7 @@ struct SettingsAcknowledgementsView: View {
     var body: some View {
         List {
             Section(header: Text("Inspiration")) {
-                Text("First, thanks to Glyph for making PINPal, a command-line program written in Python designed to help you remember passwords via spaced repetition.")
+                Text("First, thanks to Glyph for making PINPal, a command-line program written in Python designed to help you remember passwords via spaced repetition. I thought that was such a good idea that I wanted to make a mobile app that does the same thing.")
                 RowItemUrlWithIcon(title: "glyph/PINPal", emoji: "🐙", destination: URL(string: "https://github.com/glyph/PINPal")!)
                 RowItemUrlWithIcon(title: "PINPal announcement blog post", systemImageName: "network", destination: URL(string: "ttps://blog.glyph.im/2023/04/post-pycon-us-2023-notes.html")!)
             }
@@ -20,6 +20,7 @@ struct SettingsAcknowledgementsView: View {
                 RowItemUrlWithIcon(title: "Twemoji", systemImageName: "network", destination: URL(string: "ttps://blog.glyph.im/2023/04/post-pycon-us-2023-notes.html")!)
             }
         }
+        .navigationTitle("Acknowledgements")
         .padding()
     }
 }
