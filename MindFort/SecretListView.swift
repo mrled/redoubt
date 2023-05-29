@@ -10,6 +10,7 @@ import SwiftUI
 struct SecretListView: View {
     @EnvironmentObject var viewModel: SecretListViewModel
     @State private var isPresentingAddSheet = false
+    @State private var isSettingsViewActive = false
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
     @State private var error: String?
@@ -28,6 +29,13 @@ struct SecretListView: View {
             }
             .navigationBarTitle("Secrets")
             .toolbar {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    NavigationLink(destination: SettingsView(), isActive: $isSettingsViewActive) {
+                        Button(action: { isSettingsViewActive = true }) {
+                            Image(systemName: "gear")
+                        }
+                    }
+                }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: { isPresentingAddSheet = true }) {
                         Image(systemName: "plus")
