@@ -1,5 +1,5 @@
 //
-//  HashedSecretView.swift
+//  SecretListView.swift
 //  MindFort
 //
 //  Created by Micah R Ledbetter on 2023-05-22.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct HashedSecretView: View {
-    @EnvironmentObject var viewModel: HashedSecretViewModel
+struct SecretListView: View {
+    @EnvironmentObject var viewModel: SecretListViewModel
     @State private var isPresentingAddSheet = false
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
@@ -79,7 +79,7 @@ struct HashedSecretView: View {
         }
 
         do {
-            let newSecret = try HashedSecret(name: newSecretName, value: newSecretValue)
+            let newSecret = try Secret(name: newSecretName, value: newSecretValue)
             viewModel.addItem(newSecret)
         } catch {
             print("Error loading items: \(error)")
@@ -95,14 +95,14 @@ struct HashedSecretView: View {
     }
 }
 
-struct HashedSecretView_Previews: PreviewProvider {
+struct SecretListView_Previews: PreviewProvider {
     static var previews: some View {
         let exampleSecrets = [
-            try! HashedSecret(name: "Secure passphrase", value: "password"),
-            try! HashedSecret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
+            try! Secret(name: "Secure passphrase", value: "password"),
+            try! Secret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
         ]
-        let viewModel = HashedSecretViewModel(dataLoader: PreviewDataLoader(secrets: exampleSecrets))
-        return HashedSecretView()
+        let viewModel = SecretListViewModel(dataLoader: PreviewDataLoader(secrets: exampleSecrets))
+        return SecretListView()
             .environmentObject(viewModel)
     }
 }

@@ -10,9 +10,9 @@ import CryptoKit
 
 
 struct ContentView: View {
-    @StateObject private var viewModel = HashedSecretViewModel(dataLoader: PlistDataLoader())
+    @StateObject private var viewModel = SecretListViewModel(dataLoader: PlistDataLoader())
     var body: some View {
-        HashedSecretView()
+        SecretListView()
             .environmentObject(viewModel)
     }
 }

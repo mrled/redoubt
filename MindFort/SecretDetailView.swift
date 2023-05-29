@@ -1,5 +1,5 @@
 //
-//  HashedSecretDetailView.swift
+//  SecretDetailView.swift
 //  MindFort
 //
 //  Created by Micah R Ledbetter on 2023-05-28.
@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct SecretDetailView: View {
-    let secret: HashedSecret
+    let secret: Secret
     let index: Int
     @State private var passphrase = ""
     @State private var passphraseValid: Bool = false
     @FocusState private var isFocused: Bool
-    @EnvironmentObject var viewModel: HashedSecretViewModel
+    @EnvironmentObject var viewModel: SecretListViewModel
     
     var body: some View {
         VStack {
@@ -85,8 +85,8 @@ struct SecretDetailView: View {
 }
 
 
-struct HashedSecretDetailView_Previews: PreviewProvider {
-    static let secret = try! HashedSecret(name: "Test Secret", value: "hunter2")
+struct SecretDetailView_Previews: PreviewProvider {
+    static let secret = try! Secret(name: "Test Secret", value: "hunter2")
     static var previews: some View {
         SecretDetailView(secret: secret, index: 1)
     }

@@ -1,5 +1,5 @@
 //
-//  HashedSecretViewModel.swift
+//  SecretListViewModel.swift
 //  MindFort
 //
 //  Created by Micah R Ledbetter on 2023-05-22.
@@ -8,8 +8,8 @@
 import Foundation
 
 protocol DataLoader {
-    func load() -> [HashedSecret]
-    func save(secrets: [HashedSecret]) -> ()
+    func load() -> [Secret]
+    func save(secrets: [Secret]) -> ()
 }
 
 class PlistDataLoader: DataLoader {
@@ -22,15 +22,15 @@ class PlistDataLoader: DataLoader {
         guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             fatalError("Unable to access documents directory.")
         }
-        return documentsURL.appendingPathComponent("HashedSecrets.plist")
+        return documentsURL.appendingPathComponent("Secrets.plist")
     }
     
 
     
-    func load() -> [HashedSecret] {
+    func load() -> [Secret] {
         do {
             let data = try Data(contentsOf: plistURL)
-            let secrets = try decoder.decode([HashedSecret].self, from: data)
+            let secrets = try decoder.decode([Secret].self, from: data)
             print("When loading, found secrets: \(secrets)")
             return secrets
         } catch {
@@ -39,7 +39,7 @@ class PlistDataLoader: DataLoader {
         }
     }
     
-    func save(secrets: [HashedSecret]) {
+    func save(secrets: [Secret]) {
         do {
             let data = try encoder.encode(secrets)
             try data.write(to: plistURL)
@@ -50,20 +50,20 @@ class PlistDataLoader: DataLoader {
 }
 
 class PreviewDataLoader: DataLoader {
-    var secrets: [HashedSecret]
-    init(secrets: [HashedSecret]) {
+    var secrets: [Secret]
+    init(secrets: [Secret]) {
         self.secrets = secrets
     }
-    func load() -> [HashedSecret] {
+    func load() -> [Secret] {
         return secrets
     }
-    func save(secrets secretsIn: [HashedSecret]) {
+    func save(secrets secretsIn: [Secret]) {
         secrets = secretsIn
     }
 }
 
-class HashedSecretViewModel: ObservableObject {
-    @Published var secrets: [HashedSecret] = []
+class SecretListViewModel: ObservableObject {
+    @Published var secrets: [Secret] = []
     
     private var dataLoader: DataLoader
     
@@ -71,12 +71,12 @@ class HashedSecretViewModel: ObservableObject {
         self.dataLoader = dataLoader
     }
     
-    func addItem(_ item: HashedSecret) {
+    func addItem(_ item: Secret) {
         secrets.append(item)
         saveItems()
     }
     
-    func deleteItem(_ item: HashedSecret) {
+    func deleteItem(_ item: Secret) {
         if let index = secrets.firstIndex(of: item) {
             secrets.remove(at: index)
             saveItems()

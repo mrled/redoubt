@@ -1,5 +1,5 @@
 //
-//  HashedSecret.swift
+//  Secret.swift
 //  MindFort
 //
 //  Created by Micah R Ledbetter on 2023-05-22.
@@ -8,7 +8,7 @@
 import Foundation
 import CryptoKit
 
-enum HashedSecretError: Error {
+enum SecretParsingError: Error {
     case invalidInputValue
     case invalidDictValue
 }
@@ -19,7 +19,7 @@ enum SupportedDigestType: String, Codable {
 }
 
 
-struct HashedSecret: Identifiable, Codable, Equatable {
+struct Secret: Identifiable, Codable, Equatable {
     let id = UUID()
     var name: String
     var digest: Data
@@ -52,12 +52,12 @@ struct HashedSecret: Identifiable, Codable, Equatable {
         digest = digestData
     }
     
-    /// Create a HashedSecret by value
+    /// Create a Secret by value
     /// Hash the value and return only the computed hash, not the secret
     init(name nameIn: String, value: String) throws {
         name = nameIn
         guard let valueData = value.data(using: .utf8) else {
-            throw HashedSecretError.invalidInputValue
+            throw SecretParsingError.invalidInputValue
         }
         let rawDigest = SHA512.hash(data: valueData)
         let digestData = Data(rawDigest.withUnsafeBytes { pointer in
@@ -78,7 +78,7 @@ struct HashedSecret: Identifiable, Codable, Equatable {
         return digest == inputDigest
     }
     
-    static func == (left: HashedSecret, right: HashedSecret) -> Bool {
+    static func == (left: Secret, right: Secret) -> Bool {
         return left.id == right.id
     }
 }
