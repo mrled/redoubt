@@ -7,11 +7,13 @@
 
 import Foundation
 
+/// Load secret data from somewhere and hand it to the view model
 protocol DataLoader {
     func load() -> [Secret]
     func save(secrets: [Secret]) -> ()
 }
 
+/// Load secret data from a property list in the app's documents directory
 class PlistDataLoader: DataLoader {
     let encoder = PropertyListEncoder()
     let decoder = PropertyListDecoder()
@@ -24,8 +26,6 @@ class PlistDataLoader: DataLoader {
         }
         return documentsURL.appendingPathComponent("Secrets.plist")
     }
-    
-
     
     func load() -> [Secret] {
         do {
@@ -49,6 +49,7 @@ class PlistDataLoader: DataLoader {
     }
 }
 
+/// "Load" data that is passed in from a preview function
 class PreviewDataLoader: DataLoader {
     var secrets: [Secret]
     init(secrets: [Secret]) {
