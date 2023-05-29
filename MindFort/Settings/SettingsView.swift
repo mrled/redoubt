@@ -9,20 +9,18 @@ import SwiftUI
 
 struct SettingsView: View {
     var body: some View {
-        NavigationView {
-            List {
-                Section(header: Text("About")) {
-                    NavigationLink(destination: SettingsAcknowledgementsView(), label: {
-                        RowItemWithIcon(title: "Acknowledgements", systemImageName: "list.bullet.rectangle.portrait.fill")
-                    })
-                }
-                Section(header: Text("To do")) {
-                    RowItemWithIcon(title: "Spaced repetition schedule editor", systemImageName: "clock")
-                    RowItemWithIcon(title: "Option to disable HAXX0R C0D3", systemImageName: "laptopcomputer")
-                }
+        List {
+            Section(header: Text("About")) {
+                NavigationLink(destination: SettingsAcknowledgementsView(), label: {
+                    RowItemWithIcon(title: "Acknowledgements", systemImageName: "list.bullet.rectangle.portrait.fill")
+                })
             }
-            .navigationBarTitle("Settings")
+            Section(header: Text("To do")) {
+                RowItemWithIcon(title: "Spaced repetition schedule editor", systemImageName: "clock")
+                RowItemWithIcon(title: "Option to disable HAXX0R C0D3", systemImageName: "laptopcomputer")
+            }
         }
+        .navigationTitle("Settings")
     }
 }
 
