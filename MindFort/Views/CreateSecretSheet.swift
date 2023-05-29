@@ -14,50 +14,77 @@ struct CreateSecretSheet: View {
     @Binding var error: String?
     @FocusState private var newSecretFocusOnNameField: Bool
     @EnvironmentObject var viewModel: MindFortViewModel
-    
-    // add the rest of the properties and functions here...
+    @ObservedObject var keyboardState = KeyboardState()
 
     var body: some View {
-        VStack {
-            Text(newSecretTitle)
-                .font(.largeTitle)
-                .fontWeight(.bold)
+        if keyboardState.isKeyboardVisible {
+            VStack {
+                TextField("Secret name", text: $newSecretName)
+                    .focused($newSecretFocusOnNameField)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding()
+                SecureField("Passphrase", text: $newSecretValue)
+                    .keyboardType(.default)
+                    .padding()
+                Text("H4XX0R C0D3")
+                    .font(.headline)
+                Text(h4xx0rc0d3)
+                    .font(.system(size: 14, design: .monospaced))
+                    .padding()
+                Button("Add Secret") {
+                    addSecret()
+                }
                 .padding()
-            Spacer()
-            TextField("Secret name", text: $newSecretName)
-                .focused($newSecretFocusOnNameField)
-                .padding()
-            SecureField("Passphrase", text: $newSecretValue)
-                .keyboardType(.default)
-                .padding()
-            Button("Add Secret") {
-                addSecret()
-                let feedbackGenerator = UINotificationFeedbackGenerator()
-                feedbackGenerator.notificationOccurred(.success)
-                isPresentingAddSheet = false
-                newSecretName = ""
-                newSecretValue = ""
-                error = nil
+                .disabled(!validSecret)
+                if let error = error {
+                    Text(error)
+                        .foregroundColor(.red)
+                    Spacer()
+                }
             }
             .padding()
-            .disabled(!validSecret)
-            Spacer()
-            if let error = error {
-                Text(error)
-                    .foregroundColor(.red)
+            .onAppear {
+                DispatchQueue.main.async {
+                    newSecretFocusOnNameField = true
+                }
+            }
+        } else {
+            VStack {
+                Text(newSecretTitle)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding()
+                Spacer()
+                TextField("Secret name", text: $newSecretName)
+                    .focused($newSecretFocusOnNameField)
+                    .padding()
+                SecureField("Passphrase", text: $newSecretValue)
+                    .keyboardType(.default)
+                    .padding()
+                Button("Add Secret") {
+                    addSecret()
+                }
+                .padding()
+                .disabled(!validSecret)
+                Spacer()
+                if let error = error {
+                    Text(error)
+                        .foregroundColor(.red)
+                    Spacer()
+                }
+                Text("H4XX0R C0D3")
+                    .font(.headline)
+                Text(h4xx0rc0d3)
+                    .font(.system(size: 14, design: .monospaced))
+                    .padding()
                 Spacer()
             }
-            Text("H4XX0R C0D3")
-                .font(.headline)
-            Text(h4xx0rc0d3)
-                .font(.system(size: 14, design: .monospaced))
-                .padding()
-            Spacer()
-        }
-        .padding()
-        .onAppear {
-            DispatchQueue.main.async {
-                newSecretFocusOnNameField = true
+            .padding()
+            .onAppear {
+                DispatchQueue.main.async {
+                    newSecretFocusOnNameField = true
+                }
             }
         }
     }
@@ -104,15 +131,24 @@ struct CreateSecretSheet: View {
     
     /// Add a secret to the viewModel's secret list
     private func addSecret() {
+        let feedbackGenerator = UINotificationFeedbackGenerator()
         if !validSecret {
             error = "Secret Name and Value must not be empty"
+            feedbackGenerator.notificationOccurred(.error)
             return
         }
         if let ns = newSecret {
             viewModel.addItem(ns)
         } else {
-            print("addSecret: Could not add an empty/invalid secret")
+            error = "Could not create secret from input"
+            feedbackGenerator.notificationOccurred(.error)
+            return
         }
+        isPresentingAddSheet = false
+        newSecretName = ""
+        newSecretValue = ""
+        error = nil
+        feedbackGenerator.notificationOccurred(.success)
     }
     
     private var validSecret: Bool {
@@ -122,7 +158,6 @@ struct CreateSecretSheet: View {
 }
 
 struct CreateSecretSheet_Previews: PreviewProvider {
-    // Let's show off some easter eggs :)
     static var previews: some View {
         Group {
             CreateSecretSheet(
@@ -138,15 +173,24 @@ struct CreateSecretSheet_Previews: PreviewProvider {
                 newSecretValue: .constant("correct horse battery staple"),
                 error: .constant(nil)
             )
-            .previewDisplayName("That XKCD passphrase")
+            .previewDisplayName("Easter egg: XKCD")
             CreateSecretSheet(
                 isPresentingAddSheet: .constant(false),
                 newSecretName: .constant("AzureDiamond"),
                 newSecretValue: .constant("hunter2"),
                 error: .constant(nil)
             )
-            .previewDisplayName("AzureDiamond is famous")
-
+            .previewDisplayName("Easter egg: AzureDiamond")
+            
+            // Unfortunately you can't actually mock up the fucking keyboard so this isn't that useful
+            CreateSecretSheet(
+                isPresentingAddSheet: .constant(false),
+                newSecretName: .constant("Secure passphrase"),
+                newSecretValue: .constant("password"),
+                error: .constant(nil),
+                keyboardState: MockKeyboardUpState()
+            )
+            .previewDisplayName("Keyboard up")
         }
     }
 }

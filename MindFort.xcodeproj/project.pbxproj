@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */; };
 		30286CCF2A26804900456CA5 /* ControlPanelSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CCE2A26804900456CA5 /* ControlPanelSheet.swift */; };
+		30286CD22A26912800456CA5 /* KeyboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CD12A26912800456CA5 /* KeyboardState.swift */; };
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
 		30EB50C02A246D96007550D3 /* SettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50BF2A246D96007550D3 /* SettingsSheet.swift */; };
 		30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C22A24E534007550D3 /* AboutSheet.swift */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecretSheet.swift; sourceTree = "<group>"; };
 		30286CCE2A26804900456CA5 /* ControlPanelSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelSheet.swift; sourceTree = "<group>"; };
+		30286CD12A26912800456CA5 /* KeyboardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardState.swift; sourceTree = "<group>"; };
 		308025092A23B32300491DEA /* SecretDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetailView.swift; sourceTree = "<group>"; };
 		30EB50BF2A246D96007550D3 /* SettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSheet.swift; sourceTree = "<group>"; };
 		30EB50C22A24E534007550D3 /* AboutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSheet.swift; sourceTree = "<group>"; };
@@ -94,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		30286CD02A26910E00456CA5 /* Observables */ = {
+			isa = PBXGroup;
+			children = (
+				30286CD12A26912800456CA5 /* KeyboardState.swift */,
+			);
+			path = Observables;
+			sourceTree = "<group>";
+		};
 		30EB50C42A24E94F007550D3 /* UtilityViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +156,7 @@
 				30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */,
 				30EB50CC2A25BF2E007550D3 /* Views */,
 				30EB50C42A24E94F007550D3 /* UtilityViews */,
+				30286CD02A26910E00456CA5 /* Observables */,
 				30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */,
 				30FD05812A1BDD5F006AB9CC /* MindFort.entitlements */,
 				30FD05822A1BDD5F006AB9CC /* Preview Content */,
@@ -308,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30286CD22A26912800456CA5 /* KeyboardState.swift in Sources */,
 				30FD05B52A1C23CF006AB9CC /* Secret.swift in Sources */,
 				30EB50C02A246D96007550D3 /* SettingsSheet.swift in Sources */,
 				30EB50C82A24E9FA007550D3 /* RowItemUrlWithIcon.swift in Sources */,
