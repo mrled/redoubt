@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SettingsSheet: View {
+    @AppStorage("showControlPanel") var showControlPanel: Bool = false
     var body: some View {
         VStack {
             Text("Settings")
@@ -15,9 +16,8 @@ struct SettingsSheet: View {
                 .bold()
                 .padding()
             List {
-                Section(header: Text("To do")) {
-                    RowItemWithIcon(title: "Spaced repetition schedule editor", systemImageName: "clock")
-                    RowItemWithIcon(title: "Option to disable HAXX0R C0D3", systemImageName: "laptopcomputer")
+                Toggle(isOn: $showControlPanel) {
+                    Text("Show secret developer control panel")
                 }
             }
         }

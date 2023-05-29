@@ -9,9 +9,11 @@ import SwiftUI
 
 struct SecretListView: View {
     @EnvironmentObject var viewModel: MindFortViewModel
+    var showControlPanel: Bool = false
     @State private var isPresentingAddSheet = false
     @State private var isPresentingSettingsSheet = false
     @State private var isPresentingAcknowledgementsSheet = false
+    @State private var isPresentingControlPanelSheet = false
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
     @State private var error: String?
@@ -37,6 +39,11 @@ struct SecretListView: View {
                     Button(action: { isPresentingAcknowledgementsSheet = true }) {
                         Image(systemName: "info.square")
                     }
+                    if showControlPanel {
+                        Button(action: { isPresentingControlPanelSheet = true }) {
+                            Image(systemName: "slider.horizontal.3")
+                        }
+                    }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: { isPresentingAddSheet = true }) {
@@ -59,6 +66,9 @@ struct SecretListView: View {
             .sheet(isPresented: $isPresentingAcknowledgementsSheet) {
                 AboutSheet()
             }
+            .sheet(isPresented: $isPresentingControlPanelSheet) {
+                ControlPanelSheet()
+            }
             .onAppear {
                 viewModel.loadItems()
             }
@@ -77,7 +87,13 @@ struct SecretListView_Previews: PreviewProvider {
             try! Secret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
         ]
         let viewModel = MindFortViewModel(dataLoader: PreviewDataLoader(secrets: exampleSecrets))
-        return SecretListView()
-            .environmentObject(viewModel)
+        Group {
+            SecretListView()
+                .environmentObject(viewModel)
+                .previewDisplayName("Default values")
+            SecretListView(showControlPanel: true)
+                .environmentObject(viewModel)
+                .previewDisplayName("showControlPanel")
+        }
     }
 }

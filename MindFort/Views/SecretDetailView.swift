@@ -33,16 +33,16 @@ struct SecretDetailView: View {
                 )
                 .padding()
             Spacer()
-            Button(action: {
+            Button("Delete") {
                 viewModel.deleteItem(secret)
-            }) {
-                Text("Delete")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .foregroundColor(.white)
-                    .background(Color.red)
-                    .cornerRadius(10)
+                let feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
+                feedbackGenerator.impactOccurred()
             }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .foregroundColor(.white)
+            .background(Color.red)
+            .cornerRadius(10)
             Text("H4XX0R C0D3")
                 .font(.headline)
             Text(prettyHashBlock(digest: secret.digest, perLine: 4))
@@ -60,7 +60,15 @@ struct SecretDetailView: View {
     }
     
     private func validatePassphrase() {
+        let passphraseWasValid = passphraseValid
         passphraseValid = secret.validate(input: passphrase)
+        if !passphraseWasValid && passphraseValid {
+            let feedbackGenerator = UINotificationFeedbackGenerator()
+            feedbackGenerator.notificationOccurred(.success)
+        } else if passphraseWasValid && !passphraseValid {
+            let feedbackGenerator = UINotificationFeedbackGenerator()
+            feedbackGenerator.notificationOccurred(.error)
+        }
     }
     
     private var boxColor: Color {

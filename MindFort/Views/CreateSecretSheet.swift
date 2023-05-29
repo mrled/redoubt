@@ -32,6 +32,8 @@ struct CreateSecretSheet: View {
                 .padding()
             Button("Add Secret") {
                 addSecret()
+                let feedbackGenerator = UINotificationFeedbackGenerator()
+                feedbackGenerator.notificationOccurred(.success)
                 isPresentingAddSheet = false
                 newSecretName = ""
                 newSecretValue = ""
@@ -122,23 +124,29 @@ struct CreateSecretSheet: View {
 struct CreateSecretSheet_Previews: PreviewProvider {
     // Let's show off some easter eggs :)
     static var previews: some View {
-        CreateSecretSheet(
-            isPresentingAddSheet: .constant(false),
-            newSecretName: .constant("Secure passphrase"),
-            newSecretValue: .constant("password"),
-            error: .constant(nil)
-        )
-        CreateSecretSheet(
-            isPresentingAddSheet: .constant(false),
-            newSecretName: .constant("That XKCD one"),
-            newSecretValue: .constant("correct horse battery staple"),
-            error: .constant(nil)
-        )
-        CreateSecretSheet(
-            isPresentingAddSheet: .constant(false),
-            newSecretName: .constant("AzureDiamond"),
-            newSecretValue: .constant("hunter2"),
-            error: .constant(nil)
-        )
+        Group {
+            CreateSecretSheet(
+                isPresentingAddSheet: .constant(false),
+                newSecretName: .constant("Secure passphrase"),
+                newSecretValue: .constant("password"),
+                error: .constant(nil)
+            )
+            .previewDisplayName("Regular password")
+            CreateSecretSheet(
+                isPresentingAddSheet: .constant(false),
+                newSecretName: .constant("That XKCD one"),
+                newSecretValue: .constant("correct horse battery staple"),
+                error: .constant(nil)
+            )
+            .previewDisplayName("That XKCD passphrase")
+            CreateSecretSheet(
+                isPresentingAddSheet: .constant(false),
+                newSecretName: .constant("AzureDiamond"),
+                newSecretValue: .constant("hunter2"),
+                error: .constant(nil)
+            )
+            .previewDisplayName("AzureDiamond is famous")
+
+        }
     }
 }

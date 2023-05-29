@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */; };
+		30286CCF2A26804900456CA5 /* ControlPanelSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CCE2A26804900456CA5 /* ControlPanelSheet.swift */; };
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
 		30EB50C02A246D96007550D3 /* SettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50BF2A246D96007550D3 /* SettingsSheet.swift */; };
 		30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C22A24E534007550D3 /* AboutSheet.swift */; };
@@ -45,6 +46,7 @@
 
 /* Begin PBXFileReference section */
 		30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecretSheet.swift; sourceTree = "<group>"; };
+		30286CCE2A26804900456CA5 /* ControlPanelSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelSheet.swift; sourceTree = "<group>"; };
 		308025092A23B32300491DEA /* SecretDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetailView.swift; sourceTree = "<group>"; };
 		30EB50BF2A246D96007550D3 /* SettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSheet.swift; sourceTree = "<group>"; };
 		30EB50C22A24E534007550D3 /* AboutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSheet.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */,
 				30EB50BF2A246D96007550D3 /* SettingsSheet.swift */,
 				30EB50C22A24E534007550D3 /* AboutSheet.swift */,
+				30286CCE2A26804900456CA5 /* ControlPanelSheet.swift */,
 				308025092A23B32300491DEA /* SecretDetailView.swift */,
 			);
 			path = Views;
@@ -315,6 +318,7 @@
 				3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */,
 				30FD05B92A1C2DC9006AB9CC /* MindFortUtilities.swift in Sources */,
 				30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */,
+				30286CCF2A26804900456CA5 /* ControlPanelSheet.swift in Sources */,
 				30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */,
 				30FD05BB2A1C6CA7006AB9CC /* MindFortViewModel.swift in Sources */,
 			);
@@ -468,6 +472,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MindFort/MindFort.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MindFort/Preview Content\"";
@@ -492,6 +497,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFort;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -506,6 +512,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MindFort/MindFort.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MindFort/Preview Content\"";
@@ -530,6 +537,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFort;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
