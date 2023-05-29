@@ -13,6 +13,7 @@ struct SecretListView: View {
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
     @State private var error: String?
+    @FocusState private var newSecretFocusOnNameField: Bool
     
     var body: some View {
         NavigationView {
@@ -44,45 +45,90 @@ struct SecretListView: View {
     
     private var createSecretSheet: some View {
         VStack {
-            TextField("Secret Name?", text: $newSecretName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            Text(newSecretTitle)
+                .font(.largeTitle)
+                .fontWeight(.bold)
                 .padding()
-            SecureField("Secret Value", text: $newSecretValue)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            Spacer()
+            TextField("Secret name", text: $newSecretName)
+                .focused($newSecretFocusOnNameField)
                 .padding()
+            SecureField("Passphrase", text: $newSecretValue)
+                .keyboardType(.default)
+                .padding()
+                        Button("Add Secret") {
+                            addSecret()
+                            isPresentingAddSheet = false
+                            newSecretName = ""
+                            newSecretValue = ""
+                            error = nil
+                        }
+                        .padding()
+                        .disabled(!validSecret)
+            Spacer()
             if let error = error {
                 Text(error)
                     .foregroundColor(.red)
+                Spacer()
             }
-            Button("Add Secret") {
-                addSecret()
-                isPresentingAddSheet = false
-                newSecretName = ""
-                newSecretValue = ""
-                error = nil
-            }
-            .padding()
-            .disabled(!validSecret)
+            Text("H4XX0R C0D3")
+                .font(.headline)
+            Text(newSecretHashBlockOrPlaceholder)
+                .font(.system(size: 14, design: .monospaced))
+                .padding()
+            Spacer()
         }
         .padding()
-        .frame(width: 300, height: 200) // Adjust size as needed
-        .background(Color.white)
-        .cornerRadius(8)
-        .shadow(radius: 4)
-        .frame(minWidth: 300, minHeight: 200) // Set a minimum size for the sheet
+        .onAppear {
+            DispatchQueue.main.async {
+                newSecretFocusOnNameField = true
+            }
+        }
     }
     
+    /// A secret created from $newSecretName / $newSecretValue
+    private var newSecret: Secret? {
+        do {
+            let s = try Secret(name: newSecretName, value: newSecretValue)
+            return s
+        } catch {
+            print("newSecret: Error loading items: \(error)")
+            return nil
+        }
+    }
+    
+    /// The title of the new secret sheet
+    private var newSecretTitle: String {
+        if let newSecret {
+            if newSecret.name.count > 0 {
+                print("New secret has a name! It's: '\(newSecret.name)'")
+                return newSecret.name
+            }
+        }
+        return "New Secret"
+    }
+    
+    /// The digest of the newSecret, or a placeholder value
+    private var newSecretHashBlockOrPlaceholder: String {
+        if let newSecret {
+            if newSecret.value?.count ?? 0 > 0 {
+                print("New Secret has value \(newSecret.value ?? "<empty>")")
+                return prettyHashBlock(digest: newSecret.digest, perLine: 4)
+            }
+        }
+        return placeholderHashBlock(perLine: 4)
+    }
+    
+    /// Add a secret to the viewModel's secret list
     private func addSecret() {
         if !validSecret {
             error = "Secret Name and Value must not be empty"
             return
         }
-
-        do {
-            let newSecret = try Secret(name: newSecretName, value: newSecretValue)
-            viewModel.addItem(newSecret)
-        } catch {
-            print("Error loading items: \(error)")
+        if let ns = newSecret {
+            viewModel.addItem(ns)
+        } else {
+            print("addSecret: Could not add an empty/invalid secret")
         }
     }
     

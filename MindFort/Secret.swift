@@ -24,6 +24,7 @@ struct Secret: Identifiable, Codable, Equatable {
     var name: String
     var digest: Data
     var digestType: SupportedDigestType
+    var value: String?
     var h4xx0rcode: String {
         return digest.map { String(format: "%02hhx", $0) }.joined()
     }
@@ -54,9 +55,10 @@ struct Secret: Identifiable, Codable, Equatable {
     
     /// Create a Secret by value
     /// Hash the value and return only the computed hash, not the secret
-    init(name nameIn: String, value: String) throws {
+    init(name nameIn: String, value valueIn: String) throws {
         name = nameIn
-        guard let valueData = value.data(using: .utf8) else {
+        value = valueIn
+        guard let valueData = valueIn.data(using: .utf8) else {
             throw SecretParsingError.invalidInputValue
         }
         let rawDigest = SHA512.hash(data: valueData)
@@ -83,15 +85,12 @@ struct Secret: Identifiable, Codable, Equatable {
     }
 }
 
-
-/// Given a SHA512 hash binary value, return a list of number groups
-func prettyHashBlock(digest: Data, perGroup: Int = 4, perLine: Int = 8) -> String {
-    let hexString = digest.map { String(format: "%02x", $0) }.joined()
-
+/// Return the input string in groups of characters and lines
+func groupCharacters(string: String, perGroup: Int = 4, perLine: Int = 8) -> String {
     var result = ""
     var count = 0
     
-    for (index, char) in hexString.enumerated() {
+    for (index, char) in string.enumerated() {
         result.append(char)
         
         if (index + 1) % perGroup == 0 {
@@ -105,4 +104,25 @@ func prettyHashBlock(digest: Data, perGroup: Int = 4, perLine: Int = 8) -> Strin
         }
     }
     return result
+}
+
+/// Given a SHA512 hash binary value, return a list of number groups
+func prettyHashBlock(digest: Data, perGroup: Int = 4, perLine: Int = 8) -> String {
+    let hexString = digest.map { String(format: "%02x", $0) }.joined()
+    return groupCharacters(string: hexString, perGroup: perGroup, perLine: perLine)
+}
+
+func placeholderHashBlock(perGroup: Int = 4, perLine: Int = 8) -> String {
+    let placeholderStrings = [
+        "dead", "beef", "babe", "cafe",
+        "dead", "beef", "babe", "cafe",
+        "dead", "beef", "babe", "cafe",
+        "dead", "beef", "babe", "cafe",
+        "dead", "beef", "babe", "cafe",
+        "dead", "beef", "babe", "cafe",
+        "dead", "beef", "babe", "cafe",
+        "dead", "beef", "babe", "cafe",
+    ]
+    let placeholderString = placeholderStrings.joined(separator: "")
+    return groupCharacters(string: placeholderString, perGroup: perGroup, perLine: perLine)
 }
