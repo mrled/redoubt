@@ -12,6 +12,7 @@
 		30EB50C32A24E534007550D3 /* SettingsAcknowledgementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C22A24E534007550D3 /* SettingsAcknowledgementsView.swift */; };
 		30EB50C62A24E978007550D3 /* RowItemWithIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C52A24E978007550D3 /* RowItemWithIcon.swift */; };
 		30EB50C82A24E9FA007550D3 /* RowItemUrlWithIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C72A24E9FA007550D3 /* RowItemUrlWithIcon.swift */; };
+		30EB50CB2A2535F3007550D3 /* SecretTrialRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50CA2A2535F3007550D3 /* SecretTrialRunView.swift */; };
 		30FD057C2A1BDD5C006AB9CC /* MindFortApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */; };
 		30FD057E2A1BDD5C006AB9CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD057D2A1BDD5C006AB9CC /* ContentView.swift */; };
 		30FD05802A1BDD5F006AB9CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		30EB50C22A24E534007550D3 /* SettingsAcknowledgementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAcknowledgementsView.swift; sourceTree = "<group>"; };
 		30EB50C52A24E978007550D3 /* RowItemWithIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowItemWithIcon.swift; sourceTree = "<group>"; };
 		30EB50C72A24E9FA007550D3 /* RowItemUrlWithIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowItemUrlWithIcon.swift; sourceTree = "<group>"; };
+		30EB50CA2A2535F3007550D3 /* SecretTrialRunView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretTrialRunView.swift; sourceTree = "<group>"; };
 		30FD05782A1BDD5C006AB9CC /* MindFort.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MindFort.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortApp.swift; sourceTree = "<group>"; };
 		30FD057D2A1BDD5C006AB9CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -108,6 +110,14 @@
 			path = UtilityViews;
 			sourceTree = "<group>";
 		};
+		30EB50C92A2535E0007550D3 /* SecretTrialRun */ = {
+			isa = PBXGroup;
+			children = (
+				30EB50CA2A2535F3007550D3 /* SecretTrialRunView.swift */,
+			);
+			path = SecretTrialRun;
+			sourceTree = "<group>";
+		};
 		30FD056F2A1BDD5C006AB9CC = {
 			isa = PBXGroup;
 			children = (
@@ -136,6 +146,7 @@
 				30FD05B62A1C2BAD006AB9CC /* SecretListView.swift */,
 				30FD05BA2A1C6CA7006AB9CC /* SecretListViewModel.swift */,
 				308025092A23B32300491DEA /* SecretDetailView.swift */,
+				30EB50C92A2535E0007550D3 /* SecretTrialRun */,
 				30EB50C12A24E512007550D3 /* Settings */,
 				30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */,
 				30EB50C42A24E94F007550D3 /* UtilityViews */,
@@ -303,6 +314,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30FD05B52A1C23CF006AB9CC /* Secret.swift in Sources */,
+				30EB50CB2A2535F3007550D3 /* SecretTrialRunView.swift in Sources */,
 				30EB50C02A246D96007550D3 /* SettingsView.swift in Sources */,
 				30EB50C82A24E9FA007550D3 /* RowItemUrlWithIcon.swift in Sources */,
 				30FD057E2A1BDD5C006AB9CC /* ContentView.swift in Sources */,
