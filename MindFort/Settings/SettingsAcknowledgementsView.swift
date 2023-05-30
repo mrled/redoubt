@@ -21,7 +21,6 @@ struct SettingsAcknowledgementsView: View {
             }
         }
         .navigationTitle("Acknowledgements")
-        .padding()
     }
 }
 
