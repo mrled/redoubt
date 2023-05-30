@@ -48,10 +48,10 @@ struct SecretListView: View {
                 createSecretSheet
             }
             .sheet(isPresented: $isPresentingSettingsSheet) {
-                SettingsView()
+                SettingsSheet()
             }
             .sheet(isPresented: $isPresentingAcknowledgementsSheet) {
-                SettingsAcknowledgementsView()
+                AboutSheet()
             }
             .onAppear {
                 viewModel.loadItems()

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SettingsView: View {
+struct SettingsSheet: View {
     var body: some View {
         VStack {
             Text("Settings")
@@ -26,6 +26,6 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        SettingsSheet()
     }
 }

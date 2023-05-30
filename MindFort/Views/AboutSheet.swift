@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct SettingsAcknowledgementsView: View {
+struct AboutSheet: View {
     var body: some View {
         ScrollView {
             // Warning: a view can only have 10 direct child views
@@ -74,6 +74,6 @@ struct SettingsAcknowledgementsView: View {
 
 struct SettingsAcknowledgementsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsAcknowledgementsView()
+        AboutSheet()
     }
 }
