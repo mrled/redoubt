@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SecretListView: View {
-    @EnvironmentObject var viewModel: SecretListViewModel
+    @EnvironmentObject var viewModel: MindFortViewModel
     @State private var isPresentingAddSheet = false
     @State private var isSettingsViewActive = false
     @State private var newSecretName = ""
@@ -162,7 +162,7 @@ struct SecretListView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", value: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
         ]
-        let viewModel = SecretListViewModel(dataLoader: PreviewDataLoader(secrets: exampleSecrets))
+        let viewModel = MindFortViewModel(dataLoader: PreviewDataLoader(secrets: exampleSecrets))
         return SecretListView()
             .environmentObject(viewModel)
     }

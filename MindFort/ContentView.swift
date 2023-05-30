@@ -10,7 +10,7 @@ import CryptoKit
 
 
 struct ContentView: View {
-    @StateObject private var viewModel = SecretListViewModel(dataLoader: PlistDataLoader())
+    @StateObject private var viewModel = MindFortViewModel(dataLoader: PlistDataLoader())
     var body: some View {
         SecretListView()
             .environmentObject(viewModel)

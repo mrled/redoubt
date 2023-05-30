@@ -22,7 +22,7 @@
 		30FD05B52A1C23CF006AB9CC /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05B42A1C23CF006AB9CC /* Secret.swift */; };
 		30FD05B72A1C2BAD006AB9CC /* SecretListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05B62A1C2BAD006AB9CC /* SecretListView.swift */; };
 		30FD05B92A1C2DC9006AB9CC /* MindFortUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */; };
-		30FD05BB2A1C6CA7006AB9CC /* SecretListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05BA2A1C6CA7006AB9CC /* SecretListViewModel.swift */; };
+		30FD05BB2A1C6CA7006AB9CC /* MindFortViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05BA2A1C6CA7006AB9CC /* MindFortViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,7 +62,7 @@
 		30FD05B42A1C23CF006AB9CC /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		30FD05B62A1C2BAD006AB9CC /* SecretListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretListView.swift; sourceTree = "<group>"; };
 		30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortUtilities.swift; sourceTree = "<group>"; };
-		30FD05BA2A1C6CA7006AB9CC /* SecretListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretListViewModel.swift; sourceTree = "<group>"; };
+		30FD05BA2A1C6CA7006AB9CC /* MindFortViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,14 +132,14 @@
 			isa = PBXGroup;
 			children = (
 				30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */,
+				30FD05BA2A1C6CA7006AB9CC /* MindFortViewModel.swift */,
 				30FD057D2A1BDD5C006AB9CC /* ContentView.swift */,
 				30FD05B62A1C2BAD006AB9CC /* SecretListView.swift */,
-				30FD05BA2A1C6CA7006AB9CC /* SecretListViewModel.swift */,
 				308025092A23B32300491DEA /* SecretDetailView.swift */,
-				30EB50C12A24E512007550D3 /* Settings */,
 				30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */,
-				30EB50C42A24E94F007550D3 /* UtilityViews */,
 				30FD05B42A1C23CF006AB9CC /* Secret.swift */,
+				30EB50C12A24E512007550D3 /* Settings */,
+				30EB50C42A24E94F007550D3 /* UtilityViews */,
 				30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */,
 				30FD05812A1BDD5F006AB9CC /* MindFort.entitlements */,
 				30FD05822A1BDD5F006AB9CC /* Preview Content */,
@@ -312,7 +312,7 @@
 				3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */,
 				30FD05B92A1C2DC9006AB9CC /* MindFortUtilities.swift in Sources */,
 				30EB50C32A24E534007550D3 /* SettingsAcknowledgementsView.swift in Sources */,
-				30FD05BB2A1C6CA7006AB9CC /* SecretListViewModel.swift in Sources */,
+				30FD05BB2A1C6CA7006AB9CC /* MindFortViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

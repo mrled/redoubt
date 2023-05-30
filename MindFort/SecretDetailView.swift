@@ -13,7 +13,7 @@ struct SecretDetailView: View {
     @State private var passphrase = ""
     @State private var passphraseValid: Bool = false
     @FocusState private var isFocused: Bool
-    @EnvironmentObject var viewModel: SecretListViewModel
+    @EnvironmentObject var viewModel: MindFortViewModel
     
     var body: some View {
         VStack {

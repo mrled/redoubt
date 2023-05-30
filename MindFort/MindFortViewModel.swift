@@ -63,7 +63,7 @@ class PreviewDataLoader: DataLoader {
     }
 }
 
-class SecretListViewModel: ObservableObject {
+class MindFortViewModel: ObservableObject {
     @Published var secrets: [Secret] = []
     
     private var dataLoader: DataLoader
