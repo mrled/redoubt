@@ -10,7 +10,8 @@ import SwiftUI
 struct SecretListView: View {
     @EnvironmentObject var viewModel: MindFortViewModel
     @State private var isPresentingAddSheet = false
-    @State private var isSettingsViewActive = false
+    @State private var isPresentingSettingsSheet = false
+    @State private var isPresentingAcknowledgementsSheet = false
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
     @State private var error: String?
@@ -30,10 +31,11 @@ struct SecretListView: View {
             .navigationBarTitle("Secrets")
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
-                    NavigationLink(destination: SettingsView(), isActive: $isSettingsViewActive) {
-                        Button(action: { isSettingsViewActive = true }) {
-                            Image(systemName: "gear")
-                        }
+                    Button(action: { isPresentingSettingsSheet = true }) {
+                        Image(systemName: "gear")
+                    }
+                    Button(action: { isPresentingAcknowledgementsSheet = true }) {
+                        Image(systemName: "info.square")
                     }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -44,6 +46,12 @@ struct SecretListView: View {
             }
             .sheet(isPresented: $isPresentingAddSheet) {
                 createSecretSheet
+            }
+            .sheet(isPresented: $isPresentingSettingsSheet) {
+                SettingsView()
+            }
+            .sheet(isPresented: $isPresentingAcknowledgementsSheet) {
+                SettingsAcknowledgementsView()
             }
             .onAppear {
                 viewModel.loadItems()
@@ -93,7 +101,7 @@ struct SecretListView: View {
             }
         }
     }
-    
+
     /// A secret created from $newSecretName / $newSecretValue
     private var newSecret: Secret? {
         do {
