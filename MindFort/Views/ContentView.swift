@@ -10,13 +10,13 @@ import CryptoKit
 
 
 struct ContentView: View {
-    @StateObject private var viewModel = MindFortViewModel(dataLoader: PlistDataLoader())
+    @StateObject private var secretsModel = SecretsViewModel(dataLoader: PlistDataLoader())
     @StateObject private var notificationsModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromPlist())
     @AppStorage("showControlPanel") var showControlPanel: Bool = false
 
     var body: some View {
         SecretListView(showControlPanel: showControlPanel)
-            .environmentObject(viewModel)
+            .environmentObject(secretsModel)
             .environmentObject(notificationsModel)
     }
 }

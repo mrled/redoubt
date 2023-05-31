@@ -13,7 +13,7 @@ struct SecretDetailView: View {
     @State private var passphrase = ""
     @State private var passphraseValid: Bool = false
     @FocusState private var isFocused: Bool
-    @EnvironmentObject var viewModel: MindFortViewModel
+    @EnvironmentObject var secretsModel: SecretsViewModel
     
     var body: some View {
         VStack {
@@ -34,7 +34,7 @@ struct SecretDetailView: View {
                 .padding()
             Spacer()
             Button("Delete") {
-                viewModel.deleteItem(secret)
+                secretsModel.deleteItem(secret)
                 let feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
                 feedbackGenerator.impactOccurred()
             }

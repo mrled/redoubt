@@ -13,7 +13,7 @@ struct CreateSecretSheet: View {
     @Binding var newSecretValue: String
     @Binding var error: String?
     @FocusState private var newSecretFocusOnNameField: Bool
-    @EnvironmentObject var viewModel: MindFortViewModel
+    @EnvironmentObject var secretsModel: SecretsViewModel
     @ObservedObject var keyboardState = KeyboardState()
 
     var body: some View {
@@ -138,7 +138,7 @@ struct CreateSecretSheet: View {
             return
         }
         if let ns = newSecret {
-            viewModel.addItem(ns)
+            secretsModel.addItem(ns)
         } else {
             error = "Could not create secret from input"
             feedbackGenerator.notificationOccurred(.error)

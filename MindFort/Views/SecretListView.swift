@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SecretListView: View {
-    @EnvironmentObject var viewModel: MindFortViewModel
+    @EnvironmentObject var secretsModel: SecretsViewModel
     @EnvironmentObject var notificationsModel: NotificationsViewModel
     var showControlPanel: Bool = false
     @State private var isPresentingAddSheet = false
@@ -24,9 +24,9 @@ struct SecretListView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(Array(viewModel.secrets.enumerated()), id: \.element.id) { index, secret in
+                ForEach(Array(secretsModel.secrets.enumerated()), id: \.element.id) { index, secret in
                     NavigationLink(destination: SecretDetailView(secret: secret, index: index)
-                        .environmentObject(viewModel)) {
+                        .environmentObject(secretsModel)) {
                         Text(secret.name)
                     }
                 }
@@ -60,7 +60,7 @@ struct SecretListView: View {
                     newSecretValue: $newSecretValue,
                     error: $error
                 )
-                .environmentObject(viewModel)
+                .environmentObject(secretsModel)
             }
             .sheet(isPresented: $isPresentingSettingsSheet) {
                 SettingsSheet()
@@ -73,14 +73,14 @@ struct SecretListView: View {
                 ControlPanelSheet()
             }
             .onAppear {
-                viewModel.loadItems()
+                secretsModel.loadItems()
                 notificationsModel.load()
             }
         }
     }
     
     func removeSecrets(at offsets: IndexSet) {
-        viewModel.secrets.remove(atOffsets: offsets)
+        secretsModel.secrets.remove(atOffsets: offsets)
     }
 }
 
@@ -90,15 +90,15 @@ struct SecretListView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", value: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
         ]
-        let viewModel = MindFortViewModel(dataLoader: PreviewDataLoader(secrets: exampleSecrets))
+        let secretsModel = SecretsViewModel(dataLoader: PreviewDataLoader(secrets: exampleSecrets))
         let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromLiterals(schedules: []))
         Group {
             SecretListView()
-                .environmentObject(viewModel)
+                .environmentObject(secretsModel)
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("Default values")
             SecretListView(showControlPanel: true)
-                .environmentObject(viewModel)
+                .environmentObject(secretsModel)
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("showControlPanel")
         }
