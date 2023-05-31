@@ -1,0 +1,60 @@
+//
+//  DayIntervalPicker.swift
+//  MindFort
+//
+//  Created by Micah R Ledbetter on 2023-05-31.
+//
+
+import SwiftUI
+
+
+enum TimeUnit: String, CaseIterable, Identifiable {
+    case days
+    case weeks
+    case months
+
+    var id: String { self.rawValue }
+}
+
+
+/// Pick intervals of a few days, a few weeks, or a few months.
+/// This isn't useful because we can't set notifications on every 2+ units (days etc), just every unit
+struct DayIntervalPicker: View {
+    var minValue: Int = 1
+    var maxValue: Int = 4
+    @State var timeInterval: Int = 1
+    @State var timeUnit: TimeUnit = .days
+
+    var body: some View {
+        HStack {
+            Text("Every")
+            Spacer()
+            Picker("", selection: $timeInterval) {
+                ForEach(minValue..<(maxValue + 1), id: \.self) { i in
+                    Text("\(i)")
+                }
+            }
+            .labelsHidden()
+            .frame(width: 50)
+            Picker("", selection: $timeUnit) {
+                ForEach(TimeUnit.allCases) { unit in
+                    // You must include the .tag(unit), otherwise the underlying $timeUnit updates,
+                    // but the view doesn't appear to have updated to the user.
+                    Text("\(unit.rawValue)").tag(unit)
+                }
+            }
+            .labelsHidden()
+            .frame(width: 100)
+        }
+    }
+}
+
+
+struct DayIntervalPicker_Previews: PreviewProvider {
+    static var previews: some View {
+        List {
+            Text("How often?")
+            DayIntervalPicker(minValue: 2, maxValue: 5)
+        }
+    }
+}

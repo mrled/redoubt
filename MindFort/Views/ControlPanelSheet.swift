@@ -21,6 +21,7 @@ struct PlaygroundButton: View {
 }
 
 struct ControlPanelSheet: View {
+    @StateObject var notificationList = NotificationList()
     
     var body: some View {
         VStack {
@@ -42,6 +43,32 @@ struct ControlPanelSheet: View {
                 Section(header: Text("Fix bugs")) {
                     // It's cut off on my phone with the keyboard up
                     RowItemWithIcon(title: "Show all of H4XX0R C0D3 w/ keyboard enabled", systemImageName: "ladybug")
+                }
+                Section(header: Text("Registered notifications")) {
+                    if notificationList.notifications.isEmpty {
+                        Text("No registered notifications")
+                    } else {
+                        ForEach(notificationList.notifications) { item in
+                            VStack(alignment: .leading) {
+                                Text(item.title)
+                                Text(item.body)
+                                Text("\(item.trigger.hour ?? 0):\(item.trigger.minute ?? 0)")
+                            }
+                        }
+                    }
+                    Button(action: {
+                        notificationList.refreshNotifications()
+                    }) {
+                        HStack {
+                            Spacer()
+                            Text("Refresh Notifications")
+                                .foregroundColor(.blue)
+                            Spacer()
+                        }
+                    }
+                }
+                .onAppear {
+                    notificationList.refreshNotifications()
                 }
                 Section(header: Text("Haptic feedback playground")) {
                     PlaygroundButton(label: "Impact: light") {
