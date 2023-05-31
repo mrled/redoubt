@@ -74,47 +74,25 @@ class NotificationsVmDataLoaderFromLiterals: NotificationsVmDataLoader {
 
 
 enum ScheduleType: String, Codable, CaseIterable, Identifiable {
-    case regularInterval
-    case spacedRepetition
+    case daily
+//    case weekly
+//    case monthly
+//    case spacedRepetition
     
     var id: String { self.rawValue }
     
     var description: String {
         switch self {
-        case .regularInterval: return "Regular interval"
-        case .spacedRepetition: return "Spaced repetition"
-        }
-    }
-}
-
-
-/// A struct with DateComponents representing when notifications will be delivered
-struct ScheduleTime: Identifiable {
-    var dateComponents: DateComponents
-    
-    var id: String {
-        let hour = dateComponents.hour ?? 0
-        let minute = dateComponents.minute ?? 0
-        return "\(hour):\(minute)"
-    }
-    
-    func formattedTime() -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .none // Ignore the date completely
-        formatter.timeStyle = .short
-        if let date = Calendar.current.date(from: dateComponents) {
-            return formatter.string(from: date)
-        } else {
-            // TODO: should not return junk here
-            return "Error: Bad Date"
+        case .daily: return "Every day"
+//        case .spacedRepetition: return "Spaced repetition"
         }
     }
 }
 
 
 class NotificationsViewModel: ObservableObject {
-    @Published var scheduleType: ScheduleType = .regularInterval
-    @Published var regularIntervalSchedules: [DateComponents] = []
+    @Published var scheduleType: ScheduleType = .daily
+    @Published var regularIntervalEntries: [DateComponents] = []
     
     //    @Published var spacedRepetitionIntervalEntries
             
@@ -126,28 +104,34 @@ class NotificationsViewModel: ObservableObject {
     }
     
     func save() {
-        dataLoader.saveRegularIntervals(schedules: self.regularIntervalSchedules)
+        dataLoader.saveRegularIntervals(schedules: self.regularIntervalEntries)
         reregisterNotifications()
     }
     
     func load() {
-        regularIntervalSchedules = dataLoader.loadRegularIntervals()
+        regularIntervalEntries = dataLoader.loadRegularIntervals()
         reregisterNotifications()
     }
     
     func addRegularIntervalEntry(_ entry: DateComponents) {
-        // Don't allow inserting the same interval/time twice
-        if regularIntervalSchedules.firstIndex(of: entry) != nil {
+        // Don't allow inserting the same interval twice
+        if regularIntervalEntries.firstIndex(of: entry) != nil {
             return
         }
-        regularIntervalSchedules.append(entry)
+        regularIntervalEntries.append(entry)
+        save()
+    }
+    
+    func deleteRegularIntervalEntry(at offsets: IndexSet) {
+        for index in offsets {
+            regularIntervalEntries.remove(at: index)
+        }
         save()
     }
     
     func deleteRegularIntervalEntry(_ entry: DateComponents) {
-        if let index = regularIntervalSchedules.firstIndex(of: entry) {
-            regularIntervalSchedules.remove(at: index)
-            save()
+        if let index = regularIntervalEntries.firstIndex(of: entry) {
+            deleteRegularIntervalEntry(at: IndexSet(integer: index))
         }
     }
     
@@ -156,7 +140,7 @@ class NotificationsViewModel: ObservableObject {
         NotificationManager.shared.requestPermission { granted in
             if granted {
                 self.manager.removeNotifications()
-                for schedule in self.regularIntervalSchedules {
+                for schedule in self.regularIntervalEntries {
                     let trigger = UNCalendarNotificationTrigger(dateMatching: schedule, repeats: true)
                     self.manager.registerNotification(
                         title: "Password ritual",

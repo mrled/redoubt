@@ -13,8 +13,8 @@
 		30286CD72A269B3600456CA5 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CD62A269B3600456CA5 /* NotificationManager.swift */; };
 		30286CD92A26A59E00456CA5 /* NotificationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CD82A26A59E00456CA5 /* NotificationList.swift */; };
 		30286CDD2A27092B00456CA5 /* TimeRangePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CDC2A27092B00456CA5 /* TimeRangePicker.swift */; };
-		304F43572A27C50100FE08DF /* DayWeekMonthIntervalPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304F43562A27C50100FE08DF /* DayWeekMonthIntervalPicker.swift */; };
 		304F435A2A27C85800FE08DF /* NotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304F43592A27C85800FE08DF /* NotificationsViewModel.swift */; };
+		307BEFEE2A28071D004D21AC /* TimePickerExpandable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFED2A28071C004D21AC /* TimePickerExpandable.swift */; };
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
 		30EB50C02A246D96007550D3 /* SettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50BF2A246D96007550D3 /* SettingsSheet.swift */; };
 		30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C22A24E534007550D3 /* AboutSheet.swift */; };
@@ -57,8 +57,8 @@
 		30286CD62A269B3600456CA5 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		30286CD82A26A59E00456CA5 /* NotificationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationList.swift; sourceTree = "<group>"; };
 		30286CDC2A27092B00456CA5 /* TimeRangePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRangePicker.swift; sourceTree = "<group>"; };
-		304F43562A27C50100FE08DF /* DayWeekMonthIntervalPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeekMonthIntervalPicker.swift; sourceTree = "<group>"; };
 		304F43592A27C85800FE08DF /* NotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewModel.swift; sourceTree = "<group>"; };
+		307BEFED2A28071C004D21AC /* TimePickerExpandable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerExpandable.swift; sourceTree = "<group>"; };
 		308025092A23B32300491DEA /* SecretDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetailView.swift; sourceTree = "<group>"; };
 		30EB50BF2A246D96007550D3 /* SettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSheet.swift; sourceTree = "<group>"; };
 		30EB50C22A24E534007550D3 /* AboutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSheet.swift; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 				30EB50C52A24E978007550D3 /* RowItemWithIcon.swift */,
 				30EB50C72A24E9FA007550D3 /* RowItemUrlWithIcon.swift */,
 				30286CDC2A27092B00456CA5 /* TimeRangePicker.swift */,
-				304F43562A27C50100FE08DF /* DayWeekMonthIntervalPicker.swift */,
+				307BEFED2A28071C004D21AC /* TimePickerExpandable.swift */,
 			);
 			path = UtilityViews;
 			sourceTree = "<group>";
@@ -354,6 +354,7 @@
 				30FD05B52A1C23CF006AB9CC /* Secret.swift in Sources */,
 				30EB50C02A246D96007550D3 /* SettingsSheet.swift in Sources */,
 				30EB50C82A24E9FA007550D3 /* RowItemUrlWithIcon.swift in Sources */,
+				307BEFEE2A28071D004D21AC /* TimePickerExpandable.swift in Sources */,
 				30FD057E2A1BDD5C006AB9CC /* ContentView.swift in Sources */,
 				304F435A2A27C85800FE08DF /* NotificationsViewModel.swift in Sources */,
 				30FD057C2A1BDD5C006AB9CC /* MindFortApp.swift in Sources */,
@@ -362,7 +363,6 @@
 				30EB50C62A24E978007550D3 /* RowItemWithIcon.swift in Sources */,
 				3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */,
 				30FD05B92A1C2DC9006AB9CC /* MindFortUtilities.swift in Sources */,
-				304F43572A27C50100FE08DF /* DayWeekMonthIntervalPicker.swift in Sources */,
 				30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */,
 				30286CCF2A26804900456CA5 /* ControlPanelSheet.swift in Sources */,
 				30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */,
