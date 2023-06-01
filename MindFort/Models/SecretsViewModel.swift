@@ -11,10 +11,11 @@ import Foundation
 protocol DataLoader {
     func load() -> [Secret]
     func save(secrets: [Secret]) -> ()
+    func deleteAllData() -> ()
 }
 
 /// Load secret data from a property list in the app's documents directory
-class PlistDataLoader: DataLoader {
+class SecretsVmDataLoaderFromPlist: DataLoader {
     let encoder = PropertyListEncoder()
     let decoder = PropertyListDecoder()
     
@@ -47,10 +48,18 @@ class PlistDataLoader: DataLoader {
             print("Error saving items: \(error)")
         }
     }
+    
+    func deleteAllData() {
+        do {
+            try FileManager.default.removeItem(at: plistURL)
+        } catch {
+            print("Error deleting \(plistURL): \(error)")
+        }
+    }
 }
 
 /// "Load" data that is passed in from a preview function
-class PreviewDataLoader: DataLoader {
+class SecretsVmDataLoaderFromArray: DataLoader {
     var secrets: [Secret]
     init(secrets: [Secret]) {
         self.secrets = secrets
@@ -60,6 +69,9 @@ class PreviewDataLoader: DataLoader {
     }
     func save(secrets secretsIn: [Secret]) {
         secrets = secretsIn
+    }
+    func deleteAllData() {
+        secrets = []
     }
 }
 
@@ -90,5 +102,9 @@ class SecretsViewModel: ObservableObject {
     
     func loadItems() {
         secrets = dataLoader.load()
+    }
+    
+    func deleteAllData() {
+        dataLoader.deleteAllData()
     }
 }

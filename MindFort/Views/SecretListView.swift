@@ -71,6 +71,7 @@ struct SecretListView: View {
             }
             .sheet(isPresented: $isPresentingControlPanelSheet) {
                 ControlPanelSheet()
+                    .environmentObject(notificationsModel)
             }
             .onAppear {
                 secretsModel.loadItems()
@@ -90,8 +91,8 @@ struct SecretListView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", value: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
         ]
-        let secretsModel = SecretsViewModel(dataLoader: PreviewDataLoader(secrets: exampleSecrets))
-        let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromLiterals(schedules: []))
+        let secretsModel = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(secrets: exampleSecrets))
+        let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: []))
         Group {
             SecretListView()
                 .environmentObject(secretsModel)

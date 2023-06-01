@@ -24,7 +24,7 @@ struct RegularIntervalScheduleControls: View {
                             Calendar.current.date(from: notificationsModel.regularIntervalEntries[index]) ?? Date()
                         },
                         set: {
-                            notificationsModel.regularIntervalEntries[index] = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: $0)
+                            notificationsModel.regularIntervalEntries[index] = Calendar.current.dateComponents([.hour, .minute], from: $0)
                         }
                     )
                     TimePickerExpandable(date: dateBinding)
@@ -39,7 +39,9 @@ struct RegularIntervalScheduleControls: View {
     }
      
     func addScheduleTime() {
-        notificationsModel.addRegularIntervalEntry(DateComponents())
+        notificationsModel.addRegularIntervalEntry(
+            Calendar.current.dateComponents([.hour, .minute], from: Date())
+        )
     }
 
     func removeScheduleTime(at offsets: IndexSet) {
@@ -185,13 +187,13 @@ struct SettingsSheet: View {
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromLiterals(schedules: []))
+            let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: []))
             SettingsSheet()
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("Simple, no schedules")
         }
         Group {
-            let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromLiterals(schedules: []))
+            let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: []))
             SettingsSheet()
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("Simple, one schedule")

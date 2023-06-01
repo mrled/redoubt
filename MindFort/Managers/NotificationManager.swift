@@ -20,7 +20,7 @@ class NotificationManager {
                 if success {
                     completion(true)
                 } else {
-                    print("Request failed with error: \(error?.localizedDescription ?? "N/A")")
+                    appLogger.error("Request failed with error: \(error?.localizedDescription ?? "N/A")")
                     completion(false)
                 }
             }
@@ -38,9 +38,7 @@ class NotificationManager {
 
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
-                print("Failed to register notification with error: \(error.localizedDescription)")
-            } else {
-                print("Successfully registered notification??")
+                appLogger.error("Failed to register notification with error: \(error.localizedDescription)")
             }
         }
     }
@@ -63,7 +61,7 @@ class NotificationManager {
     func listPendingNotifications() {
         UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
             for request in requests {
-                print("Pending Notification: \(request.identifier)")
+                appLogger.info("Pending Notification: \(request.identifier)")
             }
         }
     }

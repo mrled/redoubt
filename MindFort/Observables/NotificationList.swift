@@ -13,7 +13,8 @@ struct NotificationItem: Identifiable {
     let id: String
     let title: String
     let body: String
-    let trigger: DateComponents
+    let trigger: UNCalendarNotificationTrigger?
+    let triggerDate: DateComponents
 }
 
 
@@ -29,7 +30,8 @@ class NotificationList: ObservableObject {
                         id: request.identifier,
                         title: request.content.title,
                         body: request.content.body,
-                        trigger: trigger?.dateComponents ?? DateComponents()
+                        trigger: trigger,
+                        triggerDate: trigger?.dateComponents ?? DateComponents()
                     )
                 }
             }

@@ -10,7 +10,7 @@ import CryptoKit
 
 
 struct ContentView: View {
-    @StateObject private var secretsModel = SecretsViewModel(dataLoader: PlistDataLoader())
+    @StateObject private var secretsModel = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist())
     @StateObject private var notificationsModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromPlist())
     @AppStorage("showControlPanel") var showControlPanel: Bool = false
 

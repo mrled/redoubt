@@ -21,6 +21,7 @@ struct PlaygroundButton: View {
 }
 
 struct ControlPanelSheet: View {
+    @EnvironmentObject var notificationsModel: NotificationsViewModel
     @StateObject var notificationList = NotificationList()
     
     var body: some View {
@@ -53,18 +54,22 @@ struct ControlPanelSheet: View {
                                 Text(item.title)
                                 Text(item.body)
                                 Text(item.id)
+                                Text("Next trigger: \(item.trigger?.nextTriggerDate()?.description ?? "Never")")
                             }
                         }
                     }
-                    Button(action: {
+                    Button("Refresh Notifications") {
                         notificationList.refreshNotifications()
-                    }) {
-                        HStack {
-                            Spacer()
-                            Text("Refresh Notifications")
-                                .foregroundColor(.blue)
-                            Spacer()
-                        }
+                    }
+                    Button("Delete All Notifications") {
+                        notificationsModel.deleteAllData()
+                        notificationList.refreshNotifications()
+                    }
+                    .foregroundColor(.red)
+                }
+                Section(header: Text("Persisted notifications")) {
+                    ForEach(notificationsModel.regularIntervalEntries, id: \.description) { entry in
+                        Text(entry.description)
                     }
                 }
                 .onAppear {
@@ -114,7 +119,9 @@ struct ControlPanelSheet: View {
 }
 
 struct DeveloperSheet_Previews: PreviewProvider {
+    static let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: []))
     static var previews: some View {
         ControlPanelSheet()
+            .environmentObject(notificationsViewModel)
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import os.log
 
 @main
 struct MindFortApp: App {
@@ -15,3 +16,6 @@ struct MindFortApp: App {
         }
     }
 }
+
+
+let appLogger = Logger()
