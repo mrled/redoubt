@@ -52,7 +52,7 @@ struct ControlPanelSheet: View {
                             VStack(alignment: .leading) {
                                 Text(item.title)
                                 Text(item.body)
-                                Text("\(item.trigger.hour ?? 0):\(item.trigger.minute ?? 0)")
+                                Text(item.id)
                             }
                         }
                     }

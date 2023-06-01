@@ -90,6 +90,11 @@ enum ScheduleType: String, Codable, CaseIterable, Identifiable {
 }
 
 
+func notificationIdentifierFromDateComponents(_ components: DateComponents, prefix: String = "") -> String {
+    return "\(components.year ?? 0)-\(components.month ?? 0)-\(components.day ?? 0)-\(components.hour ?? 0)-\(components.minute ?? 0)-\(components.second ?? 0)"
+}
+
+
 class NotificationsViewModel: ObservableObject {
     @Published var scheduleType: ScheduleType = .daily
     @Published var regularIntervalEntries: [DateComponents] = []
@@ -142,10 +147,11 @@ class NotificationsViewModel: ObservableObject {
                 self.manager.removeNotifications()
                 for schedule in self.regularIntervalEntries {
                     let trigger = UNCalendarNotificationTrigger(dateMatching: schedule, repeats: true)
+                    let identifier = notificationIdentifierFromDateComponents(schedule, prefix: "RegularIntervals-")
                     self.manager.registerNotification(
                         title: "Password ritual",
                         body: "Time to perform a passphrase ritual 🙏",
-                        identifier: "RegularIntervals-\(schedule.description)",
+                        identifier: identifier,
                         trigger: trigger
                     )
                 }
