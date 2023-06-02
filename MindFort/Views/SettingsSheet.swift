@@ -149,7 +149,7 @@ struct DeveloperControls: View {
     var body: some View {
         Section("Developers") {
             Toggle(isOn: $showControlPanel) {
-                Text("Show secret developer control panel")
+                Text("Show secret developer control panels")
             }
         }
     }

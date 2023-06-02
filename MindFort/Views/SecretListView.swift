@@ -16,6 +16,7 @@ struct SecretListView: View {
     @State private var isPresentingSettingsSheet = false
     @State private var isPresentingAcknowledgementsSheet = false
     @State private var isPresentingControlPanelSheet = false
+    @State private var isPresentingDevToDoSheet = false
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
     @State private var error: String?
@@ -60,6 +61,9 @@ struct SecretListView: View {
                         Button(action: { isPresentingControlPanelSheet = true }) {
                             Image(systemName: "slider.horizontal.3")
                         }
+                        Button(action: { isPresentingDevToDoSheet = true }) {
+                            Image(systemName: "checklist.unchecked")
+                        }
                     }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -87,6 +91,9 @@ struct SecretListView: View {
             .sheet(isPresented: $isPresentingControlPanelSheet) {
                 ControlPanelSheet()
                     .environmentObject(notificationsModel)
+            }
+            .sheet(isPresented: $isPresentingDevToDoSheet) {
+                DeveloperToDoSheet()
             }
             .onAppear {
                 secretsModel.loadItems()

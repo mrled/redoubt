@@ -17,6 +17,7 @@
 		307BEFEE2A28071D004D21AC /* TimePickerExpandable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFED2A28071C004D21AC /* TimePickerExpandable.swift */; };
 		307BEFF02A2948F7004D21AC /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFEF2A2948F7004D21AC /* QuizView.swift */; };
 		307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */; };
+		307BEFF82A29B090004D21AC /* DeveloperToDoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF72A29B090004D21AC /* DeveloperToDoSheet.swift */; };
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
 		30EB50C02A246D96007550D3 /* SettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50BF2A246D96007550D3 /* SettingsSheet.swift */; };
 		30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C22A24E534007550D3 /* AboutSheet.swift */; };
@@ -63,6 +64,7 @@
 		307BEFED2A28071C004D21AC /* TimePickerExpandable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerExpandable.swift; sourceTree = "<group>"; };
 		307BEFEF2A2948F7004D21AC /* QuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizView.swift; sourceTree = "<group>"; };
 		307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
+		307BEFF72A29B090004D21AC /* DeveloperToDoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperToDoSheet.swift; sourceTree = "<group>"; };
 		308025092A23B32300491DEA /* SecretDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetailView.swift; sourceTree = "<group>"; };
 		30EB50BF2A246D96007550D3 /* SettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSheet.swift; sourceTree = "<group>"; };
 		30EB50C22A24E534007550D3 /* AboutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSheet.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				30EB50C22A24E534007550D3 /* AboutSheet.swift */,
 				30286CCE2A26804900456CA5 /* ControlPanelSheet.swift */,
 				308025092A23B32300491DEA /* SecretDetailView.swift */,
+				307BEFF72A29B090004D21AC /* DeveloperToDoSheet.swift */,
 				307BEFEF2A2948F7004D21AC /* QuizView.swift */,
 			);
 			path = Views;
@@ -372,6 +375,7 @@
 				307BEFEE2A28071D004D21AC /* TimePickerExpandable.swift in Sources */,
 				30FD057E2A1BDD5C006AB9CC /* ContentView.swift in Sources */,
 				304F435A2A27C85800FE08DF /* NotificationsViewModel.swift in Sources */,
+				307BEFF82A29B090004D21AC /* DeveloperToDoSheet.swift in Sources */,
 				30FD057C2A1BDD5C006AB9CC /* MindFortApp.swift in Sources */,
 				30286CD72A269B3600456CA5 /* NotificationManager.swift in Sources */,
 				30FD05B72A1C2BAD006AB9CC /* SecretListView.swift in Sources */,
