@@ -32,6 +32,11 @@ struct DeveloperToDoSheet: View {
                     RowItemWithIcon(title: "Tapping on notification should launch quiz", systemImageName: "ladybug")
                     RowItemWithIcon(title: "Prune past non-repeating notifications when loading/etc", systemImageName: "ladybug")
                 }
+                Section(header: Text("Done")) {
+                    RowItemWithIcon(title: "Implement notifications", systemImageName: "bell")
+                    RowItemWithIcon(title: "Show all of H4XX0R C0D3 w/ keyboard enabled", systemImageName: "ladybug")
+                    RowItemWithIcon(title: "Add previous/next buttons to detail view", systemImageName: "arrow-right")
+                }
             }
         }
     }
