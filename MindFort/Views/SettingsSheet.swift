@@ -187,13 +187,13 @@ struct SettingsSheet: View {
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: []))
+            let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
             SettingsSheet()
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("Simple, no schedules")
         }
         Group {
-            let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: []))
+            let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
             SettingsSheet()
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("Simple, one schedule")

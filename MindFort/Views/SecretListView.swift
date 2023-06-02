@@ -10,6 +10,7 @@ import SwiftUI
 struct SecretListView: View {
     @EnvironmentObject var secretsModel: SecretsViewModel
     @EnvironmentObject var notificationsModel: NotificationsViewModel
+    @Binding var openAction: OpenAction?
     var showControlPanel: Bool = false
     @State private var isPresentingAddSheet = false
     @State private var isPresentingSettingsSheet = false
@@ -24,13 +25,27 @@ struct SecretListView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(Array(secretsModel.secrets.enumerated()), id: \.element.id) { index, secret in
-                    NavigationLink(destination: SecretDetailView(secret: secret, index: index)
-                        .environmentObject(secretsModel)) {
-                        Text(secret.name)
+                if secretsModel.secrets.count > 0 {
+                    Section() {
+                        NavigationLink(destination: QuizView().environmentObject(secretsModel), tag: OpenAction.startQuiz, selection: $openAction) {
+                                Text("Quiz now")
+                            }
+//                        NavigationLink(destination: QuizView().environmentObject(secretsModel)) {
+//                                Text("Quiz now")
+//                            }
                     }
+                    Section() {
+                        ForEach(Array(secretsModel.secrets.enumerated()), id: \.element.id) { index, secret in
+                            NavigationLink(destination: SecretDetailView(secret: secret, index: index)
+                                .environmentObject(secretsModel)) {
+                                    Text(secret.name)
+                                }
+                        }
+                        .onDelete(perform: removeSecrets)
+                    }
+                } else {
+                    Text("Click the + button to add a secret")
                 }
-                .onDelete(perform: removeSecrets)
             }
             .navigationBarTitle("Secrets")
             .toolbar {
@@ -91,17 +106,21 @@ struct SecretListView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", value: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
         ]
-        let secretsModel = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(secrets: exampleSecrets))
-        let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: []))
+        let secretsModelTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(secrets: exampleSecrets))
+        let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
         Group {
-            SecretListView()
-                .environmentObject(secretsModel)
+            SecretListView(openAction: .constant(.home))
+                .environmentObject(secretsModelTwoSecrets)
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("Default values")
-            SecretListView(showControlPanel: true)
-                .environmentObject(secretsModel)
+            SecretListView(openAction: .constant(.home), showControlPanel: true)
+                .environmentObject(secretsModelTwoSecrets)
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("showControlPanel")
+            SecretListView(openAction: .constant(.home))
+                .environmentObject(SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(secrets: [])))
+                .environmentObject(notificationsViewModel)
+                .previewDisplayName("No secrets")
         }
     }
 }

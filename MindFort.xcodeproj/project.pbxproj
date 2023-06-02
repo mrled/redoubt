@@ -15,6 +15,8 @@
 		30286CDD2A27092B00456CA5 /* TimeRangePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CDC2A27092B00456CA5 /* TimeRangePicker.swift */; };
 		304F435A2A27C85800FE08DF /* NotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304F43592A27C85800FE08DF /* NotificationsViewModel.swift */; };
 		307BEFEE2A28071D004D21AC /* TimePickerExpandable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFED2A28071C004D21AC /* TimePickerExpandable.swift */; };
+		307BEFF02A2948F7004D21AC /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFEF2A2948F7004D21AC /* QuizView.swift */; };
+		307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */; };
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
 		30EB50C02A246D96007550D3 /* SettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50BF2A246D96007550D3 /* SettingsSheet.swift */; };
 		30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C22A24E534007550D3 /* AboutSheet.swift */; };
@@ -59,6 +61,8 @@
 		30286CDC2A27092B00456CA5 /* TimeRangePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRangePicker.swift; sourceTree = "<group>"; };
 		304F43592A27C85800FE08DF /* NotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewModel.swift; sourceTree = "<group>"; };
 		307BEFED2A28071C004D21AC /* TimePickerExpandable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerExpandable.swift; sourceTree = "<group>"; };
+		307BEFEF2A2948F7004D21AC /* QuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizView.swift; sourceTree = "<group>"; };
+		307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		308025092A23B32300491DEA /* SecretDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetailView.swift; sourceTree = "<group>"; };
 		30EB50BF2A246D96007550D3 /* SettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSheet.swift; sourceTree = "<group>"; };
 		30EB50C22A24E534007550D3 /* AboutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSheet.swift; sourceTree = "<group>"; };
@@ -132,6 +136,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		307BEFF12A2950D9004D21AC /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
 		30EB50C42A24E94F007550D3 /* UtilityViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +165,7 @@
 				30EB50C22A24E534007550D3 /* AboutSheet.swift */,
 				30286CCE2A26804900456CA5 /* ControlPanelSheet.swift */,
 				308025092A23B32300491DEA /* SecretDetailView.swift */,
+				307BEFEF2A2948F7004D21AC /* QuizView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -188,6 +201,7 @@
 				30286CD02A26910E00456CA5 /* Observables */,
 				30286CD52A269B2000456CA5 /* Managers */,
 				304F43582A27C82800FE08DF /* Models */,
+				307BEFF12A2950D9004D21AC /* Delegates */,
 				30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */,
 				30FD05812A1BDD5F006AB9CC /* MindFort.entitlements */,
 				30FD05822A1BDD5F006AB9CC /* Preview Content */,
@@ -354,6 +368,7 @@
 				30FD05B52A1C23CF006AB9CC /* Secret.swift in Sources */,
 				30EB50C02A246D96007550D3 /* SettingsSheet.swift in Sources */,
 				30EB50C82A24E9FA007550D3 /* RowItemUrlWithIcon.swift in Sources */,
+				307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */,
 				307BEFEE2A28071D004D21AC /* TimePickerExpandable.swift in Sources */,
 				30FD057E2A1BDD5C006AB9CC /* ContentView.swift in Sources */,
 				304F435A2A27C85800FE08DF /* NotificationsViewModel.swift in Sources */,
@@ -367,6 +382,7 @@
 				30286CCF2A26804900456CA5 /* ControlPanelSheet.swift in Sources */,
 				30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */,
 				30286CDD2A27092B00456CA5 /* TimeRangePicker.swift in Sources */,
+				307BEFF02A2948F7004D21AC /* QuizView.swift in Sources */,
 				30FD05BB2A1C6CA7006AB9CC /* SecretsViewModel.swift in Sources */,
 				30286CD92A26A59E00456CA5 /* NotificationList.swift in Sources */,
 			);

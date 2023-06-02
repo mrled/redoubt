@@ -18,6 +18,8 @@ struct NotificationsVmData {
 protocol NotificationsVmDataLoader {
     func loadRegularIntervals() -> [DateComponents]
     func saveRegularIntervals(schedules: [DateComponents]) -> ()
+    func loadOneTimes() -> [DateComponents]
+    func saveOneTimes(components: [DateComponents]) -> ()
     func deleteAllData() -> ()
 }
 
@@ -30,40 +32,64 @@ class NotificationsVmDataLoaderFromPlist: NotificationsVmDataLoader {
 
     init() {}
 
-    private var plistURL: URL {
+    private var plistUrlRegularIntervals: URL {
         guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             fatalError("Unable to access documents directory.")
         }
         return documentsURL.appendingPathComponent("RegularIntervalNotifications.plist")
     }
-
-    func loadRegularIntervals() -> [DateComponents] {
+    private var plistUrlOneTimes: URL {
+        guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            fatalError("Unable to access documents directory.")
+        }
+        return documentsURL.appendingPathComponent("OneTimeNotifications.plist")
+    }
+    
+    private func loadPlist<T: Decodable>(plistUrl: URL) -> [T] {
         do {
-            let data = try Data(contentsOf: plistURL)
-            let schedules = try decoder.decode([DateComponents].self, from: data)
-            appLogger.info("When loading, found intervals: \(schedules)")
-            return schedules
+            let rawData = try Data(contentsOf: plistUrl)
+            let result = try decoder.decode([T].self, from: rawData)
+            appLogger.info("When loading from plist \(plistUrl), found data: \(result)")
+            return result
         } catch {
-            appLogger.error("Error loading items: \(error)")
+            appLogger.error("Error loading from plist \(plistUrl): \(error)")
             return []
         }
     }
+    
+    private func savePlist<T: Encodable>(plistUrl: URL, data: [T]) {
+        do {
+            let encodedData = try encoder.encode(data)
+            appLogger.info("Writing data to \(plistUrl):\n\(encodedData)")
+            try encodedData.write(to: plistUrl)
+        } catch {
+            appLogger.error("Error saving data to \(plistUrl): \(error)")
+        }
+
+    }
+
+    func loadRegularIntervals() -> [DateComponents] {
+        return loadPlist(plistUrl: plistUrlRegularIntervals)
+    }
 
     func saveRegularIntervals(schedules: [DateComponents]) {
-        do {
-            let data = try encoder.encode(schedules)
-            appLogger.info("Writing data to \(self.plistURL):\n\(data)")
-            try data.write(to: plistURL)
-        } catch {
-            appLogger.error("Error saving items: \(error)")
-        }
+        savePlist(plistUrl: plistUrlRegularIntervals, data: schedules)
+    }
+    
+    func loadOneTimes() -> [DateComponents] {
+        return loadPlist(plistUrl: plistUrlOneTimes)
+    }
+    
+    func saveOneTimes(components: [DateComponents]) {
+        savePlist(plistUrl: plistUrlOneTimes, data: components)
     }
     
     func deleteAllData() {
         do {
-            try FileManager.default.removeItem(at: plistURL)
+            try FileManager.default.removeItem(at: plistUrlRegularIntervals)
+            try FileManager.default.removeItem(at: plistUrlOneTimes)
         } catch {
-            appLogger.error("Error deleting \(self.plistURL): \(error)")
+            appLogger.error("Error deleting \(self.plistUrlRegularIntervals): \(error)")
         }
     }
 }
@@ -71,17 +97,29 @@ class NotificationsVmDataLoaderFromPlist: NotificationsVmDataLoader {
 /// "Load" notification data from code literals that could be passed in from a preview function
 class NotificationsVmDataLoaderFromArray: NotificationsVmDataLoader {
     var schedules: [DateComponents]
-    init(schedules: [DateComponents]) {
+    var oneTimes: [DateComponents]
+    
+    init(schedules: [DateComponents], oneTimes: [DateComponents]) {
         self.schedules = schedules
+        self.oneTimes = oneTimes
     }
+    
     func loadRegularIntervals() -> [DateComponents] {
         return schedules
     }
     func saveRegularIntervals(schedules schedulesIn: [DateComponents]) {
         schedules = schedulesIn
     }
+    func loadOneTimes() -> [DateComponents] {
+        return oneTimes
+    }
+    func saveOneTimes(components: [DateComponents]) {
+        oneTimes = components
+    }
+
     func deleteAllData() {
         schedules = []
+        oneTimes = []
     }
 }
 
@@ -108,23 +146,60 @@ func notificationIdentifierFromDateComponents(_ components: DateComponents, pref
 }
 
 
+func addQuizNotification(components: DateComponents, prefix: String, repeats: Bool) {
+    print("Going to add a quiz notification...")
+    let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: repeats)
+    let identifier = notificationIdentifierFromDateComponents(components, prefix: prefix)
+    
+    let content = UNMutableNotificationContent()
+    content.title = "Type the magic words"
+    content.body = "Time to perform a passphrase ritual 🙏"
+    content.userInfo = ["action": "startQuiz"]
+    
+    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+    
+    UNUserNotificationCenter.current().add(request) { (error) in
+        if let error {
+            appLogger.error("Error adding notification request with id \(identifier): \(error)")
+        } else {
+            appLogger.debug("Successfully registered quiz notification with id \(identifier)")
+        }
+    }
+}
+
+
 class NotificationsViewModel: ObservableObject {
     @Published var scheduleType: ScheduleType = .daily
+    
+    // These didSet closures handle persisting the change to the plists when we change the entries
     @Published var regularIntervalEntries: [DateComponents] = [] {
         didSet {
             if oldValue != regularIntervalEntries {
-                appLogger.debug("NotificationsViewModel regularIntervalEntries .didSet: value changed, updating...")
-                save()
-                reregisterNotifications()
+                appLogger.debug("NotificationsViewModel regularIntervalEntries .didSet: value changed, persisting...")
+//                save()
+//                reregisterNotifications()
+                dataLoader.saveRegularIntervals(schedules: self.regularIntervalEntries)
             } else {
                 appLogger.debug("NotificationsViewModel regularIntervalEntries .didSet: value didn't change, nothing to do")
             }
         }
     }
-    private var cancellables = Set<AnyCancellable>()
+    @Published var oneTimeEntries: [DateComponents] = [] {
+        didSet {
+            if oldValue != oneTimeEntries {
+                appLogger.debug("NotificationsViewModel oneTimeEntries .didSet: value changed, persisting...")
+//                save()
+//                reregisterNotifications()
+                dataLoader.saveOneTimes(components: self.oneTimeEntries)
+            } else {
+                appLogger.debug("NotificationsViewModel oneTimeEntries .didSet: value didn't change, nothing to do")
+            }
+        }
+    }
     
-    //    @Published var spacedRepetitionIntervalEntries
-            
+    private var regularIntervalsEntriesCancellables = Set<AnyCancellable>()
+    private var oneTimeEntriesCancellables = Set<AnyCancellable>()
+
     private var dataLoader: NotificationsVmDataLoader
     private var manager: NotificationManager = NotificationManager.shared
 
@@ -132,23 +207,36 @@ class NotificationsViewModel: ObservableObject {
         self.dataLoader = dataLoader
         load()
         
-        // Subscribe to changes to regularIntervalEntries.
+        // These subscritions handle making the change in the Notification Center when we change entries
         // We store these in the cancellables property, so they are valid for the lifetime of the NotificationsViewModel.
         // ([weak self] prevents a memory leak with automatic reference counting)
         $regularIntervalEntries
             .sink { [weak self] _ in
-                self?.save()
+                appLogger.debug("NotificationsViewModel $regularIntervalEntries .sink: noticed change, reregistering...")
+//                self?.save()
                 self?.reregisterNotifications()
             }
-            .store(in: &cancellables)    }
+            .store(in: &regularIntervalsEntriesCancellables)
+        $oneTimeEntries
+            .sink { [weak self] _ in
+                appLogger.debug("NotificationsViewModel $oneTimeEntries .sink: noticed change, reregistering...")
+//                self?.save()
+                self?.reregisterNotifications()
+            }
+            .store(in: &oneTimeEntriesCancellables)
+    }
     
     func save() {
         dataLoader.saveRegularIntervals(schedules: self.regularIntervalEntries)
+        dataLoader.saveOneTimes(components: self.oneTimeEntries)
     }
     
     func load() {
         regularIntervalEntries = dataLoader.loadRegularIntervals()
+        oneTimeEntries = dataLoader.loadOneTimes()
     }
+    
+    // TODO: now that I'm observing regularIntervalEntries / oneTimeEntries with the .sink, can I get rid of these add/delete helpers?
     
     func addRegularIntervalEntry(_ entry: DateComponents) {
         // Don't allow inserting the same interval twice
@@ -163,33 +251,54 @@ class NotificationsViewModel: ObservableObject {
             regularIntervalEntries.remove(at: index)
         }
     }
-    
     func deleteRegularIntervalEntry(_ entry: DateComponents) {
         if let index = regularIntervalEntries.firstIndex(of: entry) {
             deleteRegularIntervalEntry(at: IndexSet(integer: index))
         }
     }
     
+//    func addOneTimeEntry(_ components: DateComponents) {
+//        // Don't allow inserting the same interval twice
+//        if oneTimeEntries.firstIndex(of: components) != nil {
+//            return
+//        }
+//        oneTimeEntries.append(components)
+//    }
+//    
+//    func deleteOneTimeEntry(at offsets: IndexSet) {
+//        for index in offsets {
+//            oneTimeEntries.remove(at: index)
+//        }
+//    }
+//    func deleteOneTimeEntry(_ components: DateComponents) {
+//        if let index = oneTimeEntries.firstIndex(of: components) {
+//            deleteOneTimeEntry(at: IndexSet(integer: index))
+//        }
+//    }
+
     func reregisterNotifications() {
         // Don't do anything if the user hasn't granted us notification permissions
         NotificationManager.shared.requestPermission { granted in
             if granted {
+                appLogger.debug("reregisterNotifications: granted permission to notify, registering...")
                 self.manager.removeNotifications()
+                
                 for schedule in self.regularIntervalEntries {
-                    let trigger = UNCalendarNotificationTrigger(dateMatching: schedule, repeats: true)
-                    let identifier = notificationIdentifierFromDateComponents(schedule, prefix: "RegularIntervals-")
-                    self.manager.registerNotification(
-                        title: "Password ritual",
-                        body: "Time to perform a passphrase ritual 🙏",
-                        identifier: identifier,
-                        trigger: trigger
-                    )
+                    addQuizNotification(components: schedule, prefix: "RegularIntervals-", repeats: true)
                 }
+                
+                for components in self.oneTimeEntries {
+                    addQuizNotification(components: components, prefix: "OneTime-", repeats: false)
+                }
+            } else {
+                appLogger.debug("reregisterNotifications: not granted permission to notify, nothing we can do")
             }
         }
     }
     
     func deleteAllData() {
+        regularIntervalEntries = []
+        oneTimeEntries = []
         manager.removeNotifications()
         dataLoader.deleteAllData()
     }
