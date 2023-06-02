@@ -61,8 +61,8 @@ class SecretsVmDataLoaderFromPlist: DataLoader {
 /// "Load" data that is passed in from a preview function
 class SecretsVmDataLoaderFromArray: DataLoader {
     var secrets: [Secret]
-    init(secrets: [Secret]) {
-        self.secrets = secrets
+    init(_ secretsIn: [Secret]) {
+        self.secrets = secretsIn
     }
     func load() -> [Secret] {
         return secrets
@@ -82,6 +82,7 @@ class SecretsViewModel: ObservableObject {
     
     init(dataLoader: DataLoader) {
         self.dataLoader = dataLoader
+        loadItems()
     }
     
     func addItem(_ item: Secret) {

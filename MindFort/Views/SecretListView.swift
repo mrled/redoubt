@@ -12,6 +12,7 @@ struct SecretListView: View {
     @EnvironmentObject var notificationsModel: NotificationsViewModel
     @Binding var openAction: OpenAction?
     var showControlPanel: Bool = false
+    @State private var selectedSecretId: UUID? = nil
     @State private var isPresentingAddSheet = false
     @State private var isPresentingSettingsSheet = false
     @State private var isPresentingAcknowledgementsSheet = false
@@ -28,19 +29,25 @@ struct SecretListView: View {
             List {
                 if secretsModel.secrets.count > 0 {
                     Section() {
-                        NavigationLink(destination: QuizView().environmentObject(secretsModel), tag: OpenAction.startQuiz, selection: $openAction) {
+                        NavigationLink(
+                            destination: QuizView().environmentObject(secretsModel),
+                            tag: OpenAction.startQuiz,
+                            selection: $openAction
+                        ) {
                                 Text("Quiz now")
                             }
-//                        NavigationLink(destination: QuizView().environmentObject(secretsModel)) {
-//                                Text("Quiz now")
-//                            }
                     }
                     Section() {
                         ForEach(Array(secretsModel.secrets.enumerated()), id: \.element.id) { index, secret in
-                            NavigationLink(destination: SecretDetailView(secret: secret, index: index)
-                                .environmentObject(secretsModel)) {
-                                    Text(secret.name)
-                                }
+                            NavigationLink(
+                                destination:
+                                    SecretDetailView(currentSecretId: $selectedSecretId)
+                                    .environmentObject(secretsModel),
+                                tag: secret.id,
+                                selection: $selectedSecretId)
+                            {
+                                Text(secret.name)
+                            }
                         }
                         .onDelete(perform: removeSecrets)
                     }
@@ -113,7 +120,7 @@ struct SecretListView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", value: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
         ]
-        let secretsModelTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(secrets: exampleSecrets))
+        let secretsModelTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
         let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
         Group {
             SecretListView(openAction: .constant(.home))
@@ -125,7 +132,7 @@ struct SecretListView_Previews: PreviewProvider {
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("showControlPanel")
             SecretListView(openAction: .constant(.home))
-                .environmentObject(SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(secrets: [])))
+                .environmentObject(SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray([])))
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("No secrets")
         }
