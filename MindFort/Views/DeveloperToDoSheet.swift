@@ -26,6 +26,7 @@ struct DeveloperToDoSheet: View {
                     RowItemWithIcon(title: "Use iOS Data Protection capability", systemImageName: "lock.doc")
                     RowItemWithIcon(title: "Add the quiz functionality", systemImageName: "questionmark.app.dashed")
                     RowItemWithIcon(title: "Add geofencing ability", systemImageName: "mappin.and.ellipse")
+                    RowItemWithIcon(title: "Allow editing name of existing entries", systemImageName: "square.and.pencil")
                 }
                 Section(header: Text("Fix bugs")) {
                     RowItemWithIcon(title: "Tapping on notification should launch quiz", systemImageName: "ladybug")
