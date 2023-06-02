@@ -50,12 +50,14 @@ struct ControlPanelSheet: View {
                 }
 
                 Section(header: Text("Notifications from ViewModel")) {
-                    let allCalendarNotifications = notificationsModel.regularIntervalEntries + notificationsModel.oneTimeEntries
-                    if allCalendarNotifications.isEmpty {
+                    if (notificationsModel.regularIntervalEntries + notificationsModel.oneTimeEntries).isEmpty {
                         Text("No saved notifications")
                     } else {
-                        ForEach(allCalendarNotifications, id: \.description) { entry in
-                            Text(entry.description)
+                        ForEach(notificationsModel.regularIntervalEntries, id: \.description) { entry in
+                            Text("Interval: " + entry.description)
+                        }
+                        ForEach(notificationsModel.oneTimeEntries, id: \.description) { entry in
+                            Text("One time: " + entry.description)
                         }
                     }
                 }
