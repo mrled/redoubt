@@ -30,6 +30,7 @@ struct DeveloperToDoSheet: View {
                     // It's cut off on my phone with the keyboard up
                     RowItemWithIcon(title: "Show all of H4XX0R C0D3 w/ keyboard enabled", systemImageName: "ladybug")
                     RowItemWithIcon(title: "Tapping on notification should launch quiz", systemImageName: "ladybug")
+                    RowItemWithIcon(title: "Prune past non-repeating notifications when loading/etc", systemImageName: "ladybug")
                 }
             }
         }
