@@ -17,74 +17,34 @@ struct CreateSecretSheet: View {
     @ObservedObject var keyboardState = KeyboardState()
 
     var body: some View {
-        if keyboardState.isKeyboardVisible {
-            VStack {
-                TextField("Secret name", text: $newSecretName)
-                    .focused($newSecretFocusOnNameField)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding()
-                SecureField("Passphrase", text: $newSecretValue)
-                    .keyboardType(.default)
-                    .padding()
-                Text("H4XX0R C0D3")
-                    .font(.headline)
-                Text(h4xx0rc0d3)
-                    .font(.system(size: 14, design: .monospaced))
-                    .padding()
-                Button("Add Secret") {
-                    addSecret()
-                }
+        VStack {
+            TextField("Secret name", text: $newSecretName)
+                .focused($newSecretFocusOnNameField)
+                .font(.largeTitle)
+                .fontWeight(.bold)
                 .padding()
-                .disabled(!validSecret)
-                if let error = error {
-                    Text(error)
-                        .foregroundColor(.red)
-                    Spacer()
-                }
+            SecureField("Passphrase", text: $newSecretValue)
+                .keyboardType(.default)
+                .padding()
+            Button("Add Secret") {
+                addSecret()
             }
             .padding()
-            .onAppear {
-                DispatchQueue.main.async {
-                    newSecretFocusOnNameField = true
-                }
+            .disabled(!validSecret)
+            if let error = error {
+                Text(error)
+                    .foregroundColor(.red)
+                    .padding()
             }
-        } else {
-            VStack {
-                Text(newSecretTitle)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding()
-                Spacer()
-                TextField("Secret name", text: $newSecretName)
-                    .focused($newSecretFocusOnNameField)
-                    .padding()
-                SecureField("Passphrase", text: $newSecretValue)
-                    .keyboardType(.default)
-                    .padding()
-                Button("Add Secret") {
-                    addSecret()
-                }
+            Text(h4xx0rc0d3)
+                .font(.system(size: 10, design: .monospaced))
                 .padding()
-                .disabled(!validSecret)
-                Spacer()
-                if let error = error {
-                    Text(error)
-                        .foregroundColor(.red)
-                    Spacer()
-                }
-                Text("H4XX0R C0D3")
-                    .font(.headline)
-                Text(h4xx0rc0d3)
-                    .font(.system(size: 14, design: .monospaced))
-                    .padding()
-                Spacer()
-            }
-            .padding()
-            .onAppear {
-                DispatchQueue.main.async {
-                    newSecretFocusOnNameField = true
-                }
+            Spacer()
+        }
+        .padding()
+        .onAppear {
+            DispatchQueue.main.async {
+                newSecretFocusOnNameField = true
             }
         }
     }
@@ -201,11 +161,10 @@ struct CreateSecretSheet_Previews: PreviewProvider {
                         isPresentingAddSheet: .constant(false),
                         newSecretName: .constant("Secure passphrase"),
                         newSecretValue: .constant("password"),
-                        error: .constant(nil),
-                        keyboardState: MockKeyboardUpState()
+                        error: .constant("Example error")
                     )
                 }
-                .previewDisplayName("Keyboard up")
+                .previewDisplayName("With error")
         }
     }
 }

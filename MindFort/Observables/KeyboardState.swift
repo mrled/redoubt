@@ -22,6 +22,7 @@ class KeyboardState: ObservableObject {
         NotificationCenter.default.removeObserver(self)
     }
     
+    // Apparently this is undefined behavior, because it's publishing an observable from a view update. Bleh.
     @objc private func keyboardWillShow(notification: Notification) {
         isKeyboardVisible = true
     }

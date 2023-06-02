@@ -28,8 +28,6 @@ struct DeveloperToDoSheet: View {
                     RowItemWithIcon(title: "Add geofencing ability", systemImageName: "mappin.and.ellipse")
                 }
                 Section(header: Text("Fix bugs")) {
-                    // It's cut off on my phone with the keyboard up
-                    RowItemWithIcon(title: "Show all of H4XX0R C0D3 w/ keyboard enabled", systemImageName: "ladybug")
                     RowItemWithIcon(title: "Tapping on notification should launch quiz", systemImageName: "ladybug")
                     RowItemWithIcon(title: "Prune past non-repeating notifications when loading/etc", systemImageName: "ladybug")
                 }

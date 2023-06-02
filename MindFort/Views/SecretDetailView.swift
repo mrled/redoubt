@@ -16,7 +16,7 @@ struct SecretDetailView: View {
     @EnvironmentObject var secretsModel: SecretsViewModel
     
     var body: some View {
-        VStack {
+        ScrollView {
             SecureField("Passphrase", text: $passphrase, onCommit: validatePassphrase)
                 .keyboardType(.default)
                 .focused($isFocused)
@@ -32,6 +32,9 @@ struct SecretDetailView: View {
                         .foregroundColor(.white)
                 )
                 .padding()
+            Text(prettyHashBlock(digest: secret.digest, perLine: 4))
+                .font(.system(size: 10, design: .monospaced))
+                .padding()
             Spacer()
             Button("Delete") {
                 secretsModel.deleteItem(secret)
@@ -42,13 +45,7 @@ struct SecretDetailView: View {
             .padding()
             .foregroundColor(.white)
             .background(Color.red)
-            .cornerRadius(10)
-            Text("H4XX0R C0D3")
-                .font(.headline)
-            Text(prettyHashBlock(digest: secret.digest, perLine: 4))
-                .font(.system(size: 14, design: .monospaced))
-                .padding()
-            Spacer()
+                .cornerRadius(10)
         }
         .padding()
         .navigationBarTitle(secret.name)
