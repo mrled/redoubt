@@ -39,13 +39,15 @@ struct RegularIntervalScheduleControls: View {
     }
      
     func addScheduleTime() {
-        notificationsModel.addRegularIntervalEntry(
+        notificationsModel.regularIntervalEntries.append(
             Calendar.current.dateComponents([.hour, .minute], from: Date())
         )
     }
 
     func removeScheduleTime(at offsets: IndexSet) {
-        notificationsModel.deleteRegularIntervalEntry(at: offsets)
+        for index in offsets {
+            notificationsModel.regularIntervalEntries.remove(at: index)
+        }
     }
 }
 

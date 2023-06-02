@@ -176,8 +176,6 @@ class NotificationsViewModel: ObservableObject {
         didSet {
             if oldValue != regularIntervalEntries {
                 appLogger.debug("NotificationsViewModel regularIntervalEntries .didSet: value changed, persisting...")
-//                save()
-//                reregisterNotifications()
                 dataLoader.saveRegularIntervals(schedules: self.regularIntervalEntries)
             } else {
                 appLogger.debug("NotificationsViewModel regularIntervalEntries .didSet: value didn't change, nothing to do")
@@ -188,8 +186,6 @@ class NotificationsViewModel: ObservableObject {
         didSet {
             if oldValue != oneTimeEntries {
                 appLogger.debug("NotificationsViewModel oneTimeEntries .didSet: value changed, persisting...")
-//                save()
-//                reregisterNotifications()
                 dataLoader.saveOneTimes(components: self.oneTimeEntries)
             } else {
                 appLogger.debug("NotificationsViewModel oneTimeEntries .didSet: value didn't change, nothing to do")
@@ -213,14 +209,12 @@ class NotificationsViewModel: ObservableObject {
         $regularIntervalEntries
             .sink { [weak self] _ in
                 appLogger.debug("NotificationsViewModel $regularIntervalEntries .sink: noticed change, reregistering...")
-//                self?.save()
                 self?.reregisterNotifications()
             }
             .store(in: &regularIntervalsEntriesCancellables)
         $oneTimeEntries
             .sink { [weak self] _ in
                 appLogger.debug("NotificationsViewModel $oneTimeEntries .sink: noticed change, reregistering...")
-//                self?.save()
                 self?.reregisterNotifications()
             }
             .store(in: &oneTimeEntriesCancellables)
@@ -236,46 +230,6 @@ class NotificationsViewModel: ObservableObject {
         oneTimeEntries = dataLoader.loadOneTimes()
     }
     
-    // TODO: now that I'm observing regularIntervalEntries / oneTimeEntries with the .sink, can I get rid of these add/delete helpers?
-    
-    func addRegularIntervalEntry(_ entry: DateComponents) {
-        // Don't allow inserting the same interval twice
-        if regularIntervalEntries.firstIndex(of: entry) != nil {
-            return
-        }
-        regularIntervalEntries.append(entry)
-    }
-    
-    func deleteRegularIntervalEntry(at offsets: IndexSet) {
-        for index in offsets {
-            regularIntervalEntries.remove(at: index)
-        }
-    }
-    func deleteRegularIntervalEntry(_ entry: DateComponents) {
-        if let index = regularIntervalEntries.firstIndex(of: entry) {
-            deleteRegularIntervalEntry(at: IndexSet(integer: index))
-        }
-    }
-    
-//    func addOneTimeEntry(_ components: DateComponents) {
-//        // Don't allow inserting the same interval twice
-//        if oneTimeEntries.firstIndex(of: components) != nil {
-//            return
-//        }
-//        oneTimeEntries.append(components)
-//    }
-//    
-//    func deleteOneTimeEntry(at offsets: IndexSet) {
-//        for index in offsets {
-//            oneTimeEntries.remove(at: index)
-//        }
-//    }
-//    func deleteOneTimeEntry(_ components: DateComponents) {
-//        if let index = oneTimeEntries.firstIndex(of: components) {
-//            deleteOneTimeEntry(at: IndexSet(integer: index))
-//        }
-//    }
-
     func reregisterNotifications() {
         // Don't do anything if the user hasn't granted us notification permissions
         NotificationManager.shared.requestPermission { granted in
