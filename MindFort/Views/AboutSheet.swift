@@ -74,6 +74,9 @@ struct AboutSheet: View {
 
 struct SettingsAcknowledgementsView_Previews: PreviewProvider {
     static var previews: some View {
-        AboutSheet()
+        Text("Root view")
+            .sheet(isPresented: .constant(true)) {
+                AboutSheet()
+            }
     }
 }

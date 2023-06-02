@@ -96,6 +96,8 @@ struct SecretDetailView: View {
 struct SecretDetailView_Previews: PreviewProvider {
     static let secret = try! Secret(name: "Test Secret", value: "hunter2")
     static var previews: some View {
-        SecretDetailView(secret: secret, index: 1)
+        NavigationView {
+            SecretDetailView(secret: secret, index: 1)
+        }
     }
 }

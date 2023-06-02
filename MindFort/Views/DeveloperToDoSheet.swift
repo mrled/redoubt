@@ -25,6 +25,7 @@ struct DeveloperToDoSheet: View {
                     // xcode project -> create capability -> Data Protection
                     RowItemWithIcon(title: "Use iOS Data Protection capability", systemImageName: "lock.doc")
                     RowItemWithIcon(title: "Add the quiz functionality", systemImageName: "questionmark.app.dashed")
+                    RowItemWithIcon(title: "Add geofencing ability", systemImageName: "mappin.and.ellipse")
                 }
                 Section(header: Text("Fix bugs")) {
                     // It's cut off on my phone with the keyboard up
@@ -39,6 +40,9 @@ struct DeveloperToDoSheet: View {
 
 struct DeveloperToDoSheet_Previews: PreviewProvider {
     static var previews: some View {
-        DeveloperToDoSheet()
+        Text("Root view")
+            .sheet(isPresented: .constant(true)) {
+                DeveloperToDoSheet()
+            }
     }
 }

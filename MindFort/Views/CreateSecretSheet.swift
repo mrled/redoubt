@@ -158,39 +158,54 @@ struct CreateSecretSheet: View {
 }
 
 struct CreateSecretSheet_Previews: PreviewProvider {
+    // The Text("Root view") stuff has the .sheet(isPresented:content:)
+    // in order to show the view as a sheet overlaid on some background,
+    // just like the real app intends.
     static var previews: some View {
         Group {
-            CreateSecretSheet(
-                isPresentingAddSheet: .constant(false),
-                newSecretName: .constant("Secure passphrase"),
-                newSecretValue: .constant("password"),
-                error: .constant(nil)
-            )
-            .previewDisplayName("Regular password")
-            CreateSecretSheet(
-                isPresentingAddSheet: .constant(false),
-                newSecretName: .constant("That XKCD one"),
-                newSecretValue: .constant("correct horse battery staple"),
-                error: .constant(nil)
-            )
-            .previewDisplayName("Easter egg: XKCD")
-            CreateSecretSheet(
-                isPresentingAddSheet: .constant(false),
-                newSecretName: .constant("AzureDiamond"),
-                newSecretValue: .constant("hunter2"),
-                error: .constant(nil)
-            )
-            .previewDisplayName("Easter egg: AzureDiamond")
+            Text("Root view")
+                .sheet(isPresented: .constant(true)) {
+                    CreateSecretSheet(
+                        isPresentingAddSheet: .constant(false),
+                        newSecretName: .constant("Secure passphrase"),
+                        newSecretValue: .constant("password"),
+                        error: .constant(nil)
+                    )
+                }
+                .previewDisplayName("Regular password")
+            Text("Root view")
+                .sheet(isPresented: .constant(true)) {
+                    CreateSecretSheet(
+                        isPresentingAddSheet: .constant(false),
+                        newSecretName: .constant("That XKCD one"),
+                        newSecretValue: .constant("correct horse battery staple"),
+                        error: .constant(nil)
+                    )
+                }
+                .previewDisplayName("Easter egg: XKCD")
+            Text("Root view")
+                .sheet(isPresented: .constant(true)) {
+                    CreateSecretSheet(
+                        isPresentingAddSheet: .constant(false),
+                        newSecretName: .constant("AzureDiamond"),
+                        newSecretValue: .constant("hunter2"),
+                        error: .constant(nil)
+                    )
+                }
+                .previewDisplayName("Easter egg: AzureDiamond")
             
-            // Unfortunately you can't actually mock up the fucking keyboard so this isn't that useful
-            CreateSecretSheet(
-                isPresentingAddSheet: .constant(false),
-                newSecretName: .constant("Secure passphrase"),
-                newSecretValue: .constant("password"),
-                error: .constant(nil),
-                keyboardState: MockKeyboardUpState()
-            )
-            .previewDisplayName("Keyboard up")
+            Text("Root view")
+                .sheet(isPresented: .constant(true)) {
+                    // Unfortunately you can't actually mock up the fucking keyboard so this isn't that useful
+                    CreateSecretSheet(
+                        isPresentingAddSheet: .constant(false),
+                        newSecretName: .constant("Secure passphrase"),
+                        newSecretValue: .constant("password"),
+                        error: .constant(nil),
+                        keyboardState: MockKeyboardUpState()
+                    )
+                }
+                .previewDisplayName("Keyboard up")
         }
     }
 }

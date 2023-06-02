@@ -122,7 +122,10 @@ struct ControlPanelSheet: View {
 struct DeveloperSheet_Previews: PreviewProvider {
     static let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
     static var previews: some View {
-        ControlPanelSheet()
-            .environmentObject(notificationsViewModel)
+        Text("Root view")
+            .sheet(isPresented: .constant(true)) {
+                ControlPanelSheet()
+                    .environmentObject(notificationsViewModel)
+            }
     }
 }
