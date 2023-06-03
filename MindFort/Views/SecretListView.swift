@@ -35,8 +35,8 @@ struct SecretListView: View {
                             tag: OpenAction.startQuiz,
                             selection: $openAction
                         ) {
-                                Text("Quiz now")
-                            }
+                            Text("Quiz now")
+                        }
                     }
                     Section() {
                         ForEach(Array(secretsModel.secrets.enumerated()), id: \.element.id) { index, secret in
@@ -45,8 +45,8 @@ struct SecretListView: View {
                                     SecretDetailView(currentSecretId: $selectedSecretId)
                                     .environmentObject(secretsModel),
                                 tag: secret.id,
-                                selection: $selectedSecretId)
-                            {
+                                selection: $selectedSecretId
+                            ) {
                                 Text(secret.name)
                             }
                         }
