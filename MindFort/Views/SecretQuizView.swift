@@ -10,7 +10,6 @@ import SwiftUI
 struct SecretQuizView: View {
     @Binding var currentSecretId: UUID?
     @State private var previousSecretId: UUID?
-    @State private var nextSecretId: UUID?
 //    @State private var passphrase = ""
 //    @State private var passphraseValid: Bool = false
 //    @State private var isFlipped: Bool = false
@@ -21,7 +20,7 @@ struct SecretQuizView: View {
         ZStack {
             ForEach(secretsModel.secrets) { secret in
                 SecretQuizInnerView(currentSecretId: $currentSecretId) {
-                    if let nextSecretId {
+                    if let nextSecretId = getNextSecretId() {
                         currentSecretId = nextSecretId
                     } else {
                         finished = true
@@ -31,25 +30,7 @@ struct SecretQuizView: View {
             }
             SecretQuizFinishedView()
                 .opacity(finished ? 1 : 0)
-//            Group {
-//                SecretQuizInnerView(currentSecretId: $currentSecretId, passphraseValid: $passphraseValid)
-//                    .environmentObject(secretsModel)
-//            }
-//            .opacity(isFlipped ? 0 : 1)
-//            Group {
-//                if let nextSecretId {
-//                    SecretQuizInnerView(currentSecretId: $nextSecretId, passphraseValid: $passphraseValid)
-//                        .environmentObject(secretsModel)
-//                } else {
-//                    SecretQuizFinishedView()
-//                }
-//            }
-//            .opacity(isFlipped ? 1 : 0)
         }
-        .onAppear(perform: {
-            previousSecretId = getPreviousSecretId()
-            nextSecretId = getNextSecretId()
-        })
 //        .rotation3DEffect(.degrees(isFlipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
         .animation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0))
     }
