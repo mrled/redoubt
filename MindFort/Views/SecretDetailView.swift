@@ -11,6 +11,7 @@ struct SecretDetailView: View {
     @Binding var currentSecretId: UUID?
     @State private var passphrase = ""
     @State private var passphraseValid: Bool = false
+    @State private var showingDeleteAlert = false
     @FocusState private var isFocused: Bool
     @EnvironmentObject var secretsModel: SecretsViewModel
     
@@ -26,30 +27,23 @@ struct SecretDetailView: View {
                     .padding()
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundColor(boxColor)
-                    .frame(height: 50)
+                    .frame(height: 175)
                     .overlay(
-                        Text(validationText)
-                            .foregroundColor(.white)
+                        VStack {
+                            Text(validationText)
+                                .foregroundColor(.white)
+                                .padding([.bottom])
+                            Text(prettyHashBlock(digest: unwrappedSecret.digest, perLine: 4))
+                                .font(.system(size: 10, design: .monospaced))
+                                .foregroundColor(.white)
+                        }
                     )
                     .padding()
-                Text(prettyHashBlock(digest: unwrappedSecret.digest, perLine: 4))
-                    .font(.system(size: 10, design: .monospaced))
-                    .padding()
                 Spacer()
-                Button("Delete") {
-                    secretsModel.deleteItem(unwrappedSecret)
-                    let feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
-                    feedbackGenerator.impactOccurred()
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .foregroundColor(.white)
-                .background(Color.red)
-                .cornerRadius(10)
             }
             .padding()
             .navigationBarTitle(unwrappedSecret.name)
-            .navigationBarItems(trailing: prevNextNavigationBarItems)
+            .navigationBarItems(trailing: trailingNavBarItems)
             .onAppear {
                 DispatchQueue.main.async {
                     isFocused = true
@@ -89,8 +83,30 @@ struct SecretDetailView: View {
 
     }
     
-    private var prevNextNavigationBarItems: some View {
+    /// Items displayed in the upper right corner of the view
+    private var trailingNavBarItems: some View {
         HStack {
+            
+            /// The delete button and its alert
+            Button(action: {
+                showingDeleteAlert = true
+            }) {
+                Image(systemName: "delete.backward")
+                    .foregroundColor(.red)
+            }
+            .alert(isPresented: $showingDeleteAlert) {
+                Alert(title: Text("Delete Secret"),
+                      message: Text("Are you sure you want to delete this secret? This action cannot be undone."),
+                      primaryButton: .destructive(Text("Delete")) {
+                          guard let unwrappedSecret = secret else { return }
+                          secretsModel.deleteItem(unwrappedSecret)
+                          let feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
+                          feedbackGenerator.impactOccurred()
+                      },
+                      secondaryButton: .cancel())
+            }
+
+            /// Next/previous item buttons
             Button(action: {
                 guard let unwrappedPrevious = previousSecretId else { return }
                 currentSecretId = unwrappedPrevious
