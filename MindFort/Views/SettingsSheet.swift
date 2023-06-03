@@ -148,10 +148,14 @@ struct NotificationsControls: View {
 
 struct DeveloperControls: View {
     @Binding var showControlPanel: Bool
+    @Binding var enableEasterEggs: Bool
     var body: some View {
         Section("Developers") {
             Toggle(isOn: $showControlPanel) {
                 Text("Show secret developer control panels")
+            }
+            Toggle(isOn: $enableEasterEggs) {
+                Text("Enable easter eggs")
             }
         }
     }
@@ -160,6 +164,7 @@ struct DeveloperControls: View {
 struct SettingsSheet: View {
     @EnvironmentObject var notificationsModel: NotificationsViewModel
     @AppStorage("showControlPanel") var showControlPanel: Bool = false
+    @AppStorage("enableEasterEggs") var enableEasterEggs: Bool = false
     @AppStorage("scheduleType") var scheduleType: ScheduleType = .daily
     @State private var notificationsAllowed: Bool = false
     @State private var scheduleEveryXDays: Int = 1
@@ -174,7 +179,7 @@ struct SettingsSheet: View {
                 ScheduleControls()
                     .environmentObject(notificationsModel)
                 NotificationsControls(notificationsAllowed: $notificationsAllowed)
-                DeveloperControls(showControlPanel: $showControlPanel)
+                DeveloperControls(showControlPanel: $showControlPanel, enableEasterEggs: $enableEasterEggs)
             }
         }
         .onAppear {

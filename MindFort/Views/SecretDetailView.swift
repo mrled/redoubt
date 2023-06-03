@@ -33,9 +33,7 @@ struct SecretDetailView: View {
                             Text(validationText)
                                 .foregroundColor(.white)
                                 .padding([.bottom])
-                            Text(prettyHashBlock(digest: unwrappedSecret.digest, perLine: 4))
-                                .font(.system(size: 10, design: .monospaced))
-                                .foregroundColor(.white)
+                            H4XX0RC0D3(password: $passphrase, foregroundColor: .white)
                         }
                     )
                     .padding()

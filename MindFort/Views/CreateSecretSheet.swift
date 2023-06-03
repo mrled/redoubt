@@ -36,8 +36,7 @@ struct CreateSecretSheet: View {
                     .foregroundColor(.red)
                     .padding()
             }
-            Text(h4xx0rc0d3)
-                .font(.system(size: 10, design: .monospaced))
+            H4XX0RC0D3(password: $newSecretValue)
                 .padding()
             Spacer()
         }
@@ -71,23 +70,6 @@ struct CreateSecretSheet: View {
         }
     }
     
-    /// H4XX0R C0D3
-    /// This is:
-    ///  - the hash block of the new secret under normal circumstances
-    ///  - a placeholder if the new secret is empty
-    ///  - an easter egg if you enter one of the famous passwords
-    private var h4xx0rc0d3: String {
-        if let newSecret {
-            if let newVal = newSecret.value {
-                if let easterEggCode = easterEggPasswords[newVal] {
-                    return groupCharacters(string: easterEggCode.joined(separator: ""), perLine: 4)
-                } else if newVal.count > 0 {
-                    return prettyHashBlock(digest: newSecret.digest, perLine: 4)
-                }
-            }
-        }
-        return placeholderHashBlock(perLine: 4)
-    }
     
     /// Add a secret to the viewModel's secret list
     private func addSecret() {

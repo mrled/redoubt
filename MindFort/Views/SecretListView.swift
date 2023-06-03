@@ -13,6 +13,7 @@ struct SecretListView: View {
     @Binding var openAction: OpenAction?
     var showControlPanel: Bool = false
     @State private var selectedSecretId: UUID? = nil
+    @State private var quizCurrentSecretId: UUID? = nil
     @State private var isPresentingAddSheet = false
     @State private var isPresentingSettingsSheet = false
     @State private var isPresentingAcknowledgementsSheet = false
@@ -30,7 +31,7 @@ struct SecretListView: View {
                 if secretsModel.secrets.count > 0 {
                     Section() {
                         NavigationLink(
-                            destination: QuizView().environmentObject(secretsModel),
+                            destination: SecretQuizView(currentSecretId: $quizCurrentSecretId).environmentObject(secretsModel),
                             tag: OpenAction.startQuiz,
                             selection: $openAction
                         ) {

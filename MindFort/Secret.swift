@@ -19,6 +19,18 @@ enum SupportedDigestType: String, Codable {
 }
 
 
+func sha512(string: String) throws -> Data  {
+    guard let stringData = string.data(using: .utf8) else {
+        throw SecretParsingError.invalidInputValue
+    }
+    let rawDigest = SHA512.hash(data: stringData)
+    let digestData = Data(rawDigest.withUnsafeBytes { pointer in
+        return Data(bytes: pointer.baseAddress!, count: SHA512.Digest.byteCount)
+    })
+    return digestData
+}
+
+
 struct Secret: Identifiable, Codable, Equatable {
     let id = UUID()
     var name: String
@@ -58,14 +70,7 @@ struct Secret: Identifiable, Codable, Equatable {
     init(name nameIn: String, value valueIn: String) throws {
         name = nameIn
         value = valueIn
-        guard let valueData = valueIn.data(using: .utf8) else {
-            throw SecretParsingError.invalidInputValue
-        }
-        let rawDigest = SHA512.hash(data: valueData)
-        let digestData = Data(rawDigest.withUnsafeBytes { pointer in
-            return Data(bytes: pointer.baseAddress!, count: SHA512.Digest.byteCount)
-        })
-        digest = digestData
+        try digest = sha512(string: valueIn)
         digestType = .SHA512
     }
     
