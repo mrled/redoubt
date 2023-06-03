@@ -26,7 +26,6 @@ struct DeveloperToDoSheet: View {
                     RowItemWithIcon(title: "Add geofencing ability", systemImageName: "mappin.and.ellipse")
                     RowItemWithIcon(title: "Allow editing name of existing entries", systemImageName: "square.and.pencil")
                     RowItemWithIcon(title: "Use some good key derivation function for password storage", systemImageName: "lock")
-                    RowItemWithIcon(title: "Add single place for AppStorage defaults and keys", systemImageName: "externaldrive")
                     RowItemWithIcon(title: "Keyboard shortcuts, at least enter to create, maybe escape to go back", systemImageName: "return")
                 }
                 Section(header: Text("Fix bugs")) {
@@ -39,6 +38,7 @@ struct DeveloperToDoSheet: View {
                     RowItemWithIcon(title: "Add previous/next buttons to detail view", systemImageName: "arrow.right")
                     RowItemWithIcon(title: "Option to disable HAXX0R C0D3", systemImageName: "laptopcomputer")
                     RowItemWithIcon(title: "Are you sure? for deletes", systemImageName: "questionmark.circle")
+                    RowItemWithIcon(title: "Add single place for AppStorage defaults and keys", systemImageName: "externaldrive")
                 }
             }
         }
