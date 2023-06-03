@@ -52,7 +52,8 @@ struct SecretListView: View {
                         .onDelete(perform: removeSecrets)
                     }
                 } else {
-                    Text("Click the + button to add a secret")
+                    Text("Press the + button to add a secret")
+                        .foregroundColor(.gray)
                 }
             }
             .navigationBarTitle("Secrets")
