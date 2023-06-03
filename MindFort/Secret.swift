@@ -157,11 +157,26 @@ func groupCharacters(string: String, perGroup: Int = 4, perLine: Int = 8) -> Str
     return result
 }
 
+
+func data2hex(_ data: Data) -> String {
+    return data.map { String(format: "%02x", $0) }.joined()
+}
+
 /// Given a SHA512 hash binary value, return a list of number groups
 func prettyHashBlock(digest: Data, perGroup: Int = 4, perLine: Int = 8) -> String {
-    let hexString = digest.map { String(format: "%02x", $0) }.joined()
-    return groupCharacters(string: hexString, perGroup: perGroup, perLine: perLine)
+    return groupCharacters(string: data2hex(digest), perGroup: perGroup, perLine: perLine)
 }
+
+let placeholderString = [
+    "dead", "beef", "babe", "cafe",
+    "dead", "beef", "babe", "cafe",
+    "dead", "beef", "babe", "cafe",
+    "dead", "beef", "babe", "cafe",
+    "dead", "beef", "babe", "cafe",
+    "dead", "beef", "babe", "cafe",
+    "dead", "beef", "babe", "cafe",
+    "dead", "beef", "babe", "cafe",
+]
 
 func placeholderHashBlock(perGroup: Int = 4, perLine: Int = 8) -> String {
     let placeholderStrings = [

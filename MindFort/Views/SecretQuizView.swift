@@ -38,11 +38,24 @@ struct SecretQuizView: View {
                         finished = true
                         currentSecretId = nil
                         activeView = nil
+                        let feedbackGenerator = UINotificationFeedbackGenerator()
+                        DispatchQueue.global(qos: .userInitiated).async {
+                            for _ in 0..<3 {
+                                /// Note that haptic feedback should be initiated from the main thread only!
+                                DispatchQueue.main.async {
+                                    feedbackGenerator.notificationOccurred(.success)
+                                }
+                                /// But we sleep on the background queue
+                                usleep(300000) // sleep for 300ms
+                            }
+                        }
                     }
                 }
+                .environmentObject(secretsModel)
                 .opacity(!finished && currentSecretId == secret.id ? 1 : 0)
             }
-            SecretQuizFinishedView()
+            SecretQuizFinishedView(finished: $finished)
+                .environmentObject(secretsModel)
                 .opacity(finished ? 1 : 0)
         }
 //        .rotation3DEffect(.degrees(isFlipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))

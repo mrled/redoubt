@@ -13,20 +13,20 @@ import SwiftUI
 ///  - a placeholder if the $password is empty
 ///  - an easter egg if the $password is one of the famous passwords
 struct H4XX0RC0D3: View {
+
+    /// A string password to display the hash of.
+    /// If this is empty, we display a placeholder instead of a hash of nothing.
+    /// If easter eggs are enabled and this string matches an easter egg, display the easter egg value instead of the hash of the input.
     @Binding var password: String
+    
     var perGroup = 4
     var perLine = 4
     var fontSize: CGFloat = 10
     var foregroundColor: Color? = nil
-    // TODO: have a global enum with default appstorage values
+    
+    /// If this is False, we don't do any easter eggin'
     @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
 
-    var body: some View {
-        Text(hashString)
-            .font(.system(size: fontSize, design: .monospaced))
-            .foregroundColor(foregroundColor)
-    }
-    
     private var hashData: Data? {
         if password.count == 0 {
             return nil
@@ -37,15 +37,25 @@ struct H4XX0RC0D3: View {
             return nil
         }
     }
+
+    private var rawString: Binding<String> {
+        Binding(
+            get: {
+                if enableEasterEggs, let easterEggCode = easterEggPasswords[password] {
+                    return easterEggCode.joined(separator: "")
+                } else if password.count > 0, let unwrappedHashData = hashData {
+                    return data2hex(unwrappedHashData)
+                } else {
+                    return placeholderString.joined(separator: "")
+                }
+            },
+            /// Writing to this wouldn't make any sense, we just ignore
+            set: { _ in }
+        )
+    }
     
-    private var hashString: String {
-        if enableEasterEggs, let easterEggCode = easterEggPasswords[password] {
-            return groupCharacters(string: easterEggCode.joined(separator: ""), perGroup: perGroup, perLine: perLine)
-        }
-        if password.count > 0, let unwrappedHashData = hashData {
-            return prettyHashBlock(digest: unwrappedHashData, perGroup: perGroup, perLine: perLine)
-        }
-        return placeholderHashBlock(perGroup: perGroup, perLine: perLine)
+    var body: some View {
+        HackerCodeRawString(rawString: rawString, perGroup: perGroup, perLine: perLine, fontSize: fontSize, foregroundColor: foregroundColor)
     }
 }
 
