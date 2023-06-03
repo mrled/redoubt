@@ -89,8 +89,8 @@ struct RegularIntervalScheduleControls: View {
 
 struct ScheduleControls: View {
     @EnvironmentObject var notificationsModel: NotificationsViewModel
-    @AppStorage(MFStorage.K.scheduleEnabled) var scheduleEnabled: Bool = MFStorage.D.scheduleEnabled
-    @AppStorage(MFStorage.K.scheduleType) var scheduleType: ScheduleType = MFStorage.D.scheduleType
+    @AppStorage(MFAStorage.K.scheduleEnabled) var scheduleEnabled: Bool = MFAStorage.D.scheduleEnabled
+    @AppStorage(MFAStorage.K.scheduleType) var scheduleType: ScheduleType = MFAStorage.D.scheduleType
 
     var body: some View {
         Section("Schedule") {
@@ -163,9 +163,9 @@ struct DeveloperControls: View {
 
 struct SettingsSheet: View {
     @EnvironmentObject var notificationsModel: NotificationsViewModel
-    @AppStorage(MFStorage.K.showControlPanel) var showControlPanel: Bool = MFStorage.D.showControlPanel
-    @AppStorage(MFStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFStorage.D.enableEasterEggs
-    @AppStorage(MFStorage.K.scheduleType) var scheduleType: ScheduleType = MFStorage.D.scheduleType
+    @AppStorage(MFAStorage.K.showControlPanel) var showControlPanel: Bool = MFAStorage.D.showControlPanel
+    @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
+    @AppStorage(MFAStorage.K.scheduleType) var scheduleType: ScheduleType = MFAStorage.D.scheduleType
     @State private var notificationsAllowed: Bool = false
     @State private var scheduleEveryXDays: Int = 1
 

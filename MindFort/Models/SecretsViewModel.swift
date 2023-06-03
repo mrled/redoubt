@@ -21,16 +21,9 @@ class SecretsVmDataLoaderFromPlist: DataLoader {
     
     init() {}
     
-    private var plistURL: URL {
-        guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            fatalError("Unable to access documents directory.")
-        }
-        return documentsURL.appendingPathComponent("Secrets.plist")
-    }
-    
     func load() -> [Secret] {
         do {
-            let data = try Data(contentsOf: plistURL)
+            let data = try Data(contentsOf: MFFStorage().secretsPlist)
             let secrets = try decoder.decode([Secret].self, from: data)
             print("When loading, found secrets: \(secrets)")
             return secrets
@@ -43,7 +36,7 @@ class SecretsVmDataLoaderFromPlist: DataLoader {
     func save(secrets: [Secret]) {
         do {
             let data = try encoder.encode(secrets)
-            try data.write(to: plistURL)
+            try data.write(to: MFFStorage().secretsPlist)
         } catch {
             print("Error saving items: \(error)")
         }
@@ -51,9 +44,9 @@ class SecretsVmDataLoaderFromPlist: DataLoader {
     
     func deleteAllData() {
         do {
-            try FileManager.default.removeItem(at: plistURL)
+            try FileManager.default.removeItem(at: MFFStorage().secretsPlist)
         } catch {
-            print("Error deleting \(plistURL): \(error)")
+            print("Error deleting \(MFFStorage().secretsPlist): \(error)")
         }
     }
 }

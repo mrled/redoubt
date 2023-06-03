@@ -6,24 +6,6 @@
 //
 
 import SwiftUI
-import os.log
-
-
-/// MindFort AppStorage keys and defaults
-struct MFStorage {
-    struct K {
-        static let enableEasterEggs = "enableEasterEggs"
-        static let scheduleEnabled = "scheduleEnabled"
-        static let scheduleType = "scheduleType"
-        static let showControlPanel = "showControlPanel"
-    }
-    struct D {
-        static let enableEasterEggs = false
-        static let scheduleEnabled = true
-        static let scheduleType = ScheduleType.daily
-        static let showControlPanel = false
-    }
-}
 
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -49,6 +31,3 @@ struct MindFortApp: App {
         }
     }
 }
-
-
-let appLogger = Logger()

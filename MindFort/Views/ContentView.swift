@@ -19,7 +19,7 @@ struct ContentView: View {
     @StateObject private var secretsModel = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist())
     @StateObject private var notificationsModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromPlist())
     @State private var openAction: OpenAction? = OpenAction(rawValue: UserDefaults.standard.string(forKey: "action") ?? "home") ?? .home
-    @AppStorage(MFStorage.K.showControlPanel) var showControlPanel: Bool = MFStorage.D.showControlPanel
+    @AppStorage(MFAStorage.K.showControlPanel) var showControlPanel: Bool = MFAStorage.D.showControlPanel
 
     var body: some View {
         SecretListView(openAction: $openAction, showControlPanel: showControlPanel)

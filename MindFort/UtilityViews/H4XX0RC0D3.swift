@@ -19,7 +19,7 @@ struct H4XX0RC0D3: View {
     var fontSize: CGFloat = 10
     var foregroundColor: Color? = nil
     // TODO: have a global enum with default appstorage values
-    @AppStorage(MFStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFStorage.D.enableEasterEggs
+    @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
 
     var body: some View {
         Text(hashString)

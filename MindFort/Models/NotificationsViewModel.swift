@@ -32,19 +32,6 @@ class NotificationsVmDataLoaderFromPlist: NotificationsVmDataLoader {
 
     init() {}
 
-    private var plistUrlRegularIntervals: URL {
-        guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            fatalError("Unable to access documents directory.")
-        }
-        return documentsURL.appendingPathComponent("RegularIntervalNotifications.plist")
-    }
-    private var plistUrlOneTimes: URL {
-        guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            fatalError("Unable to access documents directory.")
-        }
-        return documentsURL.appendingPathComponent("OneTimeNotifications.plist")
-    }
-    
     private func loadPlist<T: Decodable>(plistUrl: URL) -> [T] {
         do {
             let rawData = try Data(contentsOf: plistUrl)
@@ -69,27 +56,27 @@ class NotificationsVmDataLoaderFromPlist: NotificationsVmDataLoader {
     }
 
     func loadRegularIntervals() -> [DateComponents] {
-        return loadPlist(plistUrl: plistUrlRegularIntervals)
+        return loadPlist(plistUrl: MFFStorage().regularIntervalEntriesPlist)
     }
 
     func saveRegularIntervals(schedules: [DateComponents]) {
-        savePlist(plistUrl: plistUrlRegularIntervals, data: schedules)
+        savePlist(plistUrl: MFFStorage().regularIntervalEntriesPlist, data: schedules)
     }
     
     func loadOneTimes() -> [DateComponents] {
-        return loadPlist(plistUrl: plistUrlOneTimes)
+        return loadPlist(plistUrl: MFFStorage().oneTimeEntriesPlist)
     }
     
     func saveOneTimes(components: [DateComponents]) {
-        savePlist(plistUrl: plistUrlOneTimes, data: components)
+        savePlist(plistUrl: MFFStorage().oneTimeEntriesPlist, data: components)
     }
     
     func deleteAllData() {
         do {
-            try FileManager.default.removeItem(at: plistUrlRegularIntervals)
-            try FileManager.default.removeItem(at: plistUrlOneTimes)
+            try FileManager.default.removeItem(at: MFFStorage().regularIntervalEntriesPlist)
+            try FileManager.default.removeItem(at: MFFStorage().oneTimeEntriesPlist)
         } catch {
-            appLogger.error("Error deleting \(self.plistUrlRegularIntervals): \(error)")
+            appLogger.error("Error deleting \(MFFStorage().regularIntervalEntriesPlist): \(error)")
         }
     }
 }
