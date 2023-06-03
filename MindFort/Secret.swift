@@ -41,6 +41,10 @@ func md5Hash(of data: Data) -> Data {
 }
 
 
+/// This is the easiest way to get a Swift UUID from arbitrary data.
+/// It's weak against collision attacks because lol md5 of course.
+/// It's also not a valid UUID per the UUID specification.
+/// What we want to use it for is the Identifiable protocol, and only that, so we're not worried about it.
 func md5UUID(data: Data) -> UUID {
     let hashedData = md5Hash(of: data)
     let uuid = UUID(uuid: hashedData.withUnsafeBytes { $0.load(as: uuid_t.self) })
