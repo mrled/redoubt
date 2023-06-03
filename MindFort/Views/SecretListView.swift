@@ -109,6 +109,11 @@ struct SecretListView: View {
                 notificationsModel.load()
             }
         }
+        .onAppear(perform: {
+            for secret in secretsModel.secrets {
+                CustomLogger.secretIds(message: " - SecretListView onAppear: \(secret.id)")
+            }
+        })
     }
     
     func removeSecrets(at offsets: IndexSet) {

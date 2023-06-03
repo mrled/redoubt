@@ -49,6 +49,10 @@ struct SecretQuizInnerView: View {
             if currentSecretId == nil {
                 currentSecretId = secretsModel.secrets[0].id
             }
+            CustomLogger.secretIds(message: "SecretQuizInnerView onAppear: currentSecretId: \(currentSecretId?.uuidString ?? "nil")")
+            for secret in secretsModel.secrets {
+                CustomLogger.secretIds(message: " - SecretQuizInnerView onAppear: \(secret.id)")
+            }
             DispatchQueue.main.async {
                 isFocused = true
             }
