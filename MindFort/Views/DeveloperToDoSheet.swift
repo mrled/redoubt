@@ -41,6 +41,7 @@ struct DeveloperToDoSheet: View {
                     RowItemWithIcon(title: "Add single place for AppStorage defaults and keys", systemImageName: "externaldrive")
                     RowItemWithIcon(title: "Fix entering quiz, exiting, then re-entering causes invalid secret (unsolveable)", systemImageName: "ladybug")
                     RowItemWithIcon(title: "Add the quiz functionality", systemImageName: "questionmark.app.dashed")
+                    RowItemWithIcon(title: "Fix focus in quiz mode", systemImageName: "ladybug")
                 }
             }
         }

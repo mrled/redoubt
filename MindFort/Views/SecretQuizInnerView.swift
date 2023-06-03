@@ -8,22 +8,31 @@
 import SwiftUI
 
 struct SecretQuizInnerView: View {
+    /// The secret associated with this view
+    let secret: Secret
+    
+    /// The secret ID for the currently in-view quiz card - maybe this view, or another instance of it
     @Binding var currentSecretId: UUID?
-//    @Binding var passphraseValid: Bool
+
+    /// A FocusState managed by the parent view, see there for documentation
+    var activeView: FocusState<UUID?>.Binding
+
+    /// A callback to execute when the correct passphrase is entered
     var onCorrectPassword: () -> Void
+    
     @State private var passphraseValid = false
     @State private var passphrase = ""
-    @FocusState private var isFocused: Bool
+    
     @EnvironmentObject var secretsModel: SecretsViewModel
     
     var body: some View {
         ScrollView {
-            Text(secret?.name ?? "(invalid??)")
+            Text(secret.name)
                 .font(.title)
                 .bold()
             SecureField("Passphrase", text: $passphrase, onCommit: validatePassphrase)
                 .keyboardType(.default)
-                .focused($isFocused)
+                .focused(activeView, equals: secret.id)
                 .onChange(of: passphrase) { _ in
                     validatePassphrase()
                 }
@@ -53,23 +62,21 @@ struct SecretQuizInnerView: View {
             for secret in secretsModel.secrets {
                 CustomLogger.secretIds(message: " - SecretQuizInnerView onAppear: \(secret.id)")
             }
-            DispatchQueue.main.async {
-                isFocused = true
-            }
         }
-    }
-    
-    var secret: Secret? {
-        secretsModel.secrets.first(where: { $0.id == currentSecretId })
     }
     
     var currentSecretIndex: Int? {
         secretsModel.secrets.firstIndex { $0.id == currentSecretId }
     }
-        
+    
+    /// True if my .secret property has the same ID as currentSecretId
+    var secretIsCurrent: Bool {
+        return secret.id == currentSecretId
+    }
+    
     private func validatePassphrase() {
         let passphraseWasValid = passphraseValid
-        passphraseValid = secret?.validate(input: passphrase) ?? false
+        passphraseValid = secret.validate(input: passphrase)
         if !passphraseWasValid && passphraseValid {
             let feedbackGenerator = UINotificationFeedbackGenerator()
             feedbackGenerator.notificationOccurred(.success)
@@ -108,21 +115,27 @@ struct SecretQuizInnerView_Previews: PreviewProvider {
             try! Secret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
         ]
         let secretsModel = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
-        // WARNING: These won't indicate a correct passphrase in the preview because passphraseValid is set to false
+        
+        /// Just a dummy to make the preview compile - doesn't actually set the focus
+        @FocusState var activeView: UUID?
+
         Group {
             NavigationView {
                 SecretQuizInnerView(
+                    secret: exampleSecrets[0],
                     currentSecretId: .constant(secretsModel.secrets[0].id),
-//                    passphraseValid: .constant(false),
+                    activeView: $activeView,
                     onCorrectPassword: {}
                 )
                 .environmentObject(secretsModel)
             }
             .previewDisplayName("Secret 1/2")
+            
             NavigationView {
                 SecretQuizInnerView(
+                    secret: exampleSecrets[0],
                     currentSecretId: .constant(nil),
-//                    passphraseValid: .constant(false),
+                    activeView: $activeView,
                     onCorrectPassword: {}
                 )
                 .environmentObject(secretsModel)
