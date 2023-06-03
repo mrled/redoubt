@@ -9,60 +9,56 @@ import SwiftUI
 
 struct SecretQuizView: View {
     @Binding var currentSecretId: UUID?
-    @State private var passphrase = ""
-    @State private var passphraseValid: Bool = false
-    @State private var showingDeleteAlert = false
-    @FocusState private var isFocused: Bool
+    @State private var previousSecretId: UUID?
+    @State private var nextSecretId: UUID?
+//    @State private var passphrase = ""
+//    @State private var passphraseValid: Bool = false
+//    @State private var isFlipped: Bool = false
+    @State private var finished: Bool = false
     @EnvironmentObject var secretsModel: SecretsViewModel
     
     var body: some View {
-        ScrollView {
-            Text(secret?.name ?? "(invalid??)")
-                .font(.title)
-                .bold()
-            SecureField("Passphrase", text: $passphrase, onCommit: validatePassphrase)
-                .keyboardType(.default)
-                .focused($isFocused)
-                .onChange(of: passphrase) { _ in
-                    validatePassphrase()
-                }
-                .padding()
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(boxColor)
-                .frame(height: 175)
-                .overlay(
-                    VStack {
-                        Text(validationText)
-                            .foregroundColor(.white)
-                            .padding([.bottom])
-                        H4XX0RC0D3(password: $passphrase, foregroundColor: .white)
+        ZStack {
+            ForEach(secretsModel.secrets) { secret in
+                SecretQuizInnerView(currentSecretId: $currentSecretId) {
+                    if let nextSecretId {
+                        currentSecretId = nextSecretId
+                    } else {
+                        finished = true
                     }
-                )
-                .animation(.default, value: boxColor)
-                .padding()
-            Spacer()
-        }
-        .padding()
-        .navigationBarTitle("Pop quiz!")
-        .onAppear {
-            if currentSecretId == nil {
-                currentSecretId = secretsModel.secrets[0].id
+                }
+                .opacity(!finished && currentSecretId == secret.id ? 1 : 0)
             }
-            DispatchQueue.main.async {
-                isFocused = true
-            }
+            SecretQuizFinishedView()
+                .opacity(finished ? 1 : 0)
+//            Group {
+//                SecretQuizInnerView(currentSecretId: $currentSecretId, passphraseValid: $passphraseValid)
+//                    .environmentObject(secretsModel)
+//            }
+//            .opacity(isFlipped ? 0 : 1)
+//            Group {
+//                if let nextSecretId {
+//                    SecretQuizInnerView(currentSecretId: $nextSecretId, passphraseValid: $passphraseValid)
+//                        .environmentObject(secretsModel)
+//                } else {
+//                    SecretQuizFinishedView()
+//                }
+//            }
+//            .opacity(isFlipped ? 1 : 0)
         }
+        .onAppear(perform: {
+            previousSecretId = getPreviousSecretId()
+            nextSecretId = getNextSecretId()
+        })
+//        .rotation3DEffect(.degrees(isFlipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
+        .animation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0))
     }
-    
-    var secret: Secret? {
-        secretsModel.secrets.first(where: { $0.id == currentSecretId })
-    }
-    
+        
     var currentSecretIndex: Int? {
         secretsModel.secrets.firstIndex { $0.id == currentSecretId }
     }
     
-    var nextSecretId: UUID? {
+    func getNextSecretId() -> UUID? {
         guard let currentIndex = currentSecretIndex else { return nil }
         let nextIndex = secretsModel.secrets.index(after: currentIndex)
         if nextIndex < secretsModel.secrets.count {
@@ -72,46 +68,13 @@ struct SecretQuizView: View {
         }
     }
     
-    var previousSecretId: UUID? {
+    func getPreviousSecretId() -> UUID? {
         guard let currentIndex = currentSecretIndex else { return nil }
         let prevIndex = secretsModel.secrets.index(before: currentIndex)
         if prevIndex >= 0 {
             return secretsModel.secrets[prevIndex].id
         } else {
             return nil
-        }
-
-    }
-    
-    private func validatePassphrase() {
-        let passphraseWasValid = passphraseValid
-        passphraseValid = secret?.validate(input: passphrase) ?? false
-        if !passphraseWasValid && passphraseValid {
-            let feedbackGenerator = UINotificationFeedbackGenerator()
-            feedbackGenerator.notificationOccurred(.success)
-        } else if passphraseWasValid && !passphraseValid {
-            let feedbackGenerator = UINotificationFeedbackGenerator()
-            feedbackGenerator.notificationOccurred(.error)
-        }
-    }
-    
-    private var boxColor: Color {
-        if passphrase.isEmpty {
-            return .gray
-        } else if passphraseValid {
-            return .green
-        } else {
-            return .red
-        }
-    }
-    
-    private var validationText: String {
-        if passphrase.isEmpty {
-            return "Enter passphrase..."
-        } else if passphraseValid {
-            return "Correct!"
-        } else {
-            return "Incorrect!"
         }
     }
 }
