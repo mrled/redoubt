@@ -31,7 +31,6 @@ struct DeveloperToDoSheet: View {
                 Section(header: Text("Fix bugs")) {
                     RowItemWithIcon(title: "Tapping on notification should launch quiz", systemImageName: "ladybug")
                     RowItemWithIcon(title: "Prune past non-repeating notifications when loading/etc", systemImageName: "ladybug")
-                    RowItemWithIcon(title: "Fix entering quiz, exiting, then re-entering causes invalid secret (unsolveable)", systemImageName: "ladybug")
                 }
                 Section(header: Text("Done")) {
                     RowItemWithIcon(title: "Implement notifications", systemImageName: "bell")
@@ -40,6 +39,7 @@ struct DeveloperToDoSheet: View {
                     RowItemWithIcon(title: "Option to disable HAXX0R C0D3", systemImageName: "laptopcomputer")
                     RowItemWithIcon(title: "Are you sure? for deletes", systemImageName: "questionmark.circle")
                     RowItemWithIcon(title: "Add single place for AppStorage defaults and keys", systemImageName: "externaldrive")
+                    RowItemWithIcon(title: "Fix entering quiz, exiting, then re-entering causes invalid secret (unsolveable)", systemImageName: "ladybug")
                 }
             }
         }
