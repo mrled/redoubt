@@ -17,7 +17,7 @@ struct SecretQuizView: View {
     
     var body: some View {
         ScrollView {
-            Text(secret?.name ?? "")
+            Text(secret?.name ?? "(invalid??)")
                 .font(.title)
                 .bold()
             SecureField("Passphrase", text: $passphrase, onCommit: validatePassphrase)
@@ -38,6 +38,7 @@ struct SecretQuizView: View {
                         H4XX0RC0D3(password: $passphrase, foregroundColor: .white)
                     }
                 )
+                .animation(.default, value: boxColor)
                 .padding()
             Spacer()
         }
