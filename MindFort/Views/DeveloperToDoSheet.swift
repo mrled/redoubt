@@ -36,7 +36,7 @@ struct DeveloperToDoSheet: View {
                 Section(header: Text("Done")) {
                     RowItemWithIcon(title: "Implement notifications", systemImageName: "bell")
                     RowItemWithIcon(title: "Show all of H4XX0R C0D3 w/ keyboard enabled", systemImageName: "ladybug")
-                    RowItemWithIcon(title: "Add previous/next buttons to detail view", systemImageName: "arrow-right")
+                    RowItemWithIcon(title: "Add previous/next buttons to detail view", systemImageName: "arrow.right")
                 }
             }
         }
