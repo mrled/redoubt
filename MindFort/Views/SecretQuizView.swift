@@ -24,6 +24,7 @@ struct SecretQuizView: View {
                         currentSecretId = nextSecretId
                     } else {
                         finished = true
+                        currentSecretId = nil
                     }
                 }
                 .opacity(!finished && currentSecretId == secret.id ? 1 : 0)
