@@ -61,15 +61,25 @@ struct H4XX0RC0D3: View {
 
 
 struct H4XX0RC0D3_Previews: PreviewProvider {
-    // TODO: mock easter eggs=true
+    
     static var previews: some View {
+        
+        let userDefaultsEnableEasterEggs: UserDefaults = {
+            let d = UserDefaults(suiteName: "userDefaultsEnableEasterEggs")!
+            d.set(true, forKey: MFAStorage.K.enableEasterEggs)
+            return d
+            
+        }()
+
         Group {
             H4XX0RC0D3(password: .constant("password"))
                 .previewDisplayName("Password")
-            H4XX0RC0D3(password: .constant("correct horse battery staple"))
-                .previewDisplayName("XKCD")
             H4XX0RC0D3(password: .constant("hunter2"))
-                .previewDisplayName("AzureDiamond")
+                .previewDisplayName("AzureDiamond without EE")
+            H4XX0RC0D3(password: .constant("hunter2"))
+                .previewDisplayName("AzureDiamond with EE")
+                .defaultAppStorage(userDefaultsEnableEasterEggs)
+
         }
     }
 }
