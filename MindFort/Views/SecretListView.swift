@@ -11,6 +11,7 @@ struct SecretListView: View {
     @EnvironmentObject var secretsModel: SecretsViewModel
     @EnvironmentObject var notificationsModel: NotificationsViewModel
     @Binding var openAction: OpenAction?
+    @Binding var notificationsAllowed: Bool
     var showControlPanel: Bool = false
     @State private var selectedSecretId: UUID? = nil
     @State private var quizCurrentSecretId: UUID? = nil
@@ -22,7 +23,6 @@ struct SecretListView: View {
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
     @State private var error: String?
-    @State private var notificationsAllowed: Bool = false
     @FocusState private var newSecretFocusOnNameField: Bool
     
     var body: some View {
@@ -98,7 +98,7 @@ struct SecretListView: View {
                 .environmentObject(secretsModel)
             }
             .sheet(isPresented: $isPresentingSettingsSheet) {
-                SettingsSheet()
+                SettingsSheet(notificationsAllowed: $notificationsAllowed)
                     .environmentObject(notificationsModel)
             }
             .sheet(isPresented: $isPresentingAcknowledgementsSheet) {
@@ -140,15 +140,15 @@ struct SecretListView_Previews: PreviewProvider {
         let secretsModelTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
         let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
         Group {
-            SecretListView(openAction: .constant(.home))
+            SecretListView(openAction: .constant(.home), notificationsAllowed: .constant(true))
                 .environmentObject(secretsModelTwoSecrets)
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("Default values")
-            SecretListView(openAction: .constant(.home), showControlPanel: true)
+            SecretListView(openAction: .constant(.home), notificationsAllowed: .constant(true), showControlPanel: true)
                 .environmentObject(secretsModelTwoSecrets)
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("showControlPanel")
-            SecretListView(openAction: .constant(.home))
+            SecretListView(openAction: .constant(.home), notificationsAllowed: .constant(true))
                 .environmentObject(SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray([])))
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("No secrets")

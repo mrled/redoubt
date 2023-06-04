@@ -165,10 +165,10 @@ struct DeveloperControls: View {
 
 struct SettingsSheet: View {
     @EnvironmentObject var notificationsModel: NotificationsViewModel
+    @Binding var notificationsAllowed: Bool
     @AppStorage(MFAStorage.K.showControlPanel) var showControlPanel: Bool = MFAStorage.D.showControlPanel
     @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
     @AppStorage(MFAStorage.K.scheduleType) var scheduleType: ScheduleType = MFAStorage.D.scheduleType
-    @State private var notificationsAllowed: Bool = false
     @State private var scheduleEveryXDays: Int = 1
 
     var body: some View {
@@ -184,12 +184,6 @@ struct SettingsSheet: View {
                 DeveloperControls(showControlPanel: $showControlPanel, enableEasterEggs: $enableEasterEggs)
             }
         }
-        .onAppear {
-            NotificationManager.shared.requestPermission { granted in
-                notificationsAllowed = granted
-            }
-        }
-    
     }
 }
 
@@ -199,19 +193,24 @@ struct SettingsView_Previews: PreviewProvider {
             Text("Root view")
                 .sheet(isPresented: .constant(true)) {
                 let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
-                SettingsSheet()
+                    SettingsSheet(notificationsAllowed: .constant(true))
                     .environmentObject(notificationsViewModel)
             }
             .previewDisplayName("Simple, no schedules")
-        }
-        Group {
             Text("Root view")
                 .sheet(isPresented: .constant(true)) {
                     let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
-                    SettingsSheet()
+                    SettingsSheet(notificationsAllowed: .constant(true))
                         .environmentObject(notificationsViewModel)
                 }
                 .previewDisplayName("Simple, one schedule")
+            Text("Root view")
+                .sheet(isPresented: .constant(true)) {
+                    let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
+                    SettingsSheet(notificationsAllowed: .constant(false))
+                        .environmentObject(notificationsViewModel)
+                }
+                .previewDisplayName("Notifications not allowed")
         }
     }
 }
