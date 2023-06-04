@@ -27,23 +27,28 @@ struct DeveloperToDoSheet: View {
                     RowItemWithIcon(title: "Use some good key derivation function for password storage", systemImageName: "lock")
                     RowItemWithIcon(title: "Keyboard shortcuts, at least enter to create, maybe escape to go back", systemImageName: "return")
                     RowItemWithIcon(title: "Add onboarding screen", systemImageName: "star.circle")
-                    RowItemWithIcon(title: "Add badge to Settings button if notifications are not enabled", systemImageName: "star.circle")
                 }
                 Section(header: Text("Fix bugs")) {
                     RowItemWithIcon(title: "Tapping on notification should launch quiz", systemImageName: "ladybug")
                     RowItemWithIcon(title: "Prune past non-repeating notifications when loading/etc", systemImageName: "ladybug")
                 }
                 Section(header: Text("Done")) {
-                    RowItemWithIcon(title: "Implement notifications", systemImageName: "bell")
-                    RowItemWithIcon(title: "Show all of H4XX0R C0D3 w/ keyboard enabled", systemImageName: "ladybug")
-                    RowItemWithIcon(title: "Add previous/next buttons to detail view", systemImageName: "arrow.right")
-                    RowItemWithIcon(title: "Option to disable HAXX0R C0D3", systemImageName: "laptopcomputer")
-                    RowItemWithIcon(title: "Are you sure? for deletes", systemImageName: "questionmark.circle")
-                    RowItemWithIcon(title: "Add single place for AppStorage defaults and keys", systemImageName: "externaldrive")
-                    RowItemWithIcon(title: "Fix entering quiz, exiting, then re-entering causes invalid secret (unsolveable)", systemImageName: "ladybug")
-                    RowItemWithIcon(title: "Add the quiz functionality", systemImageName: "questionmark.app.dashed")
-                    RowItemWithIcon(title: "Fix focus in quiz mode", systemImageName: "ladybug")
-                    RowItemWithIcon(title: "Add a quiz complete screen", systemImageName: "questionmark.app.dashed")
+                    /// Remember: can't have more than 10 subviews. lol!
+                    Group {
+                        RowItemWithIcon(title: "Implement notifications", systemImageName: "bell")
+                        RowItemWithIcon(title: "Show all of H4XX0R C0D3 w/ keyboard enabled", systemImageName: "ladybug")
+                        RowItemWithIcon(title: "Add previous/next buttons to detail view", systemImageName: "arrow.right")
+                        RowItemWithIcon(title: "Option to disable HAXX0R C0D3", systemImageName: "laptopcomputer")
+                        RowItemWithIcon(title: "Are you sure? for deletes", systemImageName: "questionmark.circle")
+                        RowItemWithIcon(title: "Add single place for AppStorage defaults and keys", systemImageName: "externaldrive")
+                        RowItemWithIcon(title: "Fix entering quiz, exiting, then re-entering causes invalid secret (unsolveable)", systemImageName: "ladybug")
+                        RowItemWithIcon(title: "Add the quiz functionality", systemImageName: "questionmark.app.dashed")
+                        RowItemWithIcon(title: "Fix focus in quiz mode", systemImageName: "ladybug")
+                        RowItemWithIcon(title: "Add a quiz complete screen", systemImageName: "questionmark.app.dashed")
+                    }
+                    Group {
+                        RowItemWithIcon(title: "Add badge to Settings button if notifications are not enabled", systemImageName: "star.circle")
+                    }
                 }
             }
         }
