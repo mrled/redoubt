@@ -148,16 +148,29 @@ struct NotificationsControls: View {
 }
 
 
-struct DeveloperControls: View {
+struct SettingsControls: View {
+    @Binding var showOnboarding: Bool
     @Binding var showControlPanel: Bool
     @Binding var enableEasterEggs: Bool
     var body: some View {
-        Section("Developers") {
+        Section("Settings") {
+            Toggle(isOn: $showOnboarding) {
+                HStack {
+                    Image(systemName: "play")
+                    Text("Show the onboarding button")
+                }
+            }
             Toggle(isOn: $showControlPanel) {
-                Text("Show secret developer control panels")
+                HStack {
+                    Image(systemName: "slider.horizontal.3")
+                    Text("Show secret developer control panels")
+                }
             }
             Toggle(isOn: $enableEasterEggs) {
-                Text("Enable easter eggs")
+                HStack {
+                    Image(systemName: "sparkles")
+                    Text("Enable easter eggs")
+                }
             }
         }
     }
@@ -169,6 +182,7 @@ struct SettingsSheet: View {
     @AppStorage(MFAStorage.K.showControlPanel) var showControlPanel: Bool = MFAStorage.D.showControlPanel
     @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
     @AppStorage(MFAStorage.K.scheduleType) var scheduleType: ScheduleType = MFAStorage.D.scheduleType
+    @AppStorage(MFAStorage.K.showOnboarding) var showOnboarding: Bool = MFAStorage.D.showOnboarding
     @State private var scheduleEveryXDays: Int = 1
 
     var body: some View {
@@ -181,7 +195,7 @@ struct SettingsSheet: View {
                 ScheduleControls(notificationsAllowed: $notificationsAllowed)
                     .environmentObject(notificationsModel)
                 NotificationsControls(notificationsAllowed: $notificationsAllowed)
-                DeveloperControls(showControlPanel: $showControlPanel, enableEasterEggs: $enableEasterEggs)
+                SettingsControls(showOnboarding: $showOnboarding, showControlPanel: $showControlPanel, enableEasterEggs: $enableEasterEggs)
             }
         }
     }

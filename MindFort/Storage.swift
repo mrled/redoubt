@@ -16,6 +16,7 @@ struct MFAStorage {
         static let scheduleEnabled = "scheduleEnabled"
         static let scheduleType = "scheduleType"
         static let showControlPanel = "showControlPanel"
+        static let showOnboarding = "showOnboarding"
     }
     /// AppStorage default values
     struct D {
@@ -23,6 +24,7 @@ struct MFAStorage {
         static let scheduleEnabled = true
         static let scheduleType = ScheduleType.daily
         static let showControlPanel = false
+        static let showOnboarding = true
     }
 }
 

@@ -13,11 +13,13 @@ struct SecretListView: View {
     @Binding var openAction: OpenAction?
     @Binding var notificationsAllowed: Bool
     var showControlPanel: Bool = false
+    var showOnboarding: Bool = false
     @State private var selectedSecretId: UUID? = nil
     @State private var quizCurrentSecretId: UUID? = nil
     @State private var isPresentingAddSheet = false
     @State private var isPresentingSettingsSheet = false
     @State private var isPresentingAcknowledgementsSheet = false
+    @State private var isPresentingOnboardingSheet = false
     @State private var isPresentingControlPanelSheet = false
     @State private var isPresentingDevToDoSheet = false
     @State private var newSecretName = ""
@@ -63,7 +65,19 @@ struct SecretListView: View {
                     Button(action: { isPresentingSettingsSheet = true }) {
                         ZStack {
                             Image(systemName: "gear")
+                            /// Show a badge if notification access has not been granted
                             if !notificationsAllowed {
+                                Circle()
+                                    .frame(width: 10, height: 10)
+                                    .foregroundColor(Color.red)
+                                    .offset(x: 10, y: -10)                            }
+                        }
+                    }
+                    if showOnboarding {
+                        Button(action: { isPresentingOnboardingSheet = true }) {
+                            ZStack {
+                                Image(systemName: "play")
+                                /// Always show a badge if the button is visible at all
                                 Circle()
                                     .frame(width: 10, height: 10)
                                     .foregroundColor(Color.red)
@@ -100,6 +114,9 @@ struct SecretListView: View {
             .sheet(isPresented: $isPresentingSettingsSheet) {
                 SettingsSheet(notificationsAllowed: $notificationsAllowed)
                     .environmentObject(notificationsModel)
+            }
+            .sheet(isPresented: $isPresentingOnboardingSheet) {
+                OnboardingSheet()
             }
             .sheet(isPresented: $isPresentingAcknowledgementsSheet) {
                 AboutSheet()
@@ -152,6 +169,15 @@ struct SecretListView_Previews: PreviewProvider {
                 .environmentObject(SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray([])))
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("No secrets")
+//            SecretListView(
+//                openAction: .constant(.home),
+//                notificationsAllowed: .constant(true),
+//                showControlPanel: .constant(false),
+//                showOnboarding: .constant(false)
+//            )
+//            .environmentObject(secretsModelTwoSecrets)
+//            .environmentObject(notificationsViewModel)
+//            .previewDisplayName("Show onboarding")
         }
     }
 }

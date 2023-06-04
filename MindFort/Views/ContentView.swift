@@ -21,10 +21,11 @@ struct ContentView: View {
     @State private var openAction: OpenAction? = OpenAction(rawValue: UserDefaults.standard.string(forKey: "action") ?? "home") ?? .home
     @State private var notificationsAllowed: Bool = false
     @AppStorage(MFAStorage.K.showControlPanel) var showControlPanel: Bool = MFAStorage.D.showControlPanel
+    @AppStorage(MFAStorage.K.showOnboarding) var showOnboarding: Bool = MFAStorage.D.showOnboarding
     @Environment(\.scenePhase) var scenePhase
 
     var body: some View {
-        SecretListView(openAction: $openAction, notificationsAllowed: $notificationsAllowed, showControlPanel: showControlPanel)
+        SecretListView(openAction: $openAction, notificationsAllowed: $notificationsAllowed, showControlPanel: showControlPanel, showOnboarding: showOnboarding)
             .environmentObject(secretsModel)
             .environmentObject(notificationsModel)
             .onAppear(perform: {
