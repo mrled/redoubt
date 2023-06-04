@@ -8,13 +8,65 @@
 import SwiftUI
 
 struct OnboardingSheet: View {
+    @Binding var isPresentingOnboardingSheet: Bool
+    @AppStorage(MFAStorage.K.showOnboarding) var showOnboarding: Bool = MFAStorage.D.showOnboarding
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .leading) {
+            HStack {
+                Image(uiImage: UIImage(named: "AppIcon") ?? UIImage())
+                Text("Welcome to MindFort")
+                    .font(.title)
+                    .bold()
+                    .padding()
+                Image(uiImage: UIImage(named: "AppIcon") ?? UIImage())
+            }
+            Text("Remember your most important passwords: your password database, GPG key, or Monero wallet.")
+                .font(.title2)
+                .padding([.top, .bottom])
+            Group {
+                Text("How it works")
+                    .font(.title2)
+                    .padding([.top, .bottom])
+                RowItemWithIcon(title: "Save passwords you must not forget", systemImageName: "list.bullet")
+                RowItemWithIcon(title: "MindFort will send you periodic notifications to quiz yourself", systemImageName: "bell")
+                // TODO: update this when spaced repetition is added
+                RowItemWithIcon(title: "Enter your passwords correctly and the time until the next quiz increases", systemImageName: "calendar")
+            }
+            Group {
+                Text("MindFort is secure")
+                    .font(.title2)
+                    .padding([.top, .bottom])
+                RowItemWithIcon(title: "Passwords live only on your device, no syncing", systemImageName: "lock.iphone")
+                // TODO: need a 'learn more' for password storage
+                // TODO: update this when we move to PBKDF2 or whatever
+                RowItemWithIcon(title: "Passwords are saved with strong hashing", systemImageName: "lock.shield")
+            }
+            Spacer()
+            Divider()
+            RowItemWithIcon(title: "This onboaring screen can be re-enabled in Settings", systemImageName: "gear")
+                .padding([.top, .bottom])
+            Button(action: dismissOnboarding) {
+                Text("Dismiss onboarding")
+            }
+        }
+        .padding()
+    }
+    
+    func dismissOnboarding() {
+        showOnboarding = false
+        isPresentingOnboardingSheet = false
     }
 }
 
 struct OnboardingSheet_Previews: PreviewProvider {
     static var previews: some View {
-        OnboardingSheet()
+        Group {
+            Text("Root view")
+                .sheet(isPresented: .constant(true)) {
+                    OnboardingSheet(isPresentingOnboardingSheet: .constant(true))
+                }
+                .previewDisplayName("Onboarding")
+        }
     }
 }

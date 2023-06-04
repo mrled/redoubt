@@ -129,7 +129,7 @@ struct SecretListView: View {
                     .environmentObject(notificationsModel)
             }
             .sheet(isPresented: $isPresentingOnboardingSheet) {
-                OnboardingSheet()
+                OnboardingSheet(isPresentingOnboardingSheet: $isPresentingOnboardingSheet)
             }
             .sheet(isPresented: $isPresentingAcknowledgementsSheet) {
                 AboutSheet()
