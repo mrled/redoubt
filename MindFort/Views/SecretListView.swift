@@ -61,7 +61,14 @@ struct SecretListView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     Button(action: { isPresentingSettingsSheet = true }) {
-                        Image(systemName: "gear")
+                        ZStack {
+                            Image(systemName: "gear")
+                            if !notificationsAllowed {
+                                Circle()
+                                    .frame(width: 10, height: 10)
+                                    .foregroundColor(Color.red)
+                                    .offset(x: 10, y: -10)                            }
+                        }
                     }
                     Button(action: { isPresentingAcknowledgementsSheet = true }) {
                         Image(systemName: "info.square")
@@ -112,6 +119,9 @@ struct SecretListView: View {
         .onAppear(perform: {
             for secret in secretsModel.secrets {
                 CustomLogger.secretIds(message: " - SecretListView onAppear: \(secret.id)")
+            }
+            NotificationManager.shared.requestPermission { granted in
+                notificationsAllowed = granted
             }
         })
     }

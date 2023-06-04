@@ -89,6 +89,7 @@ struct RegularIntervalScheduleControls: View {
 
 struct ScheduleControls: View {
     @EnvironmentObject var notificationsModel: NotificationsViewModel
+    @Binding var notificationsAllowed: Bool
     @AppStorage(MFAStorage.K.scheduleEnabled) var scheduleEnabled: Bool = MFAStorage.D.scheduleEnabled
     @AppStorage(MFAStorage.K.scheduleType) var scheduleType: ScheduleType = MFAStorage.D.scheduleType
 
@@ -97,6 +98,7 @@ struct ScheduleControls: View {
             Toggle(isOn: $scheduleEnabled) {
                 Text("Enable scheduled reminders")
             }
+            .disabled(!notificationsAllowed)
             Group {
                 Picker(selection: $scheduleType, label: Text("Schedule type")) {
                     ForEach(ScheduleType.allCases) { schedType in
@@ -108,7 +110,7 @@ struct ScheduleControls: View {
                         .environmentObject(notificationsModel)
                 }
             }
-            .disabled(!scheduleEnabled)
+            .disabled(!notificationsAllowed || !scheduleEnabled)
         }
     }
     
@@ -176,7 +178,7 @@ struct SettingsSheet: View {
                 .bold()
                 .padding()
             List {
-                ScheduleControls()
+                ScheduleControls(notificationsAllowed: $notificationsAllowed)
                     .environmentObject(notificationsModel)
                 NotificationsControls(notificationsAllowed: $notificationsAllowed)
                 DeveloperControls(showControlPanel: $showControlPanel, enableEasterEggs: $enableEasterEggs)
