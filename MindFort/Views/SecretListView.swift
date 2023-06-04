@@ -13,7 +13,6 @@ struct SecretListView: View {
     @Binding var openAction: OpenAction?
     @Binding var notificationsAllowed: Bool
     var showControlPanel: Bool = false
-    var showOnboarding: Bool = false
     @State private var selectedSecretId: UUID? = nil
     @State private var quizCurrentSecretId: UUID? = nil
     @State private var isPresentingAddSheet = false
@@ -27,7 +26,9 @@ struct SecretListView: View {
     @State private var error: String?
     @State private var toolbarImageSize: CGSize = .zero
     @FocusState private var newSecretFocusOnNameField: Bool
-    
+    @AppStorage(MFAStorage.K.showOnboarding) var showOnboarding: Bool = MFAStorage.D.showOnboarding
+    @AppStorage(MFAStorage.K.onboardingHasShownOnce) var onboardingHasShownOnce: Bool = MFAStorage.D.onboardingHasShownOnce
+
     var body: some View {
         NavigationView {
             List {
@@ -144,6 +145,9 @@ struct SecretListView: View {
             .onAppear {
                 secretsModel.loadItems()
                 notificationsModel.load()
+                if !onboardingHasShownOnce {
+                    isPresentingOnboardingSheet = true
+                }
             }
         }
         .onAppear(perform: {

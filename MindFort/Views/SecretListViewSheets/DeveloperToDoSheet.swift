@@ -30,6 +30,7 @@ struct DeveloperToDoSheet: View {
                 Section(header: Text("Fix bugs")) {
                     RowItemWithIcon(title: "Tapping on notification should launch quiz", systemImageName: "ladybug")
                     RowItemWithIcon(title: "Prune past non-repeating notifications when loading/etc", systemImageName: "ladybug")
+                    RowItemWithIcon(title: "Move notifications enablement to onboarding", systemImageName: "ladybug")
                 }
                 Section(header: Text("Done")) {
                     /// Remember: can't have more than 10 subviews. lol!

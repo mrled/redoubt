@@ -10,7 +10,8 @@ import SwiftUI
 struct OnboardingSheet: View {
     @Binding var isPresentingOnboardingSheet: Bool
     @AppStorage(MFAStorage.K.showOnboarding) var showOnboarding: Bool = MFAStorage.D.showOnboarding
-    
+    @AppStorage(MFAStorage.K.onboardingHasShownOnce) var onboardingHasShownOnce: Bool = MFAStorage.D.onboardingHasShownOnce
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -51,6 +52,9 @@ struct OnboardingSheet: View {
             }
         }
         .padding()
+        .onAppear() {
+            onboardingHasShownOnce = true
+        }
     }
     
     func dismissOnboarding() {
