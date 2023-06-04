@@ -26,6 +26,8 @@
 		30E3FD172A2AD6EF002BFE60 /* H4XX0RC0D3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD162A2AD6EF002BFE60 /* H4XX0RC0D3.swift */; };
 		30E3FD192A2AF538002BFE60 /* SecretQuizInnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD182A2AF538002BFE60 /* SecretQuizInnerView.swift */; };
 		30E3FD1B2A2AF581002BFE60 /* SecretQuizFinishedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD1A2A2AF581002BFE60 /* SecretQuizFinishedView.swift */; };
+		30E8165E2A2C57F7002CDD75 /* ShimmeringSystemImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E8165D2A2C57F7002CDD75 /* ShimmeringSystemImage.swift */; };
+		30E816602A2CDA59002CDD75 /* ReadSizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E8165F2A2CDA59002CDD75 /* ReadSizeModifier.swift */; };
 		30EB50C02A246D96007550D3 /* SettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50BF2A246D96007550D3 /* SettingsSheet.swift */; };
 		30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C22A24E534007550D3 /* AboutSheet.swift */; };
 		30EB50C62A24E978007550D3 /* RowItemWithIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C52A24E978007550D3 /* RowItemWithIcon.swift */; };
@@ -80,6 +82,8 @@
 		30E3FD162A2AD6EF002BFE60 /* H4XX0RC0D3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H4XX0RC0D3.swift; sourceTree = "<group>"; };
 		30E3FD182A2AF538002BFE60 /* SecretQuizInnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretQuizInnerView.swift; sourceTree = "<group>"; };
 		30E3FD1A2A2AF581002BFE60 /* SecretQuizFinishedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretQuizFinishedView.swift; sourceTree = "<group>"; };
+		30E8165D2A2C57F7002CDD75 /* ShimmeringSystemImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmeringSystemImage.swift; sourceTree = "<group>"; };
+		30E8165F2A2CDA59002CDD75 /* ReadSizeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadSizeModifier.swift; sourceTree = "<group>"; };
 		30EB50BF2A246D96007550D3 /* SettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSheet.swift; sourceTree = "<group>"; };
 		30EB50C22A24E534007550D3 /* AboutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSheet.swift; sourceTree = "<group>"; };
 		30EB50C52A24E978007550D3 /* RowItemWithIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowItemWithIcon.swift; sourceTree = "<group>"; };
@@ -192,6 +196,8 @@
 				307BEFED2A28071C004D21AC /* TimePickerExpandable.swift */,
 				30E3FD162A2AD6EF002BFE60 /* H4XX0RC0D3.swift */,
 				302878012A2BCFD00065FD0C /* HackerCodeRawString.swift */,
+				30E8165D2A2C57F7002CDD75 /* ShimmeringSystemImage.swift */,
+				30E8165F2A2CDA59002CDD75 /* ReadSizeModifier.swift */,
 			);
 			path = UtilityViews;
 			sourceTree = "<group>";
@@ -409,6 +415,7 @@
 				30286CD22A26912800456CA5 /* KeyboardState.swift in Sources */,
 				30FD05B52A1C23CF006AB9CC /* Secret.swift in Sources */,
 				30E3FD1B2A2AF581002BFE60 /* SecretQuizFinishedView.swift in Sources */,
+				30E8165E2A2C57F7002CDD75 /* ShimmeringSystemImage.swift in Sources */,
 				30EB50C02A246D96007550D3 /* SettingsSheet.swift in Sources */,
 				30EB50C82A24E9FA007550D3 /* RowItemUrlWithIcon.swift in Sources */,
 				307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */,
@@ -429,6 +436,7 @@
 				30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */,
 				30286CCF2A26804900456CA5 /* ControlPanelSheet.swift in Sources */,
 				30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */,
+				30E816602A2CDA59002CDD75 /* ReadSizeModifier.swift in Sources */,
 				30286CDD2A27092B00456CA5 /* TimeRangePicker.swift in Sources */,
 				30FD05BB2A1C6CA7006AB9CC /* SecretsViewModel.swift in Sources */,
 				30286CD92A26A59E00456CA5 /* NotificationList.swift in Sources */,

@@ -25,6 +25,7 @@ struct SecretListView: View {
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
     @State private var error: String?
+    @State private var toolbarImageSize: CGSize = .zero
     @FocusState private var newSecretFocusOnNameField: Bool
     
     var body: some View {
@@ -70,19 +71,31 @@ struct SecretListView: View {
                                 Circle()
                                     .frame(width: 10, height: 10)
                                     .foregroundColor(Color.red)
-                                    .offset(x: 10, y: -10)                            }
+                                    .offset(x: 10, y: -10)
+                            }
                         }
                     }
                     if showOnboarding {
-                        Button(action: { isPresentingOnboardingSheet = true }) {
-                            ZStack {
+                        ZStack {
+                            /// We define an invisible button with the same image only to measure its size
+                            Button(action: { isPresentingOnboardingSheet = true }) {
                                 Image(systemName: "play")
-                                /// Always show a badge if the button is visible at all
-                                Circle()
-                                    .frame(width: 10, height: 10)
-                                    .foregroundColor(Color.red)
-                                    .offset(x: 10, y: -10)                            }
+                                    .modifier(ReadSize(size: $toolbarImageSize))
+                                    .opacity(0)
+                            }
+                            /// We apply that size to the button we want to display
+                            /// Our ShimmeringSystemImage view doesn't behave the same way a regular Image does;
+                            /// it gets created very small, and also gets a distorted aspect ratio.
+                            /// This hack fixes that.
+                            Button(action: { isPresentingOnboardingSheet = true }) {
+                                ShimmeringSystemImage(systemName: "play")
+                                    .frame(width: toolbarImageSize.width, height: toolbarImageSize.height)
+                            }
                         }
+                        /// It can be useful to see the correct size when debugging
+//                        Button(action: { isPresentingOnboardingSheet = true }) {
+//                            Image(systemName: "play")
+//                        }
                     }
                     Button(action: { isPresentingAcknowledgementsSheet = true }) {
                         Image(systemName: "info.square")
@@ -169,15 +182,15 @@ struct SecretListView_Previews: PreviewProvider {
                 .environmentObject(SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray([])))
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("No secrets")
-//            SecretListView(
-//                openAction: .constant(.home),
-//                notificationsAllowed: .constant(true),
-//                showControlPanel: .constant(false),
-//                showOnboarding: .constant(false)
-//            )
-//            .environmentObject(secretsModelTwoSecrets)
-//            .environmentObject(notificationsViewModel)
-//            .previewDisplayName("Show onboarding")
+            SecretListView(
+                openAction: .constant(.home),
+                notificationsAllowed: .constant(true),
+                showControlPanel: false,
+                showOnboarding: true
+            )
+            .environmentObject(secretsModelTwoSecrets)
+            .environmentObject(notificationsViewModel)
+            .previewDisplayName("Show onboarding")
         }
     }
 }
