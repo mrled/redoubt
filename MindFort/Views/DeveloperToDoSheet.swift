@@ -10,7 +10,7 @@ import SwiftUI
 struct DeveloperToDoSheet: View {
     var body: some View {
         VStack {
-            Text("Secret control panel")
+            Text("To do list")
                 .font(.title)
                 .bold()
                 .padding()
@@ -26,7 +26,6 @@ struct DeveloperToDoSheet: View {
                     RowItemWithIcon(title: "Allow editing name of existing entries", systemImageName: "square.and.pencil")
                     RowItemWithIcon(title: "Use some good key derivation function for password storage", systemImageName: "lock")
                     RowItemWithIcon(title: "Keyboard shortcuts, at least enter to create, maybe escape to go back", systemImageName: "return")
-                    RowItemWithIcon(title: "Add a quiz complete screen", systemImageName: "questionmark.app.dashed")
                 }
                 Section(header: Text("Fix bugs")) {
                     RowItemWithIcon(title: "Tapping on notification should launch quiz", systemImageName: "ladybug")
@@ -42,6 +41,7 @@ struct DeveloperToDoSheet: View {
                     RowItemWithIcon(title: "Fix entering quiz, exiting, then re-entering causes invalid secret (unsolveable)", systemImageName: "ladybug")
                     RowItemWithIcon(title: "Add the quiz functionality", systemImageName: "questionmark.app.dashed")
                     RowItemWithIcon(title: "Fix focus in quiz mode", systemImageName: "ladybug")
+                    RowItemWithIcon(title: "Add a quiz complete screen", systemImageName: "questionmark.app.dashed")
                 }
             }
         }
