@@ -18,26 +18,48 @@ struct CreateSecretSheet: View {
 
     var body: some View {
         VStack {
+            
             TextField("Secret name", text: $newSecretName)
                 .focused($newSecretFocusOnNameField)
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding()
+            
             SecureField("Passphrase", text: $newSecretValue)
                 .keyboardType(.default)
+                .onSubmit {
+                    // Create the secret with the Enter key if this SecureField IS focused
+                    if validSecret {
+                        addSecret()
+                    }
+                }
                 .padding()
+            
             Button("Add Secret") {
                 addSecret()
             }
+            // Create a secret with the Enter key if the SecureField is NOT focused
+            .keyboardShortcut(.defaultAction)
             .padding()
             .disabled(!validSecret)
+            
+            // This is empty, so the button will not be visible. We just need it for the keyboardShortcut.
+            Button(action: {
+                self.isPresentingAddSheet = false
+            }) {
+                EmptyView()
+            }
+            .keyboardShortcut(.cancelAction) // Dismiss the sheet with the Escape key
+            
             if let error = error {
                 Text(error)
                     .foregroundColor(.red)
                     .padding()
             }
+            
             H4XX0RC0D3(password: $newSecretValue)
                 .padding()
+            
             Spacer()
         }
         .padding()

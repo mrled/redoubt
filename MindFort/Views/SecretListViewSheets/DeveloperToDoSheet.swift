@@ -25,7 +25,6 @@ struct DeveloperToDoSheet: View {
                     RowItemWithIcon(title: "Add geofencing ability", systemImageName: "mappin.and.ellipse")
                     RowItemWithIcon(title: "Allow editing name of existing entries", systemImageName: "square.and.pencil")
                     RowItemWithIcon(title: "Use some good key derivation function for password storage", systemImageName: "lock")
-                    RowItemWithIcon(title: "Keyboard shortcuts, at least enter to create, maybe escape to go back", systemImageName: "return")
                 }
                 Section(header: Text("Fix bugs")) {
                     RowItemWithIcon(title: "Tapping on notification should launch quiz", systemImageName: "ladybug")
@@ -49,6 +48,7 @@ struct DeveloperToDoSheet: View {
                     Group {
                         RowItemWithIcon(title: "Add badge to Settings button if notifications are not enabled", systemImageName: "star.circle")
                         RowItemWithIcon(title: "Add onboarding screen", systemImageName: "star.circle")
+                        RowItemWithIcon(title: "Keyboard shortcuts, at least enter to create, maybe escape to go back", systemImageName: "return")
                     }
                 }
             }
