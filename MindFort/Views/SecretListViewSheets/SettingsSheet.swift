@@ -154,21 +154,27 @@ struct SettingsControls: View {
     @Binding var enableEasterEggs: Bool
     var body: some View {
         Section("Settings") {
+            // Not sure if it's the Toggles or what, but the spacing doesn't match RowItemWithIcon.
+            // Just make them all HStack{Image, Text} and they look the same.
             Toggle(isOn: $showOnboarding) {
+                // is a RowItemWithIcon except the Icon is a ShimmeringSystemImage
                 HStack {
-                    Image(systemName: "play")
+                    ShimmeringSystemImage(systemName: "play")
+                        .frame(width: 32, height: 32)
                     Text("Show the onboarding button")
                 }
             }
             Toggle(isOn: $showControlPanel) {
                 HStack {
                     Image(systemName: "slider.horizontal.3")
-                    Text("Show secret developer control panels")
+                        .frame(width: 32, height: 32)
+                    Text("Show secret developer panel")
                 }
             }
             Toggle(isOn: $enableEasterEggs) {
                 HStack {
                     Image(systemName: "sparkles")
+                        .frame(width: 32, height: 32)
                     Text("Enable easter eggs")
                 }
             }
