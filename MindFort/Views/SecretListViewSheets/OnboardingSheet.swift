@@ -15,22 +15,28 @@ struct OnboardingSheet: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
+                Spacer() // The spacers center content horizontally even though the parent VStack is alignment:.leading
                 Image(uiImage: UIImage(named: "AppIcon") ?? UIImage())
-                Text("Welcome to MindFort")
+                Text("MindFort")
                     .font(.title)
                     .bold()
                     .padding()
                 Image(uiImage: UIImage(named: "AppIcon") ?? UIImage())
+                Spacer()
             }
-            Text("Remember your most important passwords: your password database, GPG key, or Monero wallet.")
-                .font(.title2)
-                .padding([.top, .bottom])
-            Group {
-                Text("How it works")
+            HStack {
+                Text("Remember your most important passwords: your password database, GPG key, or Monero wallet.")
                     .font(.title2)
                     .padding([.top, .bottom])
+            }
+            Group {
+                VStack(alignment: .leading) {
+                    Text("How it works")
+                        .font(.title2)
+                        .padding([.top, .bottom])
+                }
                 RowItemWithIcon(title: "Save passwords you must not forget", systemImageName: "list.bullet")
-                RowItemWithIcon(title: "MindFort will send you periodic notifications to quiz yourself", systemImageName: "bell")
+                RowItemWithIcon(title: "Receive periodic notifications to quiz yourself", systemImageName: "bell")
                 // TODO: update this when spaced repetition is added
                 RowItemWithIcon(title: "Enter your passwords correctly and the time until the next quiz increases", systemImageName: "calendar")
             }
@@ -38,18 +44,21 @@ struct OnboardingSheet: View {
                 Text("MindFort is secure")
                     .font(.title2)
                     .padding([.top, .bottom])
-                RowItemWithIcon(title: "Passwords live only on your device, no syncing", systemImageName: "lock.iphone")
-                // TODO: need a 'learn more' for password storage
-                // TODO: update this when we move to PBKDF2 or whatever
-                RowItemWithIcon(title: "Passwords are saved with strong hashing", systemImageName: "lock.shield")
+                VStack(alignment: .leading) {
+                    RowItemWithIcon(title: "Passwords live only on your device, no syncing", systemImageName: "lock.iphone")
+                    // TODO: need a 'learn more' for password storage
+                    // TODO: update this when we move to PBKDF2 or whatever
+                    RowItemWithIcon(title: "Passwords are saved with strong hashing", systemImageName: "lock.shield")
+                }
             }
             Spacer()
             Divider()
-            RowItemWithIcon(title: "This onboaring screen can be re-enabled in Settings", systemImageName: "gear")
-                .padding([.top, .bottom])
             Button(action: dismissOnboarding) {
                 Text("Dismiss onboarding")
             }
+            .padding([.top])
+            Text("Re-enable this onboaring screen in Settings")
+                .font(.subheadline)
         }
         .padding()
         .onAppear() {
