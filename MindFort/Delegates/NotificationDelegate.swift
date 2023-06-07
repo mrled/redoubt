@@ -25,6 +25,8 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
 
         if let action = userInfo["action"] as? String {
             UserDefaults.standard.set(action, forKey: "action")
+        } else {
+            UserDefaults.standard.set("", forKey: "action")
         }
         
         completionHandler()
