@@ -80,7 +80,7 @@ struct RoadmapItemView: View {
 }
 
 
-struct DevRoadmap: View {
+struct Roadmap: View {
     let items: [RoadmapItem] = [
         // features
         RoadmapItem("Spaced repetition schedule editor", .feature, icon: "clock"),
@@ -148,7 +148,7 @@ struct DeveloperToDoSheet_Previews: PreviewProvider {
         Text("Root view")
             .sheet(isPresented: .constant(true)) {
                 NavigationView {
-                    DevRoadmap()
+                    Roadmap()
                 }
             }
     }

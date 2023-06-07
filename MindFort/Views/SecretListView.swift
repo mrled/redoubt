@@ -16,7 +16,6 @@ struct SecretListView: View {
     @State private var quizCurrentSecretId: UUID? = nil
     @State private var isPresentingAddSheet = false
     @State private var isPresentingSettingsSheet = false
-    @State private var isPresentingAcknowledgementsSheet = false
     @State private var isPresentingOnboardingSheet = false
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
@@ -95,9 +94,6 @@ struct SecretListView: View {
 //                            Image(systemName: "play")
 //                        }
                     }
-                    Button(action: { isPresentingAcknowledgementsSheet = true }) {
-                        Image(systemName: "info.square")
-                    }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: { isPresentingAddSheet = true }) {
@@ -120,9 +116,6 @@ struct SecretListView: View {
             }
             .sheet(isPresented: $isPresentingOnboardingSheet) {
                 OnboardingSheet(isPresentingOnboardingSheet: $isPresentingOnboardingSheet)
-            }
-            .sheet(isPresented: $isPresentingAcknowledgementsSheet) {
-                AboutSheet()
             }
             .onAppear {
                 secretsModel.loadItems()

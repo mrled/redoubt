@@ -15,10 +15,6 @@ struct AboutSheet: View {
             // We make a bunch of unnecessary Group views in here to work around this
             VStack(alignment: .leading) {
                 Group {
-                    Text("About MindFort")
-                        .font(.title)
-                        .bold()
-                        .padding()
                     Text("MindFort is an app designed to help you remember passwords, especially passwords that you must not forget, like for your password database, GPG key, or Monero wallet.")
                         .lineLimit(nil)
                         .padding([.top, .bottom])
@@ -69,6 +65,7 @@ struct AboutSheet: View {
                 
             }.padding()
         }
+        .navigationBarTitle("About")
     }
 }
 

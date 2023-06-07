@@ -179,12 +179,17 @@ struct SettingsSheet: View {
                     ScheduleControls(notificationsAllowed: $notificationsAllowed)
                         .environmentObject(notificationsModel)
                     SettingsControls(showOnboarding: $showOnboarding, enableEasterEggs: $enableEasterEggs)
+                    Section("About") {
+                        NavigationLink(destination: AboutSheet()) {
+                            Text("About MindFort")
+                        }
+                        NavigationLink(destination: Roadmap()) {
+                            Text("Development Roadmap")
+                        }
+                    }
                     Section("Developer") {
                         NavigationLink(destination: DevControlPanel().environmentObject(secretsModel)) {
                             Text("Developer control panel")
-                        }
-                        NavigationLink(destination: DevRoadmap()) {
-                            Text("Roadmap")
                         }
                     }
                 }
