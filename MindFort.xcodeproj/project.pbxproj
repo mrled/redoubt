@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */; };
-		30286CCF2A26804900456CA5 /* ControlPanelSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CCE2A26804900456CA5 /* ControlPanelSheet.swift */; };
+		30286CCF2A26804900456CA5 /* DevControlPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CCE2A26804900456CA5 /* DevControlPanel.swift */; };
 		30286CD22A26912800456CA5 /* KeyboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CD12A26912800456CA5 /* KeyboardState.swift */; };
 		30286CD72A269B3600456CA5 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CD62A269B3600456CA5 /* NotificationManager.swift */; };
 		30286CD92A26A59E00456CA5 /* NotificationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CD82A26A59E00456CA5 /* NotificationList.swift */; };
@@ -20,7 +20,7 @@
 		304F435A2A27C85800FE08DF /* NotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304F43592A27C85800FE08DF /* NotificationsViewModel.swift */; };
 		307BEFEE2A28071D004D21AC /* TimePickerExpandable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFED2A28071C004D21AC /* TimePickerExpandable.swift */; };
 		307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */; };
-		307BEFF82A29B090004D21AC /* DeveloperToDoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF72A29B090004D21AC /* DeveloperToDoSheet.swift */; };
+		307BEFF82A29B090004D21AC /* DevRoadmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF72A29B090004D21AC /* DevRoadmap.swift */; };
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
 		30E3FD152A2AD00C002BFE60 /* SecretQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD142A2AD00C002BFE60 /* SecretQuizView.swift */; };
 		30E3FD172A2AD6EF002BFE60 /* H4XX0RC0D3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD162A2AD6EF002BFE60 /* H4XX0RC0D3.swift */; };
@@ -64,7 +64,7 @@
 
 /* Begin PBXFileReference section */
 		30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecretSheet.swift; sourceTree = "<group>"; };
-		30286CCE2A26804900456CA5 /* ControlPanelSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelSheet.swift; sourceTree = "<group>"; };
+		30286CCE2A26804900456CA5 /* DevControlPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevControlPanel.swift; sourceTree = "<group>"; };
 		30286CD12A26912800456CA5 /* KeyboardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardState.swift; sourceTree = "<group>"; };
 		30286CD62A269B3600456CA5 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		30286CD82A26A59E00456CA5 /* NotificationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationList.swift; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 		304F43592A27C85800FE08DF /* NotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewModel.swift; sourceTree = "<group>"; };
 		307BEFED2A28071C004D21AC /* TimePickerExpandable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerExpandable.swift; sourceTree = "<group>"; };
 		307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
-		307BEFF72A29B090004D21AC /* DeveloperToDoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperToDoSheet.swift; sourceTree = "<group>"; };
+		307BEFF72A29B090004D21AC /* DevRoadmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevRoadmap.swift; sourceTree = "<group>"; };
 		308025092A23B32300491DEA /* SecretDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetailView.swift; sourceTree = "<group>"; };
 		30E3FD142A2AD00C002BFE60 /* SecretQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretQuizView.swift; sourceTree = "<group>"; };
 		30E3FD162A2AD6EF002BFE60 /* H4XX0RC0D3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H4XX0RC0D3.swift; sourceTree = "<group>"; };
@@ -164,10 +164,8 @@
 			children = (
 				30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */,
 				302878052A2C52AF0065FD0C /* OnboardingSheet.swift */,
-				30EB50BF2A246D96007550D3 /* SettingsSheet.swift */,
+				30C3DDA02A3044DE0095CB37 /* Settings */,
 				30EB50C22A24E534007550D3 /* AboutSheet.swift */,
-				30286CCE2A26804900456CA5 /* ControlPanelSheet.swift */,
-				307BEFF72A29B090004D21AC /* DeveloperToDoSheet.swift */,
 			);
 			path = SecretListViewSheets;
 			sourceTree = "<group>";
@@ -187,6 +185,16 @@
 				307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */,
 			);
 			path = Delegates;
+			sourceTree = "<group>";
+		};
+		30C3DDA02A3044DE0095CB37 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				30EB50BF2A246D96007550D3 /* SettingsSheet.swift */,
+				30286CCE2A26804900456CA5 /* DevControlPanel.swift */,
+				307BEFF72A29B090004D21AC /* DevRoadmap.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		30E816632A2EEE16002CDD75 /* Docs */ = {
@@ -434,7 +442,7 @@
 				307BEFEE2A28071D004D21AC /* TimePickerExpandable.swift in Sources */,
 				30FD057E2A1BDD5C006AB9CC /* ContentView.swift in Sources */,
 				304F435A2A27C85800FE08DF /* NotificationsViewModel.swift in Sources */,
-				307BEFF82A29B090004D21AC /* DeveloperToDoSheet.swift in Sources */,
+				307BEFF82A29B090004D21AC /* DevRoadmap.swift in Sources */,
 				30FD057C2A1BDD5C006AB9CC /* MindFortApp.swift in Sources */,
 				30286CD72A269B3600456CA5 /* NotificationManager.swift in Sources */,
 				302878002A2B921A0065FD0C /* Storage.swift in Sources */,
@@ -446,7 +454,7 @@
 				30E3FD192A2AF538002BFE60 /* SecretQuizInnerView.swift in Sources */,
 				30FD05B92A1C2DC9006AB9CC /* MindFortUtilities.swift in Sources */,
 				30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */,
-				30286CCF2A26804900456CA5 /* ControlPanelSheet.swift in Sources */,
+				30286CCF2A26804900456CA5 /* DevControlPanel.swift in Sources */,
 				30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */,
 				30E816602A2CDA59002CDD75 /* ReadSizeModifier.swift in Sources */,
 				30286CDD2A27092B00456CA5 /* TimeRangePicker.swift in Sources */,

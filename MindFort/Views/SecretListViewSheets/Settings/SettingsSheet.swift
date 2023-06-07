@@ -95,22 +95,30 @@ struct ScheduleControls: View {
 
     var body: some View {
         Section("Schedule") {
-            Toggle(isOn: $scheduleEnabled) {
-                Text("Enable scheduled reminders")
-            }
-            .disabled(!notificationsAllowed)
-            Group {
-                Picker(selection: $scheduleType, label: Text("Schedule type")) {
-                    ForEach(ScheduleType.allCases) { schedType in
-                        Text(schedType.description).tag(schedType)
+            if notificationsAllowed {
+                Toggle(isOn: $scheduleEnabled) {
+                    Text("Enable scheduled reminders")
+                }
+                .disabled(!notificationsAllowed)
+                Group {
+                    Picker(selection: $scheduleType, label: Text("Schedule type")) {
+                        ForEach(ScheduleType.allCases) { schedType in
+                            Text(schedType.description).tag(schedType)
+                        }
+                    }
+                    if scheduleType == .daily {
+                        RegularIntervalScheduleControls()
+                            .environmentObject(notificationsModel)
                     }
                 }
-                if scheduleType == .daily {
-                    RegularIntervalScheduleControls()
-                        .environmentObject(notificationsModel)
+            } else {
+                Text("To schedule reminders, please enable notifications in Settings.")
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    if UIApplication.shared.canOpenURL(url) {
+                        RowItemUrlWithIcon(title: "Open Settings", systemImageName: "gear", destination: url)
+                    }
                 }
             }
-            .disabled(!notificationsAllowed || !scheduleEnabled)
         }
     }
     
@@ -129,28 +137,8 @@ struct ScheduleControls: View {
 }
 
 
-struct NotificationsControls: View {
-    @Binding var notificationsAllowed: Bool
-    var body: some View {
-        Section("Notifications") {
-            if notificationsAllowed {
-                Text("Notifications are allowed")
-            } else {
-                Text("To get the most out of MindFort, please enable notifications in Settings.")
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    if UIApplication.shared.canOpenURL(url) {
-                        RowItemUrlWithIcon(title: "Open Settings", systemImageName: "gear", destination: url)
-                    }
-                }
-            }
-        }
-    }
-}
-
-
 struct SettingsControls: View {
     @Binding var showOnboarding: Bool
-    @Binding var showControlPanel: Bool
     @Binding var enableEasterEggs: Bool
     var body: some View {
         Section("Settings") {
@@ -162,13 +150,6 @@ struct SettingsControls: View {
                     ShimmeringSystemImage(systemName: "play")
                         .frame(width: 32, height: 32)
                     Text("Show the onboarding button")
-                }
-            }
-            Toggle(isOn: $showControlPanel) {
-                HStack {
-                    Image(systemName: "slider.horizontal.3")
-                        .frame(width: 32, height: 32)
-                    Text("Show secret developer panel")
                 }
             }
             Toggle(isOn: $enableEasterEggs) {
@@ -183,25 +164,31 @@ struct SettingsControls: View {
 }
 
 struct SettingsSheet: View {
-    @EnvironmentObject var notificationsModel: NotificationsViewModel
     @Binding var notificationsAllowed: Bool
-    @AppStorage(MFAStorage.K.showControlPanel) var showControlPanel: Bool = MFAStorage.D.showControlPanel
     @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
     @AppStorage(MFAStorage.K.scheduleType) var scheduleType: ScheduleType = MFAStorage.D.scheduleType
     @AppStorage(MFAStorage.K.showOnboarding) var showOnboarding: Bool = MFAStorage.D.showOnboarding
     @State private var scheduleEveryXDays: Int = 1
+    @EnvironmentObject var notificationsModel: NotificationsViewModel
+    @EnvironmentObject var secretsModel: SecretsViewModel
 
     var body: some View {
         VStack {
-            Text("Settings")
-                .font(.title)
-                .bold()
-                .padding()
-            List {
-                ScheduleControls(notificationsAllowed: $notificationsAllowed)
-                    .environmentObject(notificationsModel)
-                NotificationsControls(notificationsAllowed: $notificationsAllowed)
-                SettingsControls(showOnboarding: $showOnboarding, showControlPanel: $showControlPanel, enableEasterEggs: $enableEasterEggs)
+            NavigationView {
+                List {
+                    ScheduleControls(notificationsAllowed: $notificationsAllowed)
+                        .environmentObject(notificationsModel)
+                    SettingsControls(showOnboarding: $showOnboarding, enableEasterEggs: $enableEasterEggs)
+                    Section("Developer") {
+                        NavigationLink(destination: DevControlPanel().environmentObject(secretsModel)) {
+                            Text("Developer control panel")
+                        }
+                        NavigationLink(destination: DevRoadmap()) {
+                            Text("Roadmap")
+                        }
+                    }
+                }
+                .navigationBarTitle("Settings", displayMode: .inline)
             }
         }
     }
@@ -209,26 +196,33 @@ struct SettingsSheet: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
+        let exampleSecrets = [
+            try! Secret(name: "Secure passphrase", value: "password"),
+            try! Secret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
+        ]
+        let secretsModelTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
+        let notificationsVmNoSchedules = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
+
         Group {
             Text("Root view")
                 .sheet(isPresented: .constant(true)) {
-                let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
                     SettingsSheet(notificationsAllowed: .constant(true))
-                    .environmentObject(notificationsViewModel)
+                        .environmentObject(notificationsVmNoSchedules)
+                        .environmentObject(secretsModelTwoSecrets)
             }
             .previewDisplayName("Simple, no schedules")
             Text("Root view")
                 .sheet(isPresented: .constant(true)) {
-                    let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
                     SettingsSheet(notificationsAllowed: .constant(true))
-                        .environmentObject(notificationsViewModel)
+                        .environmentObject(notificationsVmNoSchedules)
+                        .environmentObject(secretsModelTwoSecrets)
                 }
                 .previewDisplayName("Simple, one schedule")
             Text("Root view")
                 .sheet(isPresented: .constant(true)) {
-                    let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
                     SettingsSheet(notificationsAllowed: .constant(false))
-                        .environmentObject(notificationsViewModel)
+                        .environmentObject(notificationsVmNoSchedules)
+                        .environmentObject(secretsModelTwoSecrets)
                 }
                 .previewDisplayName("Notifications not allowed")
         }

@@ -15,7 +15,6 @@ struct MFAStorage {
         static let enableEasterEggs = "enableEasterEggs"
         static let scheduleEnabled = "scheduleEnabled"
         static let scheduleType = "scheduleType"
-        static let showControlPanel = "showControlPanel"
         static let showOnboarding = "showOnboarding"
         static let onboardingHasShownOnce = "onboardingHasShownOnce"
     }
@@ -24,7 +23,6 @@ struct MFAStorage {
         static let enableEasterEggs = false
         static let scheduleEnabled = true
         static let scheduleType = ScheduleType.daily
-        static let showControlPanel = false
         static let showOnboarding = true
         static let onboardingHasShownOnce = false
     }

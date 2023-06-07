@@ -20,16 +20,12 @@ struct PlaygroundButton: View {
     }
 }
 
-struct ControlPanelSheet: View {
+struct DevControlPanel: View {
     @EnvironmentObject var notificationsModel: NotificationsViewModel
     @StateObject var notificationList = NotificationList()
     
     var body: some View {
         VStack {
-            Text("Secret control panel")
-                .font(.title)
-                .bold()
-                .padding()
             List {
                 Section(header: Text("Notifications from Notification Center")) {
                     if notificationList.notifications.isEmpty {
@@ -118,6 +114,7 @@ struct ControlPanelSheet: View {
                 }
             }
         }
+        .navigationBarTitle("Developer control panel")
     }
 }
 
@@ -126,7 +123,7 @@ struct DeveloperSheet_Previews: PreviewProvider {
     static var previews: some View {
         Text("Root view")
             .sheet(isPresented: .constant(true)) {
-                ControlPanelSheet()
+                DevControlPanel()
                     .environmentObject(notificationsViewModel)
             }
     }

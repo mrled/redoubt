@@ -12,15 +12,12 @@ struct SecretListView: View {
     @EnvironmentObject var notificationsModel: NotificationsViewModel
     @Binding var openAction: OpenAction?
     @Binding var notificationsAllowed: Bool
-    var showControlPanel: Bool = false
     @State private var selectedSecretId: UUID? = nil
     @State private var quizCurrentSecretId: UUID? = nil
     @State private var isPresentingAddSheet = false
     @State private var isPresentingSettingsSheet = false
     @State private var isPresentingAcknowledgementsSheet = false
     @State private var isPresentingOnboardingSheet = false
-    @State private var isPresentingControlPanelSheet = false
-    @State private var isPresentingDevToDoSheet = false
     @State private var newSecretName = ""
     @State private var newSecretValue = ""
     @State private var error: String?
@@ -101,14 +98,6 @@ struct SecretListView: View {
                     Button(action: { isPresentingAcknowledgementsSheet = true }) {
                         Image(systemName: "info.square")
                     }
-                    if showControlPanel {
-                        Button(action: { isPresentingControlPanelSheet = true }) {
-                            Image(systemName: "slider.horizontal.3")
-                        }
-                        Button(action: { isPresentingDevToDoSheet = true }) {
-                            Image(systemName: "checklist.unchecked")
-                        }
-                    }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: { isPresentingAddSheet = true }) {
@@ -134,13 +123,6 @@ struct SecretListView: View {
             }
             .sheet(isPresented: $isPresentingAcknowledgementsSheet) {
                 AboutSheet()
-            }
-            .sheet(isPresented: $isPresentingControlPanelSheet) {
-                ControlPanelSheet()
-                    .environmentObject(notificationsModel)
-            }
-            .sheet(isPresented: $isPresentingDevToDoSheet) {
-                DeveloperToDoSheet()
             }
             .onAppear {
                 secretsModel.loadItems()
@@ -178,10 +160,6 @@ struct SecretListView_Previews: PreviewProvider {
                 .environmentObject(secretsModelTwoSecrets)
                 .environmentObject(notificationsViewModel)
                 .previewDisplayName("Default values")
-            SecretListView(openAction: .constant(.home), notificationsAllowed: .constant(true), showControlPanel: true)
-                .environmentObject(secretsModelTwoSecrets)
-                .environmentObject(notificationsViewModel)
-                .previewDisplayName("showControlPanel")
             SecretListView(openAction: .constant(.home), notificationsAllowed: .constant(true))
                 .environmentObject(SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray([])))
                 .environmentObject(notificationsViewModel)
@@ -189,7 +167,6 @@ struct SecretListView_Previews: PreviewProvider {
             SecretListView(
                 openAction: .constant(.home),
                 notificationsAllowed: .constant(true),
-                showControlPanel: false,
                 showOnboarding: true
             )
             .environmentObject(secretsModelTwoSecrets)
