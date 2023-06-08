@@ -22,6 +22,9 @@
 		307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */; };
 		307BEFF82A29B090004D21AC /* Roadmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF72A29B090004D21AC /* Roadmap.swift */; };
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
+		3093FF042A314E47004442CD /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3093FF032A314E47004442CD /* CryptoSwift */; };
+		30C3DDA92A3121940095CB37 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDA82A3121940095CB37 /* Cryptography.swift */; };
+		30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */; };
 		30E3FD152A2AD00C002BFE60 /* SecretQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD142A2AD00C002BFE60 /* SecretQuizView.swift */; };
 		30E3FD172A2AD6EF002BFE60 /* H4XX0RC0D3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD162A2AD6EF002BFE60 /* H4XX0RC0D3.swift */; };
 		30E3FD192A2AF538002BFE60 /* SecretQuizInnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD182A2AF538002BFE60 /* SecretQuizInnerView.swift */; };
@@ -78,6 +81,9 @@
 		307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		307BEFF72A29B090004D21AC /* Roadmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Roadmap.swift; sourceTree = "<group>"; };
 		308025092A23B32300491DEA /* SecretDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetailView.swift; sourceTree = "<group>"; };
+		30C3DDA82A3121940095CB37 /* Cryptography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cryptography.swift; sourceTree = "<group>"; };
+		30C3DDAB2A3135EC0095CB37 /* CryptoSwift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CryptoSwift; sourceTree = "<group>"; };
+		30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		30E3FD142A2AD00C002BFE60 /* SecretQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretQuizView.swift; sourceTree = "<group>"; };
 		30E3FD162A2AD6EF002BFE60 /* H4XX0RC0D3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H4XX0RC0D3.swift; sourceTree = "<group>"; };
 		30E3FD182A2AF538002BFE60 /* SecretQuizInnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretQuizInnerView.swift; sourceTree = "<group>"; };
@@ -112,6 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3093FF042A314E47004442CD /* CryptoSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +204,22 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		30C3DDA12A3120FF0095CB37 /* Cryptography */ = {
+			isa = PBXGroup;
+			children = (
+				30C3DDA82A3121940095CB37 /* Cryptography.swift */,
+			);
+			path = Cryptography;
+			sourceTree = "<group>";
+		};
+		30C3DDAA2A3135EC0095CB37 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				30C3DDAB2A3135EC0095CB37 /* CryptoSwift */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		30E816632A2EEE16002CDD75 /* Docs */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,6 +264,7 @@
 				30FD058C2A1BDD5F006AB9CC /* MindFortTests */,
 				30FD05962A1BDD5F006AB9CC /* MindFortUITests */,
 				30FD05792A1BDD5C006AB9CC /* Products */,
+				30C3DDAA2A3135EC0095CB37 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -262,6 +286,7 @@
 				30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */,
 				302877FD2A2B917A0065FD0C /* Logging.swift */,
 				302877FF2A2B921A0065FD0C /* Storage.swift */,
+				30C3DDA12A3120FF0095CB37 /* Cryptography */,
 				30EB50CC2A25BF2E007550D3 /* Views */,
 				30EB50C42A24E94F007550D3 /* UtilityViews */,
 				30286CD02A26910E00456CA5 /* Observables */,
@@ -287,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				30FD058D2A1BDD5F006AB9CC /* MindFortTests.swift */,
+				30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */,
 			);
 			path = MindFortTests;
 			sourceTree = "<group>";
@@ -316,6 +342,9 @@
 			dependencies = (
 			);
 			name = MindFort;
+			packageProductDependencies = (
+				3093FF032A314E47004442CD /* CryptoSwift */,
+			);
 			productName = MindFort;
 			productReference = 30FD05782A1BDD5C006AB9CC /* MindFort.app */;
 			productType = "com.apple.product-type.application";
@@ -461,6 +490,7 @@
 				30FD05BB2A1C6CA7006AB9CC /* SecretsViewModel.swift in Sources */,
 				30286CD92A26A59E00456CA5 /* NotificationList.swift in Sources */,
 				30E3FD172A2AD6EF002BFE60 /* H4XX0RC0D3.swift in Sources */,
+				30C3DDA92A3121940095CB37 /* Cryptography.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,6 +499,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30FD058E2A1BDD5F006AB9CC /* MindFortTests.swift in Sources */,
+				30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -816,6 +847,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3093FF032A314E47004442CD /* CryptoSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CryptoSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 30FD05702A1BDD5C006AB9CC /* Project object */;
 }
