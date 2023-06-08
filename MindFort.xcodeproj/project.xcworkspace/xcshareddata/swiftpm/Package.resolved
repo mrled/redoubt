@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "argon2swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tmthecoder/Argon2Swift.git",
+      "state" : {
+        "revision" : "23e1bf5213c733801621293bcde62e098e73f184",
+        "version" : "1.0.1"
+      }
+    }
+  ],
+  "version" : 2
+}
