@@ -22,7 +22,6 @@
 		307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */; };
 		307BEFF82A29B090004D21AC /* Roadmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF72A29B090004D21AC /* Roadmap.swift */; };
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
-		3093FF072A317D6D004442CD /* Argon2Swift in Frameworks */ = {isa = PBXBuildFile; productRef = 3093FF062A317D6D004442CD /* Argon2Swift */; };
 		30C3DDA92A3121940095CB37 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDA82A3121940095CB37 /* Cryptography.swift */; };
 		30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */; };
 		30E3FD152A2AD00C002BFE60 /* SecretQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD142A2AD00C002BFE60 /* SecretQuizView.swift */; };
@@ -117,7 +116,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3093FF072A317D6D004442CD /* Argon2Swift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,7 +339,6 @@
 			);
 			name = MindFort;
 			packageProductDependencies = (
-				3093FF062A317D6D004442CD /* Argon2Swift */,
 			);
 			productName = MindFort;
 			productReference = 30FD05782A1BDD5C006AB9CC /* MindFort.app */;
@@ -415,9 +412,6 @@
 				Base,
 			);
 			mainGroup = 30FD056F2A1BDD5C006AB9CC;
-			packageReferences = (
-				3093FF052A317D6D004442CD /* XCRemoteSwiftPackageReference "Argon2Swift" */,
-			);
 			productRefGroup = 30FD05792A1BDD5C006AB9CC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -848,25 +842,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		3093FF052A317D6D004442CD /* XCRemoteSwiftPackageReference "Argon2Swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/tmthecoder/Argon2Swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		3093FF062A317D6D004442CD /* Argon2Swift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3093FF052A317D6D004442CD /* XCRemoteSwiftPackageReference "Argon2Swift" */;
-			productName = Argon2Swift;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 30FD05702A1BDD5C006AB9CC /* Project object */;
 }
