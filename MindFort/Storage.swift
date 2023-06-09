@@ -17,6 +17,7 @@ struct MFAStorage {
         static let scheduleType = "scheduleType"
         static let showOnboarding = "showOnboarding"
         static let onboardingHasShownOnce = "onboardingHasShownOnce"
+        static let visualizationMode = "visualizationMode"
     }
     /// AppStorage default values
     struct D {
@@ -25,6 +26,7 @@ struct MFAStorage {
         static let scheduleType = ScheduleType.daily
         static let showOnboarding = true
         static let onboardingHasShownOnce = false
+        static let visualizationMode = VisualizationMode.Sha512Argon2
     }
 }
 

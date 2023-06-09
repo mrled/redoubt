@@ -29,29 +29,31 @@ struct H4XX0RC0D3: View {
     
     /// If this is False, we don't do any easter eggin'
     @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
-    
-    let sodium = Sodium()
 
-    private var hashData: Data? {
-        if password.count == 0 {
-            return nil
-        }
-        do {
-            return try sha512(string: password)
-        } catch {
-            return nil
-        }
-    }
+    @AppStorage(MFAStorage.K.visualizationMode) var visualizationMode: VisualizationMode = MFAStorage.D.visualizationMode
+
+    let sodium = Sodium()
     
-    private var hashArgon2: String? {
+    private var displayHash: String? {
         if password.count == 0 {
             return nil
         }
-        return sodium.pwHash.str(
+        let hash = sodium.pwHash.str(
             passwd: Array(password.utf8),
             opsLimit: sodium.pwHash.OpsLimitInteractive,
             memLimit: sodium.pwHash.MemLimitInteractive
         )
+        switch visualizationMode {
+        case .RawArgon2: return hash
+        case .Sha512Argon2:
+            guard let unwrappedHash = hash else { return nil }
+            do {
+                let hashedHash = try sha512(string: unwrappedHash)
+                return data2hex(hashedHash)
+            } catch {
+                return nil
+            }
+        }
     }
 
     private var rawString: Binding<String> {
@@ -59,9 +61,9 @@ struct H4XX0RC0D3: View {
             get: {
                 if enableEasterEggs, let easterEggCode = easterEggPasswords[password] {
                     return easterEggCode.joined(separator: "")
-                } else if password.count > 0, let unwrappedHashArgon2 = hashArgon2 {
+                } else if password.count > 0, let unwrappedDisplayHash = displayHash {
                     // TODO: display this more nicely now that we are using argon2 instead of sha512
-                    return unwrappedHashArgon2
+                    return unwrappedDisplayHash
                 } else {
                     return placeholderStringArray.joined(separator: "")
                 }

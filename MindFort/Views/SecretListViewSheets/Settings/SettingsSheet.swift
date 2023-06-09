@@ -9,6 +9,21 @@ import SwiftUI
 import Foundation
 
 
+enum VisualizationMode: String, Codable, CaseIterable, Identifiable {
+    case RawArgon2
+    case Sha512Argon2
+    
+    var id: String { self.rawValue }
+
+    var description: String {
+        switch self {
+        case .RawArgon2: return "Raw Argon2 (ugly)"
+        case .Sha512Argon2: return "SHA512 hash of Argon2"
+        }
+    }
+}
+
+
 struct RegularIntervalScheduleControls: View {
     @EnvironmentObject var notificationsModel: NotificationsViewModel
     
@@ -140,6 +155,7 @@ struct ScheduleControls: View {
 struct SettingsControls: View {
     @Binding var showOnboarding: Bool
     @Binding var enableEasterEggs: Bool
+    @Binding var visualizationMode: VisualizationMode
     var body: some View {
         Section("Settings") {
             // Not sure if it's the Toggles or what, but the spacing doesn't match RowItemWithIcon.
@@ -159,6 +175,15 @@ struct SettingsControls: View {
                     Text("Enable easter eggs")
                 }
             }
+            HStack {
+                Image(systemName: "display")
+                    .frame(width: 32, height: 32)
+                Picker(selection: $visualizationMode, label: Text("Visualization type")) {
+                    ForEach(VisualizationMode.allCases) { possibleVizMode in
+                        Text(possibleVizMode.description).tag(possibleVizMode)
+                    }
+                }
+            }
         }
     }
 }
@@ -168,6 +193,7 @@ struct SettingsSheet: View {
     @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
     @AppStorage(MFAStorage.K.scheduleType) var scheduleType: ScheduleType = MFAStorage.D.scheduleType
     @AppStorage(MFAStorage.K.showOnboarding) var showOnboarding: Bool = MFAStorage.D.showOnboarding
+    @AppStorage(MFAStorage.K.visualizationMode) var visualizationMode: VisualizationMode = MFAStorage.D.visualizationMode
     @State private var scheduleEveryXDays: Int = 1
     @EnvironmentObject var notificationsModel: NotificationsViewModel
     @EnvironmentObject var secretsModel: SecretsViewModel
@@ -178,7 +204,7 @@ struct SettingsSheet: View {
                 List {
                     ScheduleControls(notificationsAllowed: $notificationsAllowed)
                         .environmentObject(notificationsModel)
-                    SettingsControls(showOnboarding: $showOnboarding, enableEasterEggs: $enableEasterEggs)
+                    SettingsControls(showOnboarding: $showOnboarding, enableEasterEggs: $enableEasterEggs, visualizationMode: $visualizationMode)
                     Section("About") {
                         NavigationLink(destination: AboutSheet()) {
                             Text("About MindFort")
