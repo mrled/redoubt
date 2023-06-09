@@ -121,6 +121,37 @@ func data2hex(_ data: Data) -> String {
     return data.map { String(format: "%02x", $0) }.joined()
 }
 
+
+//func intarray2hex<T: BinaryInteger>(_ array: [T]) -> String {
+//    return array.map { String(format: "%02x", $0) }.joined()
+//}
+
+protocol HexConvertible {
+    var hexString: String { get }
+}
+
+extension BinaryInteger {
+    var hexString: String {
+        return String(self, radix: 16)
+    }
+}
+
+
+func hex2bytes(_ hexString: String) -> [UInt8] {
+    var bytes = [UInt8]()
+    var start = hexString.startIndex
+    while start < hexString.endIndex {
+        let end = hexString.index(start, offsetBy: 2)
+        let byteString = hexString[start..<end]
+        if let byte = UInt8(byteString, radix: 16) {
+            bytes.append(byte)
+        }
+        start = end
+    }
+    return bytes
+}
+
+
 /// Given a SHA512 hash binary value, return a list of number groups
 func prettyHashBlock(digest: Data, perGroup: Int = 4, perLine: Int = 8) -> String {
     return groupCharacters(string: data2hex(digest), perGroup: perGroup, perLine: perLine)

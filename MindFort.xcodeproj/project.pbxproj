@@ -24,6 +24,8 @@
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
 		30C3DDA92A3121940095CB37 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDA82A3121940095CB37 /* Cryptography.swift */; };
 		30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */; };
+		30DC65E02A32D07E00EDB001 /* Clibsodium in Frameworks */ = {isa = PBXBuildFile; productRef = 30DC65DF2A32D07E00EDB001 /* Clibsodium */; };
+		30DC65E22A32D07E00EDB001 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 30DC65E12A32D07E00EDB001 /* Sodium */; };
 		30E3FD152A2AD00C002BFE60 /* SecretQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD142A2AD00C002BFE60 /* SecretQuizView.swift */; };
 		30E3FD172A2AD6EF002BFE60 /* H4XX0RC0D3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD162A2AD6EF002BFE60 /* H4XX0RC0D3.swift */; };
 		30E3FD192A2AF538002BFE60 /* SecretQuizInnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD182A2AF538002BFE60 /* SecretQuizInnerView.swift */; };
@@ -116,6 +118,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30DC65E02A32D07E00EDB001 /* Clibsodium in Frameworks */,
+				30DC65E22A32D07E00EDB001 /* Sodium in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +343,8 @@
 			);
 			name = MindFort;
 			packageProductDependencies = (
+				30DC65DF2A32D07E00EDB001 /* Clibsodium */,
+				30DC65E12A32D07E00EDB001 /* Sodium */,
 			);
 			productName = MindFort;
 			productReference = 30FD05782A1BDD5C006AB9CC /* MindFort.app */;
@@ -412,6 +418,9 @@
 				Base,
 			);
 			mainGroup = 30FD056F2A1BDD5C006AB9CC;
+			packageReferences = (
+				30DC65DE2A32D07E00EDB001 /* XCRemoteSwiftPackageReference "swift-sodium" */,
+			);
 			productRefGroup = 30FD05792A1BDD5C006AB9CC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -842,6 +851,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		30DC65DE2A32D07E00EDB001 /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jedisct1/swift-sodium.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		30DC65DF2A32D07E00EDB001 /* Clibsodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 30DC65DE2A32D07E00EDB001 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Clibsodium;
+		};
+		30DC65E12A32D07E00EDB001 /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 30DC65DE2A32D07E00EDB001 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 30FD05702A1BDD5C006AB9CC /* Project object */;
 }
