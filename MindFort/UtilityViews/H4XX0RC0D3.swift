@@ -46,7 +46,7 @@ struct H4XX0RC0D3: View {
                 } else if password.count > 0, let unwrappedHashData = hashData {
                     return data2hex(unwrappedHashData)
                 } else {
-                    return placeholderString.joined(separator: "")
+                    return placeholderStringArray.joined(separator: "")
                 }
             },
             /// Writing to this wouldn't make any sense, we just ignore

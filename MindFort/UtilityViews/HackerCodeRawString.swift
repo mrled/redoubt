@@ -33,7 +33,7 @@ struct HackerCodeRawString: View {
 struct HackerCodeRawString_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            HackerCodeRawString(rawString: .constant(placeholderString.joined(separator: "")))
+            HackerCodeRawString(rawString: .constant(placeholderStringArray.joined(separator: "")))
                 .previewDisplayName("Placeholder")
         }
     }

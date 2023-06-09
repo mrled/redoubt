@@ -26,7 +26,7 @@ struct SecretQuizFinishedView: View {
                         Text(successText)
                             .foregroundColor(.white)
                             .padding([.bottom])
-                        HackerCodeRawString(rawString: .constant(placeholderString.joined(separator: "")), foregroundColor: .white)
+                        HackerCodeRawString(rawString: .constant(placeholderStringArray.joined(separator: "")), foregroundColor: .white)
                     }
                 )
                 .padding()
