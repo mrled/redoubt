@@ -12,6 +12,7 @@ struct SecretDetailView: View {
     @State private var passphrase = ""
     @State private var passphraseValid: Bool = false
     @State private var showingDeleteAlert = false
+    @State private var validationWorkItem: DispatchWorkItem?
     @FocusState private var isFocused: Bool
     @EnvironmentObject var secretsModel: SecretsViewModel
     
@@ -123,16 +124,34 @@ struct SecretDetailView: View {
         }
     }
     
+    /// Validate the passphrase out of the main thread
+    ///
+    /// Argon2 validation is a noticeably slow, so we do this outside of the main thread.
+    /// We use a dispatch queue and the validationWorkItem to only allow one validation to happen at a time;
+    /// if a new one is started, the old one is cancelled.
     private func validatePassphrase() {
-        let passphraseWasValid = passphraseValid
-        passphraseValid = secret?.validate(plaintextIn: passphrase) ?? false
-        if !passphraseWasValid && passphraseValid {
-            let feedbackGenerator = UINotificationFeedbackGenerator()
-            feedbackGenerator.notificationOccurred(.success)
-        } else if passphraseWasValid && !passphraseValid {
-            let feedbackGenerator = UINotificationFeedbackGenerator()
-            feedbackGenerator.notificationOccurred(.error)
+        validationWorkItem?.cancel()
+        let item = DispatchWorkItem {
+            // This is happening in a different thread
+            let passphraseWasValid = passphraseValid
+            let newPassphraseIsValid = secret?.validate(plaintextIn: passphrase) ?? false
+            
+            // However, updating state variables must happen in the main thread
+            // I think this is true of haptic feedback too?
+            DispatchQueue.main.async {
+                passphraseValid = newPassphraseIsValid
+                if !passphraseWasValid && passphraseValid {
+                    let feedbackGenerator = UINotificationFeedbackGenerator()
+                    feedbackGenerator.notificationOccurred(.success)
+                } else if passphraseWasValid && !passphraseValid {
+                    let feedbackGenerator = UINotificationFeedbackGenerator()
+                    feedbackGenerator.notificationOccurred(.error)
+                }
+            }
         }
+        
+        validationWorkItem = item
+        DispatchQueue.global().async(execute: item)
     }
     
     private var boxColor: Color {
