@@ -125,7 +125,7 @@ struct SecretDetailView: View {
     
     private func validatePassphrase() {
         let passphraseWasValid = passphraseValid
-        passphraseValid = secret?.validate(input: passphrase) ?? false
+        passphraseValid = secret?.validate(plaintextIn: passphrase) ?? false
         if !passphraseWasValid && passphraseValid {
             let feedbackGenerator = UINotificationFeedbackGenerator()
             feedbackGenerator.notificationOccurred(.success)
@@ -160,8 +160,8 @@ struct SecretDetailView: View {
 struct SecretDetailView_Previews: PreviewProvider {
     static var previews: some View {
         let exampleSecrets = [
-            try! Secret(name: "Secure passphrase", value: "password"),
-            try! Secret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
+            try! Secret(name: "Secure passphrase", plaintext: "password"),
+            try! Secret(name: "Bitcoin wallet passphrase", plaintext: "showmethemoney"),
         ]
         let secretsModel = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
         Group {

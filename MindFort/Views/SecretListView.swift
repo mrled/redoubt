@@ -143,8 +143,8 @@ struct SecretListView: View {
 struct SecretListView_Previews: PreviewProvider {
     static var previews: some View {
         let exampleSecrets = [
-            try! Secret(name: "Secure passphrase", value: "password"),
-            try! Secret(name: "Bitcoin wallet passphrase", value: "showmethemoney"),
+            try! Secret(name: "Secure passphrase", plaintext: "password"),
+            try! Secret(name: "Bitcoin wallet passphrase", plaintext: "showmethemoney"),
         ]
         let secretsModelTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
         let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))

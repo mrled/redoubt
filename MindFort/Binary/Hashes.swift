@@ -19,6 +19,14 @@ func sha512(data: Data) -> Data {
 }
 
 
+func sha512(string: String) throws -> Data  {
+    guard let stringData = string.data(using: .utf8) else {
+        throw SecretParsingError.invalidInputValue
+    }
+    return sha512(data: stringData)
+}
+
+
 /// NOTE: we're just using this for UUIDs! Nothing else!
 func md5Hash(of data: Data) -> Data {
     var hash = Data(count: Int(CC_MD5_DIGEST_LENGTH))
@@ -39,14 +47,6 @@ func md5UUID(data: Data) -> UUID {
     let hashedData = md5Hash(of: data)
     let uuid = UUID(uuid: hashedData.withUnsafeBytes { $0.load(as: uuid_t.self) })
     return uuid
-}
-
-
-func sha512(string: String) throws -> Data  {
-    guard let stringData = string.data(using: .utf8) else {
-        throw SecretParsingError.invalidInputValue
-    }
-    return sha512(data: stringData)
 }
 
 

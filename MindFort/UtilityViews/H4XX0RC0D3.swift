@@ -7,12 +7,15 @@
 
 import SwiftUI
 
+import Sodium
+
 /// H4XX0R C0D3
 /// This is:
 ///  - the hash block of the $password under normal circumstances
 ///  - a placeholder if the $password is empty
 ///  - an easter egg if the $password is one of the famous passwords
 struct H4XX0RC0D3: View {
+
 
     /// A string password to display the hash of.
     /// If this is empty, we display a placeholder instead of a hash of nothing.
@@ -26,6 +29,8 @@ struct H4XX0RC0D3: View {
     
     /// If this is False, we don't do any easter eggin'
     @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
+    
+    let sodium = Sodium()
 
     private var hashData: Data? {
         if password.count == 0 {
@@ -37,14 +42,26 @@ struct H4XX0RC0D3: View {
             return nil
         }
     }
+    
+    private var hashArgon2: String? {
+        if password.count == 0 {
+            return nil
+        }
+        return sodium.pwHash.str(
+            passwd: Array(password.utf8),
+            opsLimit: sodium.pwHash.OpsLimitInteractive,
+            memLimit: sodium.pwHash.MemLimitInteractive
+        )
+    }
 
     private var rawString: Binding<String> {
         Binding(
             get: {
                 if enableEasterEggs, let easterEggCode = easterEggPasswords[password] {
                     return easterEggCode.joined(separator: "")
-                } else if password.count > 0, let unwrappedHashData = hashData {
-                    return data2hex(unwrappedHashData)
+                } else if password.count > 0, let unwrappedHashArgon2 = hashArgon2 {
+                    // TODO: display this more nicely now that we are using argon2 instead of sha512
+                    return unwrappedHashArgon2
                 } else {
                     return placeholderStringArray.joined(separator: "")
                 }

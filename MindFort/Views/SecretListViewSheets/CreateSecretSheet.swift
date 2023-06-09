@@ -84,7 +84,7 @@ struct CreateSecretSheet: View {
     /// A secret created from $newSecretName / $newSecretValue
     private var newSecret: Secret? {
         do {
-            let s = try Secret(name: newSecretName, value: newSecretValue)
+            let s = try Secret(name: newSecretName, plaintext: newSecretValue)
             return s
         } catch {
             print("newSecret: Error loading items: \(error)")
