@@ -22,6 +22,7 @@
 		307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */; };
 		307BEFF82A29B090004D21AC /* Roadmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF72A29B090004D21AC /* Roadmap.swift */; };
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
+		30A8146D2A365D5F0032456C /* UIKitTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A8146C2A365D5F0032456C /* UIKitTextField.swift */; };
 		30C3DDA92A3121940095CB37 /* Hashes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDA82A3121940095CB37 /* Hashes.swift */; };
 		30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */; };
 		30DC65E02A32D07E00EDB001 /* Clibsodium in Frameworks */ = {isa = PBXBuildFile; productRef = 30DC65DF2A32D07E00EDB001 /* Clibsodium */; };
@@ -85,6 +86,7 @@
 		307BEFF72A29B090004D21AC /* Roadmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Roadmap.swift; sourceTree = "<group>"; };
 		308025092A23B32300491DEA /* SecretDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetailView.swift; sourceTree = "<group>"; };
 		30A8146B2A33DAC40032456C /* Visualizations.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Visualizations.md; sourceTree = "<group>"; };
+		30A8146C2A365D5F0032456C /* UIKitTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTextField.swift; sourceTree = "<group>"; };
 		30C3DDA82A3121940095CB37 /* Hashes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hashes.swift; sourceTree = "<group>"; };
 		30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		30DC65E32A32DB0900EDB001 /* BinaryDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDisplay.swift; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 				302878012A2BCFD00065FD0C /* HackerCodeRawString.swift */,
 				30E8165D2A2C57F7002CDD75 /* ShimmeringSystemImage.swift */,
 				30E8165F2A2CDA59002CDD75 /* ReadSizeModifier.swift */,
+				30A8146C2A365D5F0032456C /* UIKitTextField.swift */,
 			);
 			path = UtilityViews;
 			sourceTree = "<group>";
@@ -485,6 +488,7 @@
 				304F435A2A27C85800FE08DF /* NotificationsViewModel.swift in Sources */,
 				307BEFF82A29B090004D21AC /* Roadmap.swift in Sources */,
 				30DC65E62A32DC9B00EDB001 /* BinaryDisplayConstants.swift in Sources */,
+				30A8146D2A365D5F0032456C /* UIKitTextField.swift in Sources */,
 				30FD057C2A1BDD5C006AB9CC /* MindFortApp.swift in Sources */,
 				30286CD72A269B3600456CA5 /* NotificationManager.swift in Sources */,
 				302878002A2B921A0065FD0C /* Storage.swift in Sources */,
