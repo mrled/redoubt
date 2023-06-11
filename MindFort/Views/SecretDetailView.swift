@@ -5,12 +5,26 @@
 //  Created by Micah R Ledbetter on 2023-05-28.
 //
 
+
+enum PasswordValidationStatus {
+    case valid
+    case invalid
+    case validating
+}
+
+
 import SwiftUI
 
 struct SecretDetailView: View {
     @Binding var currentSecretId: UUID?
     @State private var passphrase = ""
-    @State private var passphraseValid: Bool = false
+    
+    /// The current validity of the password
+    @State private var validity: PasswordValidationStatus = .invalid
+    
+    /// The most recent non-.validating state of the password
+    @State private var previousCompletedValidity: PasswordValidationStatus = .invalid
+    
     @State private var showingDeleteAlert = false
     @State private var validationWorkItem: DispatchWorkItem?
     @FocusState private var isFocused: Bool
@@ -70,7 +84,7 @@ struct SecretDetailView: View {
             return nil
         }
     }
-    
+
     var previousSecretId: UUID? {
         guard let currentIndex = currentSecretIndex else { return nil }
         let prevIndex = secretsModel.secrets.index(before: currentIndex)
@@ -79,13 +93,11 @@ struct SecretDetailView: View {
         } else {
             return nil
         }
-
     }
     
     /// Items displayed in the upper right corner of the view
     private var trailingNavBarItems: some View {
         HStack {
-            
             /// The delete button and its alert
             Button(action: {
                 showingDeleteAlert = true
@@ -131,46 +143,75 @@ struct SecretDetailView: View {
     /// if a new one is started, the old one is cancelled.
     private func validatePassphrase() {
         validationWorkItem?.cancel()
+        print("M-1 \(CACurrentMediaTime()), \(Thread.isMainThread)")
+        print("M-2 \(CACurrentMediaTime()), \(Thread.isMainThread)")
+        var tmpPreviousCompletedValidity = previousCompletedValidity
+        if validity != .validating {
+            tmpPreviousCompletedValidity = validity
+        }
+        validity = .validating
+        let tmpSecret = secret
+        let tmpPassphrase = passphrase
+        print("M-3 \(CACurrentMediaTime()), \(Thread.isMainThread)")
+
         let item = DispatchWorkItem {
-            // This is happening in a different thread
-            let passphraseWasValid = passphraseValid
-            let newPassphraseIsValid = secret?.validate(plaintextIn: passphrase) ?? false
-            
+            // This is happening off the main thread
+            // We cannot mutate struct properties on this thread
+            // Also, take care not to reference state variables from this thread,
+            // or else Swift will just run it synchronously (as if it were not threaded).
+            print("D-4 \(CACurrentMediaTime()), \(Thread.isMainThread)")
+
+            var tmpValidity: PasswordValidationStatus
+            if tmpSecret?.validate(plaintextIn: tmpPassphrase) ?? false {
+                tmpValidity = .valid
+            } else {
+                tmpValidity = .invalid
+            }
+            print("D-5 \(CACurrentMediaTime()), \(Thread.isMainThread)")
+
             // However, updating state variables must happen in the main thread
             // I think this is true of haptic feedback too?
             DispatchQueue.main.async {
-                passphraseValid = newPassphraseIsValid
-                if !passphraseWasValid && passphraseValid {
+                print("N-6 \(CACurrentMediaTime()), \(Thread.isMainThread)")
+                previousCompletedValidity = tmpPreviousCompletedValidity
+                validity = tmpValidity
+                print("N-7 \(CACurrentMediaTime()), \(Thread.isMainThread)")
+                if validity == .valid {
                     let feedbackGenerator = UINotificationFeedbackGenerator()
                     feedbackGenerator.notificationOccurred(.success)
-                } else if passphraseWasValid && !passphraseValid {
+                } else if previousCompletedValidity == .valid && validity == .invalid {
                     let feedbackGenerator = UINotificationFeedbackGenerator()
                     feedbackGenerator.notificationOccurred(.error)
                 }
+                print("N-8 \(CACurrentMediaTime()), \(Thread.isMainThread)")
             }
         }
         
         validationWorkItem = item
-        DispatchQueue.global().async(execute: item)
+        DispatchQueue.global(qos: .userInitiated).async(execute: item)
     }
-    
+
     private var boxColor: Color {
         if passphrase.isEmpty {
             return .gray
-        } else if passphraseValid {
-            return .green
         } else {
-            return .red
+            switch validity {
+            case .valid: return .green
+            case .validating: return .blue
+            case .invalid: return .red
+            }
         }
     }
     
     private var validationText: String {
         if passphrase.isEmpty {
             return "Enter passphrase..."
-        } else if passphraseValid {
-            return "Correct!"
         } else {
-            return "Incorrect!"
+            switch validity {
+            case .valid: return "Correct!"
+            case .validating: return "Validating..."
+            case .invalid: return "Incorrect!"
+            }
         }
     }
 }
