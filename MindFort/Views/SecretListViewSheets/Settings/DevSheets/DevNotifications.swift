@@ -1,5 +1,5 @@
 //
-//  DeveloperSheet.swift
+//  DevNotifications.swift
 //  MindFort
 //
 //  Created by Micah R Ledbetter on 2023-05-30.
@@ -7,20 +7,7 @@
 
 import SwiftUI
 
-struct PlaygroundButton: View {
-    let label: String
-    let action: () -> Void
-    var body: some View {
-        HStack {
-                Text(label)
-                Spacer()
-                Button("Generate") { action() }
-                    .buttonStyle(DefaultButtonStyle())
-        }
-    }
-}
-
-struct DevControlPanel: View {
+struct DevNotifications: View {
     @EnvironmentObject var notificationsModel: NotificationsViewModel
     @StateObject var notificationList = NotificationList()
     
@@ -74,56 +61,18 @@ struct DevControlPanel: View {
                     .foregroundColor(.red)
                 }
                 
-                Section(header: Text("Haptic feedback playground")) {
-                    PlaygroundButton(label: "Impact: light") {
-                        let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
-                        feedbackGenerator.impactOccurred()
-                    }
-                    PlaygroundButton(label: "Impact: medium") {
-                        let feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-                        feedbackGenerator.impactOccurred()
-                    }
-                    PlaygroundButton(label: "Impact: heavy") {
-                        let feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
-                        feedbackGenerator.impactOccurred()
-                    }
-                    PlaygroundButton(label: "Impact: rigid") {
-                        let feedbackGenerator = UIImpactFeedbackGenerator(style: .rigid)
-                        feedbackGenerator.impactOccurred()
-                    }
-                    PlaygroundButton(label: "Impact: soft") {
-                        let feedbackGenerator = UIImpactFeedbackGenerator(style: .soft)
-                        feedbackGenerator.impactOccurred()
-                    }
-                    PlaygroundButton(label: "Notification: success") {
-                        let feedbackGenerator = UINotificationFeedbackGenerator()
-                        feedbackGenerator.notificationOccurred(.success)
-                    }
-                    PlaygroundButton(label: "Notification: warning") {
-                        let feedbackGenerator = UINotificationFeedbackGenerator()
-                        feedbackGenerator.notificationOccurred(.warning)
-                    }
-                    PlaygroundButton(label: "Notification: error") {
-                        let feedbackGenerator = UINotificationFeedbackGenerator()
-                        feedbackGenerator.notificationOccurred(.error)
-                    }
-                    PlaygroundButton(label: "Selection: changed") {
-                        let feedbackGenerator = UISelectionFeedbackGenerator()
-                        feedbackGenerator.selectionChanged()
-                    }
-                }
             }
         }
-        .navigationBarTitle("Developer control panel")
+        .navigationBarTitle("Notifications debugger")
     }
 }
 
-struct DeveloperSheet_Previews: PreviewProvider {
+struct DevNotifications_Previews: PreviewProvider {
     static let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
     static var previews: some View {
         Text("Root view")
             .sheet(isPresented: .constant(true)) {
-                DevControlPanel()
+                DevNotifications()
                     .environmentObject(notificationsViewModel)
             }
     }

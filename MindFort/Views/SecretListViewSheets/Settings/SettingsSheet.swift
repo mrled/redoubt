@@ -154,6 +154,7 @@ struct ScheduleControls: View {
 
 struct SettingsControls: View {
     @Binding var showOnboarding: Bool
+    @Binding var showDeveloperOptions: Bool
     @Binding var enableEasterEggs: Bool
     @Binding var visualizationMode: VisualizationMode
     var body: some View {
@@ -184,6 +185,27 @@ struct SettingsControls: View {
                     }
                 }
             }
+            Toggle(isOn: $showDeveloperOptions) {
+                HStack {
+                    Image(systemName: "slider.horizontal.3")
+                        .frame(width: 32, height: 32)
+                    Text("Show developer options")
+                }
+            }
+        }
+    }
+}
+
+struct DeveloperOptions: View {
+    @EnvironmentObject var notificationsModel: NotificationsViewModel
+    var body: some View {
+        Section("Developer") {
+            NavigationLink(destination: DevNotifications().environmentObject(notificationsModel)) {
+                Text("Notifications debugger")
+            }
+            NavigationLink(destination: DevHapticPlayground()) {
+                Text("Haptic playground")
+            }
         }
     }
 }
@@ -191,6 +213,7 @@ struct SettingsControls: View {
 struct SettingsSheet: View {
     @Binding var notificationsAllowed: Bool
     @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
+    @AppStorage(MFAStorage.K.showDeveloperOptions) var showDeveloperOptions: Bool = MFAStorage.D.showDeveloperOptions
     @AppStorage(MFAStorage.K.scheduleType) var scheduleType: ScheduleType = MFAStorage.D.scheduleType
     @AppStorage(MFAStorage.K.showOnboarding) var showOnboarding: Bool = MFAStorage.D.showOnboarding
     @AppStorage(MFAStorage.K.visualizationMode) var visualizationMode: VisualizationMode = MFAStorage.D.visualizationMode
@@ -204,7 +227,12 @@ struct SettingsSheet: View {
                 List {
                     ScheduleControls(notificationsAllowed: $notificationsAllowed)
                         .environmentObject(notificationsModel)
-                    SettingsControls(showOnboarding: $showOnboarding, enableEasterEggs: $enableEasterEggs, visualizationMode: $visualizationMode)
+                    SettingsControls(
+                        showOnboarding: $showOnboarding,
+                        showDeveloperOptions: $showDeveloperOptions,
+                        enableEasterEggs: $enableEasterEggs,
+                        visualizationMode: $visualizationMode
+                    )
                     Section("About") {
                         NavigationLink(destination: AboutSheet()) {
                             Text("About MindFort")
@@ -213,10 +241,9 @@ struct SettingsSheet: View {
                             Text("Development Roadmap")
                         }
                     }
-                    Section("Developer") {
-                        NavigationLink(destination: DevControlPanel().environmentObject(secretsModel)) {
-                            Text("Developer control panel")
-                        }
+                    if showDeveloperOptions {
+                        DeveloperOptions()
+                            .environmentObject(notificationsModel)
                     }
                 }
                 .navigationBarTitle("Settings", displayMode: .inline)

@@ -13,6 +13,7 @@ struct MFAStorage {
     /// AppStorage keys
     struct K {
         static let enableEasterEggs = "enableEasterEggs"
+        static let showDeveloperOptions = "showDeveloperOptions"
         static let scheduleEnabled = "scheduleEnabled"
         static let scheduleType = "scheduleType"
         static let showOnboarding = "showOnboarding"
@@ -22,6 +23,7 @@ struct MFAStorage {
     /// AppStorage default values
     struct D {
         static let enableEasterEggs = false
+        static let showDeveloperOptions = false
         static let scheduleEnabled = true
         static let scheduleType = ScheduleType.daily
         static let showOnboarding = true

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */; };
-		30286CCF2A26804900456CA5 /* DevControlPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CCE2A26804900456CA5 /* DevControlPanel.swift */; };
 		30286CD22A26912800456CA5 /* KeyboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CD12A26912800456CA5 /* KeyboardState.swift */; };
 		30286CD72A269B3600456CA5 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CD62A269B3600456CA5 /* NotificationManager.swift */; };
 		30286CD92A26A59E00456CA5 /* NotificationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CD82A26A59E00456CA5 /* NotificationList.swift */; };
@@ -23,6 +22,8 @@
 		307BEFF82A29B090004D21AC /* Roadmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF72A29B090004D21AC /* Roadmap.swift */; };
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
 		30A8146D2A365D5F0032456C /* UIKitTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A8146C2A365D5F0032456C /* UIKitTextField.swift */; };
+		30A814702A3665EB0032456C /* DevNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A8146F2A3665EB0032456C /* DevNotifications.swift */; };
+		30A814722A3665F80032456C /* DevHapticPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814712A3665F80032456C /* DevHapticPlayground.swift */; };
 		30C3DDA92A3121940095CB37 /* Hashes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDA82A3121940095CB37 /* Hashes.swift */; };
 		30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */; };
 		30DC65E02A32D07E00EDB001 /* Clibsodium in Frameworks */ = {isa = PBXBuildFile; productRef = 30DC65DF2A32D07E00EDB001 /* Clibsodium */; };
@@ -71,7 +72,6 @@
 
 /* Begin PBXFileReference section */
 		30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecretSheet.swift; sourceTree = "<group>"; };
-		30286CCE2A26804900456CA5 /* DevControlPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevControlPanel.swift; sourceTree = "<group>"; };
 		30286CD12A26912800456CA5 /* KeyboardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardState.swift; sourceTree = "<group>"; };
 		30286CD62A269B3600456CA5 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		30286CD82A26A59E00456CA5 /* NotificationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationList.swift; sourceTree = "<group>"; };
@@ -87,6 +87,8 @@
 		308025092A23B32300491DEA /* SecretDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetailView.swift; sourceTree = "<group>"; };
 		30A8146B2A33DAC40032456C /* Visualizations.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Visualizations.md; sourceTree = "<group>"; };
 		30A8146C2A365D5F0032456C /* UIKitTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTextField.swift; sourceTree = "<group>"; };
+		30A8146F2A3665EB0032456C /* DevNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevNotifications.swift; sourceTree = "<group>"; };
+		30A814712A3665F80032456C /* DevHapticPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevHapticPlayground.swift; sourceTree = "<group>"; };
 		30C3DDA82A3121940095CB37 /* Hashes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hashes.swift; sourceTree = "<group>"; };
 		30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		30DC65E32A32DB0900EDB001 /* BinaryDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDisplay.swift; sourceTree = "<group>"; };
@@ -201,13 +203,22 @@
 			path = Delegates;
 			sourceTree = "<group>";
 		};
+		30A8146E2A36657D0032456C /* DevSheets */ = {
+			isa = PBXGroup;
+			children = (
+				30A8146F2A3665EB0032456C /* DevNotifications.swift */,
+				30A814712A3665F80032456C /* DevHapticPlayground.swift */,
+			);
+			path = DevSheets;
+			sourceTree = "<group>";
+		};
 		30C3DDA02A3044DE0095CB37 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
 				30EB50BF2A246D96007550D3 /* SettingsSheet.swift */,
 				30EB50C22A24E534007550D3 /* AboutSheet.swift */,
 				307BEFF72A29B090004D21AC /* Roadmap.swift */,
-				30286CCE2A26804900456CA5 /* DevControlPanel.swift */,
+				30A8146E2A36657D0032456C /* DevSheets */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -484,6 +495,7 @@
 				30EB50C82A24E9FA007550D3 /* RowItemUrlWithIcon.swift in Sources */,
 				307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */,
 				307BEFEE2A28071D004D21AC /* TimePickerExpandable.swift in Sources */,
+				30A814702A3665EB0032456C /* DevNotifications.swift in Sources */,
 				30FD057E2A1BDD5C006AB9CC /* ContentView.swift in Sources */,
 				304F435A2A27C85800FE08DF /* NotificationsViewModel.swift in Sources */,
 				307BEFF82A29B090004D21AC /* Roadmap.swift in Sources */,
@@ -501,7 +513,7 @@
 				30DC65E42A32DB0900EDB001 /* BinaryDisplay.swift in Sources */,
 				30FD05B92A1C2DC9006AB9CC /* MindFortUtilities.swift in Sources */,
 				30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */,
-				30286CCF2A26804900456CA5 /* DevControlPanel.swift in Sources */,
+				30A814722A3665F80032456C /* DevHapticPlayground.swift in Sources */,
 				30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */,
 				30E816602A2CDA59002CDD75 /* ReadSizeModifier.swift in Sources */,
 				30286CDD2A27092B00456CA5 /* TimeRangePicker.swift in Sources */,
