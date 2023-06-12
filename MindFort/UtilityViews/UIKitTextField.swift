@@ -11,12 +11,18 @@ import SwiftUI
 /// A SwiftUI wrapper around UIKIt TextField
 /// ChatGPT says this (with isSecureTextEntry) may be more performant than SwiftUI's SecureField.
 struct UIKitTextField: UIViewRepresentable {
-    var title: String
+    var placeholder: String
     var text: Binding<String>
     var isSecureTextEntry: Bool
+    var onCommit: (() -> Void)?
     
-    init(_ title: String, text: Binding<String>, isSecureTextEntry: Bool = false) {
-        self.title = title
+    init(
+        _ placeholder: String,
+        text: Binding<String>,
+        isSecureTextEntry: Bool = false,
+        onCommit: (() -> Void)? = nil
+    ) {
+        self.placeholder = placeholder
         self.text = text
         self.isSecureTextEntry = isSecureTextEntry
     }
@@ -25,6 +31,7 @@ struct UIKitTextField: UIViewRepresentable {
         let textField = UITextField()
         textField.delegate = context.coordinator
         textField.isSecureTextEntry = isSecureTextEntry
+        textField.placeholder = placeholder
         return textField
     }
 
@@ -48,6 +55,12 @@ struct UIKitTextField: UIViewRepresentable {
                let range = Range(range, in: currentText) {
                 parent.text.wrappedValue = currentText.replacingCharacters(in: range, with: string)
             }
+            return true
+        }
+        
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            textField.resignFirstResponder() // Dismiss the keyboard
+            parent.onCommit?()
             return true
         }
     }

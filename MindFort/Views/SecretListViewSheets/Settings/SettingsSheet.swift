@@ -206,6 +206,9 @@ struct DeveloperOptions: View {
             NavigationLink(destination: DevHapticPlayground()) {
                 Text("Haptic playground")
             }
+            NavigationLink(destination: DevTextFieldPlayground()) {
+                Text("Text field playground")
+            }
         }
     }
 }
