@@ -177,29 +177,23 @@ struct DevTextFieldPlayground: View {
     }
     
     private var boxColor: Color {
-        if passphrase.isEmpty {
-            return .gray
-        } else {
-            switch validity {
-            case .valid: return .green
-            case .validating: return .blue
-            case .invalid: return .red
-            }
+        switch validity {
+        case .empty: return .gray
+        case .valid: return .green
+        case .validating: return .blue
+        case .invalid: return .red
         }
     }
     
     private var validationText: String {
-        if passphrase.isEmpty {
-            return "Enter passphrase..."
-        } else {
-            switch validity {
-            case .valid: return "Correct!"
-            case .validating: return "Validating..."
-            case .invalid: return "Incorrect!"
-            }
+        switch validity {
+        case .empty: return "Enter passphrase..."
+        case .valid: return "Correct!"
+        case .validating: return "Validating..."
+        case .invalid: return "Incorrect!"
         }
     }
-    
+
     var currentSecretIndex: Int? {
         secretsModel.secrets.firstIndex { $0.id == currentSecretId }
     }

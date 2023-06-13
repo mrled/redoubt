@@ -7,6 +7,7 @@
 
 
 enum PasswordValidationStatus {
+    case empty
     case valid
     case invalid
     case validating
@@ -18,17 +19,16 @@ import SwiftUI
 struct SecretDetailView: View {
     @Binding var currentSecretId: UUID?
     @State private var passphrase = ""
-    
-    /// The current validity of the password
-    @State private var validity: PasswordValidationStatus = .invalid
-    
-    /// The most recent non-.validating state of the password
-    @State private var previousCompletedValidity: PasswordValidationStatus = .invalid
-    
+    @State private var validity: PasswordValidationStatus = .empty
     @State private var showingDeleteAlert = false
     @State private var validationWorkItem: DispatchWorkItem?
     @FocusState private var isFocused: Bool
     @EnvironmentObject var secretsModel: SecretsViewModel
+    
+    // Delay a bit before notifying the user that their password is .empty or .invalid.
+    // A .valid result will happen right away, but for invalid or empty results,
+    // this gives users a bit to type the next character before being told they're Wrong.
+    private let validationDelaySecs: Double = 1.0
     
     var body: some View {
         if let unwrappedSecret = secret {
@@ -141,49 +141,46 @@ struct SecretDetailView: View {
     /// Argon2 validation is a noticeably slow, so we do this outside of the main thread.
     /// We use a dispatch queue and the validationWorkItem to only allow one validation to happen at a time;
     /// if a new one is started, the old one is cancelled.
-    ///
-    /// We can't capture the whole struct in the thread closures,
-    /// which means we have to copy specific variables we want to use in the closures into tmp variables rather than relying on instance properties.
     private func validatePassphrase() {
         validationWorkItem?.cancel()
-        var tmpPreviousCompletedValidity = previousCompletedValidity
-        if validity != .validating {
-            tmpPreviousCompletedValidity = validity
-        }
+        
         validity = .validating
-        var tmpValidity: PasswordValidationStatus = .validating
+        
+        /// We can't capture the whole struct in the thread closures,
+        /// which means we have to copy specific variables we want to use in the closures into tmp variables rather than relying on instance properties.
         let tmpSecret = secret
         let tmpPassphrase = passphrase
-
+        let tmpValidationDelaySecs = validationDelaySecs
+        
         let item = DispatchWorkItem {
             // This is happening off the main thread
             // We cannot mutate struct properties on this thread
             // Also, take care not to reference state variables from this thread,
             // or else Swift will just run it synchronously (as if it were not threaded).
-
+        
             if tmpSecret?.validate(plaintextIn: tmpPassphrase) ?? false {
-                tmpValidity = .valid
-            } else {
-                tmpValidity = .invalid
-
-                // Give the user a bit of extra time to keep typing
-                // ... I'm not sure this is a necessary / a good idea?
-                // A suggestion from Hannah that being told the password is "wrong" was frustrating when she wasn't finished.
-                sleep(2)
-            }
-
-
-            // However, updating state variables must happen in the main thread
-            // I think this is true of haptic feedback too?
-            DispatchQueue.main.async {
-                previousCompletedValidity = tmpPreviousCompletedValidity
-                validity = tmpValidity
-                if validity == .valid {
+                // Notify the user immediately as their passphrase is valid
+                DispatchQueue.main.async {
+                    validity = .valid
                     let feedbackGenerator = UINotificationFeedbackGenerator()
                     feedbackGenerator.notificationOccurred(.success)
-                } else if previousCompletedValidity == .valid && validity == .invalid {
-                    let feedbackGenerator = UINotificationFeedbackGenerator()
-                    feedbackGenerator.notificationOccurred(.error)
+                }
+            } else if tmpPassphrase.isEmpty {
+                // Notify the user after a delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + tmpValidationDelaySecs) {
+                    validity = .empty
+                    let feedbackGenerator = UIImpactFeedbackGenerator(style: .soft)
+                    feedbackGenerator.impactOccurred()
+                }
+            } else {
+                // Notify the user after a delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + tmpValidationDelaySecs) {
+                    // Only set to invalid if the passphrase hasn't changed during the wait
+                    if passphrase == tmpPassphrase {
+                        validity = .invalid
+                        let feedbackGenerator = UINotificationFeedbackGenerator()
+                        feedbackGenerator.notificationOccurred(.error)
+                    }
                 }
             }
         }
@@ -193,26 +190,20 @@ struct SecretDetailView: View {
     }
 
     private var boxColor: Color {
-        if passphrase.isEmpty {
-            return .gray
-        } else {
-            switch validity {
-            case .valid: return .green
-            case .validating: return .blue
-            case .invalid: return .red
-            }
+        switch validity {
+        case .empty: return .gray
+        case .valid: return .green
+        case .validating: return .blue
+        case .invalid: return .red
         }
     }
     
     private var validationText: String {
-        if passphrase.isEmpty {
-            return "Enter passphrase..."
-        } else {
-            switch validity {
-            case .valid: return "Correct!"
-            case .validating: return "Validating..."
-            case .invalid: return "Incorrect!"
-            }
+        switch validity {
+        case .empty: return "Enter passphrase..."
+        case .valid: return "Correct!"
+        case .validating: return "Validating..."
+        case .invalid: return "Incorrect!"
         }
     }
 }

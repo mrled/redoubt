@@ -98,7 +98,6 @@ struct Roadmap: View {
         RoadmapItem("Prune past non-repeating notifications when loading/etc"),
         RoadmapItem("Move notifications enablement to onboarding"),
         RoadmapItem("Add onboarding note about visualizations: they're hash blocks, but mixed with randomness so they're just for fun"),
-        RoadmapItem("Sometimes validation box briefly shows incorrect state before updating to correct state"),
 
         // done
         RoadmapItem("Implement notifications", .feature, icon: "bell", done: "20230531"),
@@ -116,6 +115,7 @@ struct Roadmap: View {
         RoadmapItem("Keyboard shortcuts, at least enter to create, maybe escape to go back", .feature, icon: "return", done: "20230604"),
         RoadmapItem("Slow validation speed when entering password", done: "20230613"),
         RoadmapItem("Use some good key derivation function for password storage", .feature, icon: "lock", done: "20230609"),
+        RoadmapItem("Sometimes validation box briefly shows incorrect state before updating to correct state", done: "20230613"),
     ]
     var body: some View {
         VStack {
