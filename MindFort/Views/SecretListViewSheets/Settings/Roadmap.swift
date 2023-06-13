@@ -92,9 +92,10 @@ struct Roadmap: View {
         RoadmapItem("OS Data Protection capability", .feature, icon: "lock.doc"),
         RoadmapItem("Add geofencing ability", .feature, icon: "mappin.and.ellipse"),
         RoadmapItem("Allow editing name of existing entries", .feature, icon: "square.and.pencil"),
+        RoadmapItem("Add a demo mode to show your friends", .feature, icon: "person.2"),
+        RoadmapItem("Animate a shimmer or sparkle for the onboarding screen icon in the nav bar", .feature, icon: "sparkles"),
 
         // bugs
-        RoadmapItem("Tapping on notification should launch quiz"),
         RoadmapItem("Prune past non-repeating notifications when loading/etc"),
         RoadmapItem("Move notifications enablement to onboarding"),
         RoadmapItem("Add onboarding note about visualizations: they're hash blocks, but mixed with randomness so they're just for fun"),
@@ -116,6 +117,7 @@ struct Roadmap: View {
         RoadmapItem("Slow validation speed when entering password", done: "20230613"),
         RoadmapItem("Use some good key derivation function for password storage", .feature, icon: "lock", done: "20230609"),
         RoadmapItem("Sometimes validation box briefly shows incorrect state before updating to correct state", done: "20230613"),
+        RoadmapItem("Tapping on notification should launch quiz", done: "20230613"),
     ]
     var body: some View {
         VStack {
