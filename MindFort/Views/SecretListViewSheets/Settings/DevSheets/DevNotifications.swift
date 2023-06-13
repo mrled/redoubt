@@ -50,8 +50,12 @@ struct DevNotifications: View {
                         notificationList.refreshNotifications()
                         notificationsModel.load()
                     }
-                    Button("Add notification for one minute from now") {
+                    Button("Notify me when minute changes") {
                         notificationsModel.oneTimeEntries.append(Calendar.current.dateComponents([.hour, .minute], from: Date().addingTimeInterval(60)))
+                        notificationList.refreshNotifications()
+                    }
+                    Button("Notify me in five seconds") {
+                        notificationsModel.oneTimeEntries.append(Calendar.current.dateComponents([.hour, .minute, .second], from: Date().addingTimeInterval(5)))
                         notificationList.refreshNotifications()
                     }
                     Button("Delete All Notifications") {

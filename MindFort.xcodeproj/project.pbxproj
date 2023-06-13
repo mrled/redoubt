@@ -25,6 +25,7 @@
 		30A814702A3665EB0032456C /* DevNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A8146F2A3665EB0032456C /* DevNotifications.swift */; };
 		30A814722A3665F80032456C /* DevHapticPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814712A3665F80032456C /* DevHapticPlayground.swift */; };
 		30A814742A37BDA30032456C /* DevTextFieldPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814732A37BDA30032456C /* DevTextFieldPlayground.swift */; };
+		30A814762A38FB340032456C /* NotificationActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814752A38FB340032456C /* NotificationActionHandler.swift */; };
 		30C3DDA92A3121940095CB37 /* Hashes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDA82A3121940095CB37 /* Hashes.swift */; };
 		30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */; };
 		30DC65E02A32D07E00EDB001 /* Clibsodium in Frameworks */ = {isa = PBXBuildFile; productRef = 30DC65DF2A32D07E00EDB001 /* Clibsodium */; };
@@ -91,6 +92,7 @@
 		30A8146F2A3665EB0032456C /* DevNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevNotifications.swift; sourceTree = "<group>"; };
 		30A814712A3665F80032456C /* DevHapticPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevHapticPlayground.swift; sourceTree = "<group>"; };
 		30A814732A37BDA30032456C /* DevTextFieldPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevTextFieldPlayground.swift; sourceTree = "<group>"; };
+		30A814752A38FB340032456C /* NotificationActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionHandler.swift; sourceTree = "<group>"; };
 		30C3DDA82A3121940095CB37 /* Hashes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hashes.swift; sourceTree = "<group>"; };
 		30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		30DC65E32A32DB0900EDB001 /* BinaryDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDisplay.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 			children = (
 				30286CD12A26912800456CA5 /* KeyboardState.swift */,
 				30286CD82A26A59E00456CA5 /* NotificationList.swift */,
+				30A814752A38FB340032456C /* NotificationActionHandler.swift */,
 			);
 			path = Observables;
 			sourceTree = "<group>";
@@ -491,6 +494,7 @@
 				30E3FD152A2AD00C002BFE60 /* SecretQuizView.swift in Sources */,
 				302877FE2A2B917A0065FD0C /* Logging.swift in Sources */,
 				30286CD22A26912800456CA5 /* KeyboardState.swift in Sources */,
+				30A814762A38FB340032456C /* NotificationActionHandler.swift in Sources */,
 				30FD05B52A1C23CF006AB9CC /* Secret.swift in Sources */,
 				30E3FD1B2A2AF581002BFE60 /* SecretQuizFinishedView.swift in Sources */,
 				30E8165E2A2C57F7002CDD75 /* ShimmeringSystemImage.swift in Sources */,

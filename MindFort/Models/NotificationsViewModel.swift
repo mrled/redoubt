@@ -141,7 +141,7 @@ func addQuizNotification(components: DateComponents, prefix: String, repeats: Bo
     let content = UNMutableNotificationContent()
     content.title = "Type the magic words"
     content.body = "Time to perform a passphrase ritual 🙏"
-    content.userInfo = ["action": "startQuiz"]
+    content.userInfo = [MFAStorage.K.notificationAction: "startQuiz"]
     
     let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
     

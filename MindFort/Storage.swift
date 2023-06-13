@@ -9,6 +9,7 @@ import Foundation
 
 
 /// MindFort AppStorage keys and defaults
+/// Also used for UserDefaults and UNNotificationResponse.notification.request.content.userInfo
 struct MFAStorage {
     /// AppStorage keys
     struct K {
@@ -19,6 +20,7 @@ struct MFAStorage {
         static let showOnboarding = "showOnboarding"
         static let onboardingHasShownOnce = "onboardingHasShownOnce"
         static let visualizationMode = "visualizationMode"
+        static let notificationAction = "notificationAction"
     }
     /// AppStorage default values
     struct D {
@@ -29,6 +31,7 @@ struct MFAStorage {
         static let showOnboarding = true
         static let onboardingHasShownOnce = false
         static let visualizationMode = VisualizationMode.Sha512
+        static let notificationAction = "home"
     }
 }
 

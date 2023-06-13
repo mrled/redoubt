@@ -125,6 +125,12 @@ struct SecretListView: View {
                 }
             }
         }
+        .onChange(of: openAction) { newOpenAction in
+            // We have to do this in onChange(of:), not onAppear(perform:), due to something about view lifecycle and @Binding properties
+            if newOpenAction != .home {
+                dismissAllSheets()
+            }
+        }
         .onAppear(perform: {
             for secret in secretsModel.secrets {
                 CustomLogger.secretIds(message: " - SecretListView onAppear: \(secret.id)")
@@ -137,6 +143,12 @@ struct SecretListView: View {
     
     func removeSecrets(at offsets: IndexSet) {
         secretsModel.secrets.remove(atOffsets: offsets)
+    }
+    
+    func dismissAllSheets() {
+        isPresentingAddSheet = false
+        isPresentingSettingsSheet = false
+        isPresentingOnboardingSheet = false
     }
 }
 
