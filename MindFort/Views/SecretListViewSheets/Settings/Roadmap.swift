@@ -94,6 +94,8 @@ struct Roadmap: View {
         RoadmapItem("Allow editing name of existing entries", .feature, icon: "square.and.pencil"),
         RoadmapItem("Add a demo mode to show your friends", .feature, icon: "person.2"),
         RoadmapItem("Animate a shimmer or sparkle for the onboarding screen icon in the nav bar", .feature, icon: "sparkles"),
+        RoadmapItem("Show a success image/animation/box for each entry in the quiz briefly before showing next quiz question", .feature, icon: "checkmark"),
+        RoadmapItem("Show a nicer/larger/more significant whole-quiz success screen", .feature, icon: "checkmark"),
 
         // bugs
         RoadmapItem("Prune past non-repeating notifications when loading/etc"),
