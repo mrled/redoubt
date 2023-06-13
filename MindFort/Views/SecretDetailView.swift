@@ -141,41 +141,43 @@ struct SecretDetailView: View {
     /// Argon2 validation is a noticeably slow, so we do this outside of the main thread.
     /// We use a dispatch queue and the validationWorkItem to only allow one validation to happen at a time;
     /// if a new one is started, the old one is cancelled.
+    ///
+    /// We can't capture the whole struct in the thread closures,
+    /// which means we have to copy specific variables we want to use in the closures into tmp variables rather than relying on instance properties.
     private func validatePassphrase() {
         validationWorkItem?.cancel()
-        print("M-1 \(CACurrentMediaTime()), \(Thread.isMainThread)")
-        print("M-2 \(CACurrentMediaTime()), \(Thread.isMainThread)")
         var tmpPreviousCompletedValidity = previousCompletedValidity
         if validity != .validating {
             tmpPreviousCompletedValidity = validity
         }
         validity = .validating
+        var tmpValidity: PasswordValidationStatus = .validating
         let tmpSecret = secret
         let tmpPassphrase = passphrase
-        print("M-3 \(CACurrentMediaTime()), \(Thread.isMainThread)")
 
         let item = DispatchWorkItem {
             // This is happening off the main thread
             // We cannot mutate struct properties on this thread
             // Also, take care not to reference state variables from this thread,
             // or else Swift will just run it synchronously (as if it were not threaded).
-            print("D-4 \(CACurrentMediaTime()), \(Thread.isMainThread)")
 
-            var tmpValidity: PasswordValidationStatus
             if tmpSecret?.validate(plaintextIn: tmpPassphrase) ?? false {
                 tmpValidity = .valid
             } else {
                 tmpValidity = .invalid
+
+                // Give the user a bit of extra time to keep typing
+                // ... I'm not sure this is a necessary / a good idea?
+                // A suggestion from Hannah that being told the password is "wrong" was frustrating when she wasn't finished.
+                sleep(2)
             }
-            print("D-5 \(CACurrentMediaTime()), \(Thread.isMainThread)")
+
 
             // However, updating state variables must happen in the main thread
             // I think this is true of haptic feedback too?
             DispatchQueue.main.async {
-                print("N-6 \(CACurrentMediaTime()), \(Thread.isMainThread)")
                 previousCompletedValidity = tmpPreviousCompletedValidity
                 validity = tmpValidity
-                print("N-7 \(CACurrentMediaTime()), \(Thread.isMainThread)")
                 if validity == .valid {
                     let feedbackGenerator = UINotificationFeedbackGenerator()
                     feedbackGenerator.notificationOccurred(.success)
@@ -183,7 +185,6 @@ struct SecretDetailView: View {
                     let feedbackGenerator = UINotificationFeedbackGenerator()
                     feedbackGenerator.notificationOccurred(.error)
                 }
-                print("N-8 \(CACurrentMediaTime()), \(Thread.isMainThread)")
             }
         }
         

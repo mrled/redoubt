@@ -14,8 +14,14 @@ import Sodium
 ///  - the hash block of the $password under normal circumstances
 ///  - a placeholder if the $password is empty
 ///  - an easter egg if the $password is one of the famous passwords
+///
+///  REMINDER: this is a view, you can't do expensive computations here!
+///  (This obvious warning brought to you by the bruise I have on my forehead from banging my head against this for a week,
+///  looking everywhere for the cause except here.)
+///
+/// The hash block is just for a fun visual - the input password is concatenated with a random value
+/// so that if a shoulder is surfed or a screenshot is shared an attacker would not be able to guess.
 struct H4XX0RC0D3: View {
-
 
     /// A string password to display the hash of.
     /// If this is empty, we display a placeholder instead of a hash of nothing.
@@ -27,32 +33,32 @@ struct H4XX0RC0D3: View {
     var fontSize: CGFloat = 10
     var foregroundColor: Color? = nil
     
-    /// If this is False, we don't do any easter eggin'
     @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
-
     @AppStorage(MFAStorage.K.visualizationMode) var visualizationMode: VisualizationMode = MFAStorage.D.visualizationMode
-
-    let sodium = Sodium()
+    
+    private let sodium = Sodium()
+    
+    /// A random value to mix with our password so that the display is useless, even theoretically, for a shoulder surfer or screenshot
+    private var ubersalt: Bytes? {
+        return sodium.randomBytes.buf(length: 128)
+    }
     
     private var displayHash: String? {
         if password.count == 0 {
             return nil
         }
-        let hash = sodium.pwHash.str(
-            passwd: Array(password.utf8),
-            opsLimit: sodium.pwHash.OpsLimitInteractive,
-            memLimit: sodium.pwHash.MemLimitInteractive
-        )
+        guard let unwrappedUbersalt = ubersalt else {
+            return nil
+        }
+        guard let passwordData = password.data(using: .utf8) else {
+            return nil
+        }
+        
         switch visualizationMode {
-        case .RawArgon2: return hash
-        case .Sha512Argon2:
-            guard let unwrappedHash = hash else { return nil }
-            do {
-                let hashedHash = try sha512(string: unwrappedHash)
-                return data2hex(hashedHash)
-            } catch {
-                return nil
-            }
+        case .Sha512:
+            let hash = sha512(data: unwrappedUbersalt + passwordData)
+            let hexHash = data2hex(hash)
+            return hexHash
         }
     }
 
@@ -62,7 +68,6 @@ struct H4XX0RC0D3: View {
                 if enableEasterEggs, let easterEggCode = easterEggPasswords[password] {
                     return easterEggCode.joined(separator: "")
                 } else if password.count > 0, let unwrappedDisplayHash = displayHash {
-                    // TODO: display this more nicely now that we are using argon2 instead of sha512
                     return unwrappedDisplayHash
                 } else {
                     return placeholderStringArray.joined(separator: "")

@@ -28,7 +28,7 @@ struct MFAStorage {
         static let scheduleType = ScheduleType.daily
         static let showOnboarding = true
         static let onboardingHasShownOnce = false
-        static let visualizationMode = VisualizationMode.Sha512Argon2
+        static let visualizationMode = VisualizationMode.Sha512
     }
 }
 

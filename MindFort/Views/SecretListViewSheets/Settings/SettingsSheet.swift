@@ -10,15 +10,13 @@ import Foundation
 
 
 enum VisualizationMode: String, Codable, CaseIterable, Identifiable {
-    case RawArgon2
-    case Sha512Argon2
+    case Sha512
     
     var id: String { self.rawValue }
 
     var description: String {
         switch self {
-        case .RawArgon2: return "Raw Argon2 (ugly)"
-        case .Sha512Argon2: return "SHA512 hash of Argon2"
+        case .Sha512: return "SHA512 hash"
         }
     }
 }
@@ -198,6 +196,8 @@ struct SettingsControls: View {
 
 struct DeveloperOptions: View {
     @EnvironmentObject var notificationsModel: NotificationsViewModel
+    @EnvironmentObject var secretsModel: SecretsViewModel
+    
     var body: some View {
         Section("Developer") {
             NavigationLink(destination: DevNotifications().environmentObject(notificationsModel)) {
@@ -206,9 +206,10 @@ struct DeveloperOptions: View {
             NavigationLink(destination: DevHapticPlayground()) {
                 Text("Haptic playground")
             }
-            NavigationLink(destination: DevTextFieldPlayground()) {
+            NavigationLink(destination: DevTextFieldPlayground(currentSecretId: .constant(secretsModel.secrets[0].id))) {
                 Text("Text field playground")
             }
+            .environmentObject(secretsModel)
         }
     }
 }
@@ -247,6 +248,7 @@ struct SettingsSheet: View {
                     if showDeveloperOptions {
                         DeveloperOptions()
                             .environmentObject(notificationsModel)
+                            .environmentObject(secretsModel)
                     }
                 }
                 .navigationBarTitle("Settings", displayMode: .inline)
