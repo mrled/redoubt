@@ -96,6 +96,11 @@ struct Roadmap: View {
         RoadmapItem("Animate a shimmer or sparkle for the onboarding screen icon in the nav bar", .feature, icon: "sparkles"),
         RoadmapItem("Show a success image/animation/box for each entry in the quiz briefly before showing next quiz question", .feature, icon: "checkmark"),
         RoadmapItem("Show a nicer/larger/more significant whole-quiz success screen", .feature, icon: "checkmark"),
+        RoadmapItem("When entering passwords, allow viewing the password or require user to enter twice", .feature, icon: "asterisk"),
+        RoadmapItem("Store plaintext password securely so that the user doesn't need to store the password elsewhere on device", .feature, icon: "asterisk"),
+        RoadmapItem("Confirm that data is never backed up, note this in onboarding", .feature, icon: "arrowshape.turn.up.backward.badge.clock"),
+        RoadmapItem("Add plausible deniability, maybe indexing into random data or something, require unlocking after phone powers on", .feature, icon: "lock.doc"),
+        RoadmapItem("Add flash card modes for larger lists of passwords you want to be quizzed on multiple times per day", .feature, icon: "clock"),
 
         // bugs
         RoadmapItem("Prune past non-repeating notifications when loading/etc"),
