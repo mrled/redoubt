@@ -85,14 +85,13 @@ struct Roadmap: View {
         // features
         RoadmapItem("Spaced repetition schedule editor", .feature, icon: "clock"),
         RoadmapItem("Try color schemes", .feature, icon: "sparkles"),
-        RoadmapItem("Add nice visualizations for password validation, animationms etc", .feature, icon: "sparkles"),
+        RoadmapItem("Add nice visualizations for password validation, animations etc", .feature, icon: "sparkles"),
         RoadmapItem("Undo for deletes", .feature, icon: "arrow.uturn.backward"),
         // https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/encrypting_your_app_s_files
         // xcode project -> create capability -> Data Protection
         RoadmapItem("OS Data Protection capability", .feature, icon: "lock.doc"),
         RoadmapItem("Add geofencing ability", .feature, icon: "mappin.and.ellipse"),
         RoadmapItem("Allow editing name of existing entries", .feature, icon: "square.and.pencil"),
-        RoadmapItem("Add a demo mode to show your friends", .feature, icon: "person.2"),
         RoadmapItem("Animate a shimmer or sparkle for the onboarding screen icon in the nav bar", .feature, icon: "sparkles"),
         RoadmapItem("Show a success image/animation/box for each entry in the quiz briefly before showing next quiz question", .feature, icon: "checkmark"),
         RoadmapItem("Show a nicer/larger/more significant whole-quiz success screen", .feature, icon: "checkmark"),
@@ -125,6 +124,7 @@ struct Roadmap: View {
         RoadmapItem("Use some good key derivation function for password storage", .feature, icon: "lock", done: "20230609"),
         RoadmapItem("Sometimes validation box briefly shows incorrect state before updating to correct state", done: "20230613"),
         RoadmapItem("Tapping on notification should launch quiz", done: "20230613"),
+        RoadmapItem("Add a demo mode to show your friends", .feature, icon: "person.2", done: "20230617"),
     ]
     var body: some View {
         VStack {
