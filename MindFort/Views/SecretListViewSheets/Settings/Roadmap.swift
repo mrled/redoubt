@@ -82,8 +82,10 @@ struct RoadmapItemView: View {
 
 struct Roadmap: View {
     let items: [RoadmapItem] = [
-        // features
+        // Required for next milestone
         RoadmapItem("Spaced repetition schedule editor", .feature, icon: "clock"),
+
+        // Backlog: features
         RoadmapItem("Try color schemes", .feature, icon: "sparkles"),
         RoadmapItem("Add nice visualizations for password validation, animations etc", .feature, icon: "sparkles"),
         RoadmapItem("Undo for deletes", .feature, icon: "arrow.uturn.backward"),
@@ -101,12 +103,12 @@ struct Roadmap: View {
         RoadmapItem("Add plausible deniability, maybe indexing into random data or something, require unlocking after phone powers on", .feature, icon: "lock.doc"),
         RoadmapItem("Add flash card modes for larger lists of passwords you want to be quizzed on multiple times per day", .feature, icon: "clock"),
 
-        // bugs
+        // Backlog: bugs
         RoadmapItem("Prune past non-repeating notifications when loading/etc"),
         RoadmapItem("Move notifications enablement to onboarding"),
         RoadmapItem("Add onboarding note about visualizations: they're hash blocks, but mixed with randomness so they're just for fun"),
 
-        // done
+        // Done
         RoadmapItem("Implement notifications", .feature, icon: "bell", done: "20230531"),
         RoadmapItem("Show all of H4XX0R C0D3 w/ keyboard enabled", done: "20230602"),
         RoadmapItem("Add previous/next buttons to detail view", .feature, icon: "arrow.right", done: "20230602"),
