@@ -52,3 +52,13 @@ struct MFFStorage {
     var regularIntervalEntriesPlist: URL { documents.appendingPathComponent("RegularIntervalNotifications.plist") }
     var oneTimeEntriesPlist: URL { documents.appendingPathComponent("OneTimeNotifications.plist") }
 }
+
+
+/// MindFort storage for UserDefaults (see also UserDefaultsWrappers file)
+extension UserDefaultsWrapperKey {
+    static let demoMode: UserDefaultsWrapperKey = "demoMode"
+}
+struct MFUDStorage {
+    @UserDefault(key: .demoMode, defaultValue: false)
+    var demoMode: Bool
+}

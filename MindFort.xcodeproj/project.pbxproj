@@ -26,6 +26,7 @@
 		30A814722A3665F80032456C /* DevHapticPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814712A3665F80032456C /* DevHapticPlayground.swift */; };
 		30A814742A37BDA30032456C /* DevTextFieldPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814732A37BDA30032456C /* DevTextFieldPlayground.swift */; };
 		30A814762A38FB340032456C /* NotificationActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814752A38FB340032456C /* NotificationActionHandler.swift */; };
+		30A8147A2A3E05FE0032456C /* UserDefaultsWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814792A3E05FE0032456C /* UserDefaultsWrappers.swift */; };
 		30C3DDA92A3121940095CB37 /* Hashes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDA82A3121940095CB37 /* Hashes.swift */; };
 		30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */; };
 		30DC65E02A32D07E00EDB001 /* Clibsodium in Frameworks */ = {isa = PBXBuildFile; productRef = 30DC65DF2A32D07E00EDB001 /* Clibsodium */; };
@@ -93,6 +94,7 @@
 		30A814712A3665F80032456C /* DevHapticPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevHapticPlayground.swift; sourceTree = "<group>"; };
 		30A814732A37BDA30032456C /* DevTextFieldPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevTextFieldPlayground.swift; sourceTree = "<group>"; };
 		30A814752A38FB340032456C /* NotificationActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionHandler.swift; sourceTree = "<group>"; };
+		30A814792A3E05FE0032456C /* UserDefaultsWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsWrappers.swift; sourceTree = "<group>"; };
 		30C3DDA82A3121940095CB37 /* Hashes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hashes.swift; sourceTree = "<group>"; };
 		30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		30DC65E32A32DB0900EDB001 /* BinaryDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDisplay.swift; sourceTree = "<group>"; };
@@ -218,6 +220,15 @@
 			path = DevSheets;
 			sourceTree = "<group>";
 		};
+		30A814782A3E05B50032456C /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				302877FF2A2B921A0065FD0C /* Storage.swift */,
+				30A814792A3E05FE0032456C /* UserDefaultsWrappers.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 		30C3DDA02A3044DE0095CB37 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -313,7 +324,7 @@
 				30FD05B42A1C23CF006AB9CC /* Secret.swift */,
 				30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */,
 				302877FD2A2B917A0065FD0C /* Logging.swift */,
-				302877FF2A2B921A0065FD0C /* Storage.swift */,
+				30A814782A3E05B50032456C /* Storage */,
 				30C3DDA12A3120FF0095CB37 /* Binary */,
 				30EB50CC2A25BF2E007550D3 /* Views */,
 				30EB50C42A24E94F007550D3 /* UtilityViews */,
@@ -495,6 +506,7 @@
 				302877FE2A2B917A0065FD0C /* Logging.swift in Sources */,
 				30286CD22A26912800456CA5 /* KeyboardState.swift in Sources */,
 				30A814762A38FB340032456C /* NotificationActionHandler.swift in Sources */,
+				30A8147A2A3E05FE0032456C /* UserDefaultsWrappers.swift in Sources */,
 				30FD05B52A1C23CF006AB9CC /* Secret.swift in Sources */,
 				30E3FD1B2A2AF581002BFE60 /* SecretQuizFinishedView.swift in Sources */,
 				30E8165E2A2C57F7002CDD75 /* ShimmeringSystemImage.swift in Sources */,
