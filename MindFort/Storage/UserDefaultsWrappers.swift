@@ -72,9 +72,9 @@ struct UserDefault<T: PropertyListValue> {
     var projectedValue: UserDefault<T> { return self }
     
     /// Return an instance of the property wrapper
-    func observe(change: @escaping (T?, T?) -> Void) -> NSObject {
+    func observe(change: @escaping (T?, T) -> Void) -> NSObject {
         return DefaultsObservation(key: key) { old, new in
-            change(old as? T, new as? T)
+            change(old as? T, new as? T ?? defaultValue)
         }
     }
 }

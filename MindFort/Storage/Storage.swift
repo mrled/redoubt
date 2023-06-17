@@ -21,6 +21,7 @@ struct MFAStorage {
         static let onboardingHasShownOnce = "onboardingHasShownOnce"
         static let visualizationMode = "visualizationMode"
         static let notificationAction = "notificationAction"
+        static let demoMode = "demoMode"
     }
     /// AppStorage default values
     struct D {
@@ -32,6 +33,7 @@ struct MFAStorage {
         static let onboardingHasShownOnce = false
         static let visualizationMode = VisualizationMode.Sha512
         static let notificationAction = "home"
+        static let demoMode = false
     }
 }
 
@@ -48,7 +50,8 @@ struct MFFStorage {
         }
     }
     
-    var secretsPlist: URL { documents.appendingPathComponent("Secrets.plist") }
+    var secretsUserPlist: URL { documents.appendingPathComponent("SecretsUser.plist") }
+    var secretsDemoPlist: URL { documents.appendingPathComponent("SecretsDemo.plist") }
     var regularIntervalEntriesPlist: URL { documents.appendingPathComponent("RegularIntervalNotifications.plist") }
     var oneTimeEntriesPlist: URL { documents.appendingPathComponent("OneTimeNotifications.plist") }
 }

@@ -24,6 +24,7 @@ struct SecretListView: View {
     @FocusState private var newSecretFocusOnNameField: Bool
     @AppStorage(MFAStorage.K.showOnboarding) var showOnboarding: Bool = MFAStorage.D.showOnboarding
     @AppStorage(MFAStorage.K.onboardingHasShownOnce) var onboardingHasShownOnce: Bool = MFAStorage.D.onboardingHasShownOnce
+    @AppStorage(MFAStorage.K.demoMode) private var demoMode: Bool = MFAStorage.D.demoMode
 
     var body: some View {
         NavigationView {
@@ -93,6 +94,10 @@ struct SecretListView: View {
 //                        Button(action: { isPresentingOnboardingSheet = true }) {
 //                            Image(systemName: "play")
 //                        }
+                    }
+                    if demoMode {
+                        Text("DEMO")
+                            .foregroundColor(.red)
                     }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {

@@ -11,6 +11,8 @@ import UserNotifications
 
 class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
 
+    let userDefaults = UserDefaults.standard
+
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
@@ -28,8 +30,12 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
         -> Void
     ) {
         let userInfo = response.notification.request.content.userInfo
-
-        if let action = userInfo[MFAStorage.K.notificationAction] as? String {
+        
+        let demoMode = userDefaults.object(forKey: MFAStorage.K.demoMode) as? Bool ?? MFAStorage.D.demoMode
+        if demoMode {
+            // Don't respond to notifications at all when the app is in demo mode
+            print("userNotificationCenter: In demo mode")
+        } else if let action = userInfo[MFAStorage.K.notificationAction] as? String {
             print("userNotificationCenter: Set action to \(action)")
             NotificationActionHandler.shared.handleNotificationAction(action)
         } else {

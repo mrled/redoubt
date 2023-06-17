@@ -155,6 +155,7 @@ struct SettingsControls: View {
     @Binding var showDeveloperOptions: Bool
     @Binding var enableEasterEggs: Bool
     @Binding var visualizationMode: VisualizationMode
+    @Binding var demoMode: Bool
     var body: some View {
         Section("Settings") {
             // Not sure if it's the Toggles or what, but the spacing doesn't match RowItemWithIcon.
@@ -175,7 +176,7 @@ struct SettingsControls: View {
                 }
             }
             HStack {
-                Image(systemName: "display")
+                Image(systemName: "sparkles.tv")
                     .frame(width: 32, height: 32)
                 Picker(selection: $visualizationMode, label: Text("Visualization type")) {
                     ForEach(VisualizationMode.allCases) { possibleVizMode in
@@ -189,6 +190,15 @@ struct SettingsControls: View {
                         .frame(width: 32, height: 32)
                     Text("Show developer options")
                 }
+            }
+            Toggle(isOn: $demoMode) {
+                HStack {
+                    Image(systemName: "tv")
+                        .frame(width: 32, height: 32)
+                    Text("Enable demo mode")
+                }
+                Text("Fill the system with example data to demo the app without revealing passwords")
+                    .foregroundColor(.gray)
             }
         }
     }
@@ -206,10 +216,14 @@ struct DeveloperOptions: View {
             NavigationLink(destination: DevHapticPlayground()) {
                 Text("Haptic playground")
             }
-            NavigationLink(destination: DevTextFieldPlayground(currentSecretId: .constant(secretsModel.secrets[0].id))) {
-                Text("Text field playground")
+            if secretsModel.secrets.isEmpty {
+                Text("Add a secret to enable the text field playground")
+            } else {
+                NavigationLink(destination: DevTextFieldPlayground(currentSecretId: .constant(secretsModel.secrets[0].id))) {
+                    Text("Text field playground")
+                }
+                .environmentObject(secretsModel)
             }
-            .environmentObject(secretsModel)
         }
     }
 }
@@ -221,6 +235,7 @@ struct SettingsSheet: View {
     @AppStorage(MFAStorage.K.scheduleType) var scheduleType: ScheduleType = MFAStorage.D.scheduleType
     @AppStorage(MFAStorage.K.showOnboarding) var showOnboarding: Bool = MFAStorage.D.showOnboarding
     @AppStorage(MFAStorage.K.visualizationMode) var visualizationMode: VisualizationMode = MFAStorage.D.visualizationMode
+    @AppStorage(MFAStorage.K.demoMode) var demoMode: Bool = MFAStorage.D.demoMode
     @State private var scheduleEveryXDays: Int = 1
     @EnvironmentObject var notificationsModel: NotificationsViewModel
     @EnvironmentObject var secretsModel: SecretsViewModel
@@ -235,7 +250,8 @@ struct SettingsSheet: View {
                         showOnboarding: $showOnboarding,
                         showDeveloperOptions: $showDeveloperOptions,
                         enableEasterEggs: $enableEasterEggs,
-                        visualizationMode: $visualizationMode
+                        visualizationMode: $visualizationMode,
+                        demoMode: $demoMode
                     )
                     Section("About") {
                         NavigationLink(destination: AboutSheet()) {

@@ -10,11 +10,22 @@ import CryptoKit
 
 
 struct ContentView: View {
-    @StateObject private var secretsModel = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist())
+    @AppStorage(MFAStorage.K.demoMode) private var demoMode: Bool = MFAStorage.D.demoMode
+    @StateObject private var secretsModel: SecretsViewModel
     @StateObject private var notificationsModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromPlist())
     @StateObject private var notificationActionHandler = NotificationActionHandler.shared
     @State private var notificationsAllowed: Bool = false
     @Environment(\.scenePhase) var scenePhase
+    
+    init() {
+        // We can't reference the class demoMode variable here because, we're in the initializer. bleh
+        let initDemoMode = MFUDStorage().demoMode
+        if initDemoMode {
+            _secretsModel = StateObject(wrappedValue: SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist(secretsPlist: MFFStorage().secretsDemoPlist)))
+        } else {
+            _secretsModel = StateObject(wrappedValue: SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist(secretsPlist: MFFStorage().secretsUserPlist)))
+        }
+    }
 
     var body: some View {
         SecretListView(openAction: $notificationActionHandler.openAction, notificationsAllowed: $notificationsAllowed)

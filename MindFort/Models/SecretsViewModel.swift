@@ -16,14 +16,17 @@ protocol DataLoader {
 
 /// Load secret data from a property list in the app's documents directory
 class SecretsVmDataLoaderFromPlist: DataLoader {
+    var secretsPlist: URL
     let encoder = PropertyListEncoder()
     let decoder = PropertyListDecoder()
     
-    init() {}
+    init(secretsPlist: URL) {
+        self.secretsPlist = secretsPlist
+    }
     
     func load() -> [Secret] {
         do {
-            let data = try Data(contentsOf: MFFStorage().secretsPlist)
+            let data = try Data(contentsOf: secretsPlist)
             let secrets = try decoder.decode([Secret].self, from: data)
             print("When loading, found secrets: \(secrets)")
             return secrets
@@ -36,7 +39,7 @@ class SecretsVmDataLoaderFromPlist: DataLoader {
     func save(secrets: [Secret]) {
         do {
             let data = try encoder.encode(secrets)
-            try data.write(to: MFFStorage().secretsPlist)
+            try data.write(to: secretsPlist)
         } catch {
             print("Error saving items: \(error)")
         }
@@ -44,9 +47,9 @@ class SecretsVmDataLoaderFromPlist: DataLoader {
     
     func deleteAllData() {
         do {
-            try FileManager.default.removeItem(at: MFFStorage().secretsPlist)
+            try FileManager.default.removeItem(at: secretsPlist)
         } catch {
-            print("Error deleting \(MFFStorage().secretsPlist): \(error)")
+            print("Error deleting \(secretsPlist): \(error)")
         }
     }
 }
@@ -72,10 +75,45 @@ class SecretsViewModel: ObservableObject {
     @Published var secrets: [Secret] = []
     
     private var dataLoader: DataLoader
+    private var inDemoMode: Bool
+    private var userDefautlsObserver: Any?
     
-    init(dataLoader: DataLoader) {
-        self.dataLoader = dataLoader
+    init(dataLoader: DataLoader? = nil) {
+//        self.dataLoader = dataLoader
+        
+        // Why use UserDefaults here, which requires adding the Observer below,
+        // when AppStorage is supposed to handle observability for us?
+        // Because AppStorage can only do that automatically in a SwiftUI View,
+        // and was really only intended to be used in View code.
+        inDemoMode = UserDefaults.standard.bool(forKey: "demoMode")
+        
+        let secretsPlist = inDemoMode ? MFFStorage().secretsDemoPlist : MFFStorage().secretsUserPlist
+        
+        self.dataLoader = dataLoader ?? SecretsVmDataLoaderFromPlist(secretsPlist: secretsPlist)
+        
+        // This listens for changes on ANY UserDefaults key, lol
+        // TODO: replace this with something that only listens to the specific key we care about
+        userDefautlsObserver = NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            // We don't get the new value for demoMode
+            self?.userDefaultsDidChange()
+        }
+
         loadItems()
+    }
+    
+    func userDefaultsDidChange() {
+        let oldDemoMode = inDemoMode
+        inDemoMode = UserDefaults.standard.bool(forKey: "demoMode")
+        if inDemoMode != oldDemoMode {
+            let secretsPlist = inDemoMode ? MFFStorage().secretsDemoPlist : MFFStorage().secretsUserPlist
+            dataLoader = SecretsVmDataLoaderFromPlist(secretsPlist: secretsPlist)
+            if inDemoMode {
+                // If we are transitioning to demo mode from regular mode,
+                // we want a clean slate with a default list of passwords
+                dataLoader.save(secrets: getDemoModePasswords())
+            }
+            loadItems()
+        }
     }
     
     func addItem(_ item: Secret) {
