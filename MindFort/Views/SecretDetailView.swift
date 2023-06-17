@@ -57,6 +57,11 @@ struct SecretDetailView: View {
             .padding()
             .navigationBarTitle(unwrappedSecret.name)
             .navigationBarItems(trailing: trailingNavBarItems)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    DemoNavbarToolbarButton()
+                }
+            }
             .onAppear {
                 DispatchQueue.main.async {
                     isFocused = true

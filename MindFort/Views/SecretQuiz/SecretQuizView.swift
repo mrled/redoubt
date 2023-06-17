@@ -65,6 +65,11 @@ struct SecretQuizView: View {
             currentSecretId = secretsModel.secrets[0].id
             activeView = secretsModel.secrets[0].id
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                DemoNavbarToolbarButton()
+            }
+        }
     }
         
     var currentSecretIndex: Int? {

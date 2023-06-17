@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Foundation
-import LocalAuthentication
 
 
 enum VisualizationMode: String, Codable, CaseIterable, Identifiable {
@@ -20,15 +19,6 @@ enum VisualizationMode: String, Codable, CaseIterable, Identifiable {
         case .Sha512: return "SHA512 hash"
         }
     }
-}
-
-
-/// Possible alerts the Settings sheet can show
-enum SettingsAlertType {
-    case none
-    case biometricsUnavailable
-    case biometricsFailed
-    case biometricsLockedOut
 }
 
 
@@ -166,8 +156,7 @@ struct SettingsControls: View {
     @Binding var enableEasterEggs: Bool
     @Binding var visualizationMode: VisualizationMode
     @Binding var demoMode: Bool
-    @State private var showAlert = false
-    @State private var alertType: SettingsAlertType = .none
+    @State private var isPresentingDemoModeSheet = false
     var body: some View {
         Section("Settings") {
             // Not sure if it's the Toggles or what, but the spacing doesn't match RowItemWithIcon.
@@ -203,87 +192,20 @@ struct SettingsControls: View {
                     Text("Show developer options")
                 }
             }
-            Button(action: toggleDemoModeWithAuthentication) {
+            Button(action: { isPresentingDemoModeSheet = true }) {
                 HStack {
                     Image(systemName: "tv")
                         .frame(width: 32, height: 32)
                     if demoMode {
-                        Text("Exit demo mode")
-                            .foregroundColor(.green)
+                        Text("Demo mode (currently enabled)")
                     } else {
-                        Text("Enter demo mode")
-                            .foregroundColor(.red)
+                        Text("Demo mode (currently disabled)")
                     }
                 }
             }
         }
-        .alert(isPresented: $showAlert) {
-            switch alertType {
-            case .none:
-                return Alert(
-                    title: Text("Something went wrong"),
-                    message: Text("This should never happen"),
-                    dismissButton: .default(Text("OK"))
-                )
-            case .biometricsUnavailable:
-                return Alert(
-                    title: Text("Biometrics unavailable"),
-                    message: Text("Please set up Face ID or Touch ID in your device settings"),
-                    dismissButton: .default(Text("OK"))
-                )
-            case .biometricsFailed:
-                return Alert (
-                    title: Text("Biometrics failed"),
-                    message: Text("Could not authenticate with Face ID or Touch ID"),
-                    dismissButton: .default(Text("OK"))
-                )
-            case .biometricsLockedOut:
-                return Alert (
-                    title: Text("Biometrics locked out"),
-                    message: Text("Too many Face ID or Touch ID failures"),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
-        }
-    }
-    
-    
-    
-    func toggleDemoModeWithAuthentication() {
-        let context = LAContext()
-        var error: NSError?
-
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            let reason = "Please authenticate to change the setting."
-
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
-                DispatchQueue.main.async {
-                    if success {
-                        self.demoMode.toggle()
-                    } else {
-                        self.alertType = .biometricsFailed
-                        self.showAlert = true
-                    }
-                }
-            }
-        } else {
-            if let laError = error as? LAError, laError.code == .biometryLockout {
-                let reason = "You've attempted too many times! Enter your passcode to enable biometrics."
-                
-                context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
-                    DispatchQueue.main.async {
-                        if success {
-                            self.demoMode.toggle()
-                        } else {
-                            self.alertType = .biometricsFailed
-                            self.showAlert = true
-                        }
-                    }
-                }
-            } else {
-                self.alertType = .biometricsUnavailable
-                self.showAlert = true
-            }
+        .sheet(isPresented: $isPresentingDemoModeSheet) {
+            DemoModeSheet(isPresentingDemoMode: $isPresentingDemoModeSheet)
         }
     }
 }
@@ -352,6 +274,11 @@ struct SettingsSheet: View {
                     }
                 }
                 .navigationBarTitle("Settings", displayMode: .inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        DemoNavbarToolbarButton()
+                    }
+                }
             }
         }
     }

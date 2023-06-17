@@ -15,6 +15,7 @@ struct CreateSecretSheet: View {
     @FocusState private var newSecretFocusOnNameField: Bool
     @EnvironmentObject var secretsModel: SecretsViewModel
     @ObservedObject var keyboardState = KeyboardState()
+    @AppStorage(MFAStorage.K.demoMode) var demoMode: Bool = MFAStorage.D.demoMode
 
     var body: some View {
         VStack {
@@ -24,6 +25,11 @@ struct CreateSecretSheet: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding()
+            
+            if demoMode {
+                Text("Demonstration mode")
+                    .foregroundColor(.red)
+            }
             
             SecureField("Passphrase", text: $newSecretValue)
                 .keyboardType(.default)
@@ -68,6 +74,7 @@ struct CreateSecretSheet: View {
                 newSecretFocusOnNameField = true
             }
         }
+        .navigationBarTitle("Add secret", displayMode: .inline)
     }
     
     /// The title of the new secret sheet

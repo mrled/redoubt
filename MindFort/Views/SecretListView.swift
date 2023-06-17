@@ -95,10 +95,7 @@ struct SecretListView: View {
 //                            Image(systemName: "play")
 //                        }
                     }
-                    if demoMode {
-                        Text("DEMO")
-                            .foregroundColor(.red)
-                    }
+                    DemoNavbarToolbarButton()
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: { isPresentingAddSheet = true }) {

@@ -28,6 +28,8 @@
 		30A814762A38FB340032456C /* NotificationActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814752A38FB340032456C /* NotificationActionHandler.swift */; };
 		30A8147A2A3E05FE0032456C /* UserDefaultsWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814792A3E05FE0032456C /* UserDefaultsWrappers.swift */; };
 		30A8147C2A3E1EFC0032456C /* MindFortContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A8147B2A3E1EFC0032456C /* MindFortContext.swift */; };
+		30A814822A3E5DE70032456C /* DemoModeSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814812A3E5DE70032456C /* DemoModeSheet.swift */; };
+		30A814842A3E64B40032456C /* DemoNavbarToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814832A3E64B40032456C /* DemoNavbarToolbarButton.swift */; };
 		30C3DDA92A3121940095CB37 /* Hashes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDA82A3121940095CB37 /* Hashes.swift */; };
 		30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */; };
 		30DC65E02A32D07E00EDB001 /* Clibsodium in Frameworks */ = {isa = PBXBuildFile; productRef = 30DC65DF2A32D07E00EDB001 /* Clibsodium */; };
@@ -97,6 +99,8 @@
 		30A814752A38FB340032456C /* NotificationActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionHandler.swift; sourceTree = "<group>"; };
 		30A814792A3E05FE0032456C /* UserDefaultsWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsWrappers.swift; sourceTree = "<group>"; };
 		30A8147B2A3E1EFC0032456C /* MindFortContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortContext.swift; sourceTree = "<group>"; };
+		30A814812A3E5DE70032456C /* DemoModeSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoModeSheet.swift; sourceTree = "<group>"; };
+		30A814832A3E64B40032456C /* DemoNavbarToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoNavbarToolbarButton.swift; sourceTree = "<group>"; };
 		30C3DDA82A3121940095CB37 /* Hashes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hashes.swift; sourceTree = "<group>"; };
 		30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		30DC65E32A32DB0900EDB001 /* BinaryDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDisplay.swift; sourceTree = "<group>"; };
@@ -190,6 +194,7 @@
 			children = (
 				30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */,
 				302878052A2C52AF0065FD0C /* OnboardingSheet.swift */,
+				30A814812A3E5DE70032456C /* DemoModeSheet.swift */,
 				30C3DDA02A3044DE0095CB37 /* Settings */,
 			);
 			path = SecretListViewSheets;
@@ -281,6 +286,7 @@
 				30E8165D2A2C57F7002CDD75 /* ShimmeringSystemImage.swift */,
 				30E8165F2A2CDA59002CDD75 /* ReadSizeModifier.swift */,
 				30A8146C2A365D5F0032456C /* UIKitTextField.swift */,
+				30A814832A3E64B40032456C /* DemoNavbarToolbarButton.swift */,
 			);
 			path = UtilityViews;
 			sourceTree = "<group>";
@@ -537,11 +543,13 @@
 				30DC65E42A32DB0900EDB001 /* BinaryDisplay.swift in Sources */,
 				30FD05B92A1C2DC9006AB9CC /* MindFortUtilities.swift in Sources */,
 				30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */,
+				30A814842A3E64B40032456C /* DemoNavbarToolbarButton.swift in Sources */,
 				30A814722A3665F80032456C /* DevHapticPlayground.swift in Sources */,
 				30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */,
 				30E816602A2CDA59002CDD75 /* ReadSizeModifier.swift in Sources */,
 				30286CDD2A27092B00456CA5 /* TimeRangePicker.swift in Sources */,
 				30FD05BB2A1C6CA7006AB9CC /* SecretsViewModel.swift in Sources */,
+				30A814822A3E5DE70032456C /* DemoModeSheet.swift in Sources */,
 				30286CD92A26A59E00456CA5 /* NotificationList.swift in Sources */,
 				30E3FD172A2AD6EF002BFE60 /* H4XX0RC0D3.swift in Sources */,
 				30C3DDA92A3121940095CB37 /* Hashes.swift in Sources */,
