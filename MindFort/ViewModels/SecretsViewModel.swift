@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 /// Load secret data from somewhere and hand it to the view model
 protocol DataLoader {
@@ -72,7 +73,14 @@ class SecretsVmDataLoaderFromArray: DataLoader {
 }
 
 class SecretsViewModel: ObservableObject {
-    @Published var secrets: [Secret] = []
+    @Published var secrets: [Secret] = [] {
+        didSet {
+            saveItems()
+            setupPublishers()
+        }
+    }
+
+    private var cancellables = Set<AnyCancellable>()
     
     private var dataLoader: DataLoader
     private var inDemoMode: Bool
@@ -99,6 +107,24 @@ class SecretsViewModel: ObservableObject {
         }
 
         loadItems()
+        setupPublishers()
+    }
+    
+    /// Set a publisher for each secret in our .secrets array.
+    /// Whenever any secret changes, it triggers saveItems().
+    private func setupPublishers() {
+        // Cancel any existing publishers
+        cancellables.forEach { $0.cancel() }
+        cancellables.removeAll()
+
+        // Create new publishers for each secret
+        secrets.forEach { secret in
+            secret.objectWillChange
+                .sink { [weak self] _ in
+                    self?.saveItems()
+                }
+                .store(in: &cancellables)
+        }
     }
     
     func userDefaultsDidChange() {
@@ -116,15 +142,14 @@ class SecretsViewModel: ObservableObject {
         }
     }
     
+    // TODO: now that we have the didSet on the secrets array, we no longer have to call saveItems() here - change all callers to just modify the .secrets array
     func addItem(_ item: Secret) {
         secrets.append(item)
-        saveItems()
     }
     
     func deleteItem(_ item: Secret) {
         if let index = secrets.firstIndex(of: item) {
             secrets.remove(at: index)
-            saveItems()
         }
     }
     

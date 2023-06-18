@@ -14,6 +14,7 @@ enum RoadmapItemType {
 }
 
 
+// TODO: move these somewhere more appropriate
 extension Date {
     func mfFormatted(as format: String) -> String {
         let dateFormatter = DateFormatter()

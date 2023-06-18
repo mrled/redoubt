@@ -52,6 +52,7 @@ struct SecretDetailView: View {
                         }
                     )
                     .padding()
+                Text("Last quizzed: \(lastQuizzedText)")
                 Spacer()
             }
             .padding()
@@ -153,7 +154,7 @@ struct SecretDetailView: View {
         
         /// We can't capture the whole struct in the thread closures,
         /// which means we have to copy specific variables we want to use in the closures into tmp variables rather than relying on instance properties.
-        let tmpSecret = secret
+        var tmpSecret = secret
         let tmpPassphrase = passphrase
         let tmpValidationDelaySecs = validationDelaySecs
         
@@ -209,6 +210,14 @@ struct SecretDetailView: View {
         case .valid: return "Correct!"
         case .validating: return "Validating..."
         case .invalid: return "Incorrect!"
+        }
+    }
+    
+    private var lastQuizzedText: String {
+        if let lastQuizDate = secret?.lastQuizzed {
+            return lastQuizDate.mfFormatted(as: "yyyy-MM-dd HH:mm")
+        } else {
+            return "never"
         }
     }
 }

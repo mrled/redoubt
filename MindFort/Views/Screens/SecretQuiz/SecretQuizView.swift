@@ -27,7 +27,8 @@ struct SecretQuizView: View {
     
     var body: some View {
         ZStack {
-            ForEach(secretsModel.secrets) { secret in
+            ForEach(secretsModel.secrets.indices, id: \.self) { index in
+                let secret = self.$secretsModel.secrets[index]
                 SecretQuizInnerView(secret: secret, currentSecretId: $currentSecretId, activeView: $activeView) {
                     /// This is a callback function that the child view will run when the passphrase is entered successfully
                     /// Note that it's only run AFTER the passphrase is entered correctly, meaning that we have to use the .onAppear below to set INITIAL values.

@@ -26,6 +26,17 @@ enum SupportedDigestType: String, Codable {
 let BestDigestType: SupportedDigestType = .Argon2
 
 
+/// Calculate a value for the .id property of a Secret object
+func calculateSecretId(name: String, digest: String) throws -> UUID {
+    guard let data = (name + digest).data(using: .utf8) else {
+        throw SecretParsingError.invalidInputValue
+    }
+    return md5UUID(data: data)
+}
+
+
+
+
 /// A hash of a secret, stored securely.
 ///
 /// Usable with the id, name, digest, and digestType properties
@@ -34,9 +45,7 @@ let BestDigestType: SupportedDigestType = .Argon2
 ///
 /// Equatable (the == operator) is only if the id matches; this struct can't tell if two underlying plaintexts are the same,
 /// mostly because it doesn't necessarily know what they are.
-///
-/// TODO: Update to the BestDigestType during update() or successful validate()
-struct Secret: Identifiable, Codable, Equatable {
+class Secret: Identifiable, ObservableObject, Codable, Equatable {
 
     /// The id field should be composed of the name and hashed value of a secret --
     /// requiring the name means we can have two secrets with different plaintexts but the same name.
@@ -44,22 +53,22 @@ struct Secret: Identifiable, Codable, Equatable {
     ///
     /// It's important that the UUID not change, so we cannot just do UUID() !
     /// If it changes, views will get new copies of the same data, and iterating won't work.
-    var id: UUID
+    @Published var id: UUID
 
     /// The user-visible name for the secret
-    var name: String
+    @Published var name: String
     
     /// The digest is a String because it's easier for Codable and calculateId, and it's what you get natively from Argon2.
     /// For raw hash like SHA512, just use a string encoding like base64 or hex.
-    var digest: String
+    @Published var digest: String
     
-    var digestType: SupportedDigestType
+    @Published var digestType: SupportedDigestType
     
-    var lastQuizzed: Date?
+    @Published var lastQuizzed: Date?
     
-    var spacedRepetitionCategory: String?
+    @Published var spacedRepetitionCategory: String?
     
-    var plaintext: String?
+    @Published var plaintext: String?
     
     private let sodium = Sodium()
     
@@ -76,22 +85,15 @@ struct Secret: Identifiable, Codable, Equatable {
         try container.encode(spacedRepetitionCategory, forKey: .spacedRepetitionCategory)
     }
     
-    /// The .id will be the raw data behind the .name string plus the .digest data
-    /// This means you can't have two Secret instances in the same list with the same name and digest.
-    static private func calculateId(_ nameIn: String, _ digestIn: String) throws -> UUID {
-        guard let data = (nameIn + digestIn).data(using: .utf8) else {
-            throw SecretParsingError.invalidInputValue
-        }
-        return md5UUID(data: data)
-    }
-    
-    init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(String.self, forKey: .name)
+        let decodedName = try container.decode(String.self, forKey: .name)
+        name = decodedName
         let digestTypeString = try container.decode(String.self, forKey: .digestType)
         digestType = SupportedDigestType(rawValue: digestTypeString)!
-        digest = try container.decode(String.self, forKey: .digest)
-        id = try Secret.calculateId(name, digest)
+        let decodedDigest = try container.decode(String.self, forKey: .digest)
+        digest = decodedDigest
+        id = try calculateSecretId(name: decodedName, digest: decodedDigest)
         lastQuizzed = try container.decodeIfPresent(Date.self, forKey: .lastQuizzed)
         spacedRepetitionCategory = try container.decodeIfPresent(String.self, forKey: .spacedRepetitionCategory)
     }
@@ -107,24 +109,23 @@ struct Secret: Identifiable, Codable, Equatable {
             throw SecretParsingError.invalidInputValue
         }
         digest = newDigest
-        id = try Secret.calculateId(name, digest)
+        id = try calculateSecretId(name: name, digest: newDigest)
         print("Creating new Argon2 secret")
     }
     
     /// Update the hashed value with a new plaintext value, and the current best practice digest type
-    /// TODO: this doesn't work in a struct with our view hierarchy, might need to make this a class that implements ObservedObject
-//    mutating func update(newPlaintext: String) throws {
-//        digestType = .Argon2
-//        guard let newDigest = sodium.pwHash.str(passwd: Array(newPlaintext.utf8), opsLimit: sodium.pwHash.OpsLimitInteractive, memLimit: sodium.pwHash.MemLimitInteractive) else {
-//            throw SecretParsingError.invalidInputValue
-//        }
-//        digest = newDigest
-//    }
+    func update(newPlaintext: String) throws {
+        digestType = .Argon2
+        guard let newDigest = sodium.pwHash.str(passwd: Array(newPlaintext.utf8), opsLimit: sodium.pwHash.OpsLimitInteractive, memLimit: sodium.pwHash.MemLimitInteractive) else {
+            throw SecretParsingError.invalidInputValue
+        }
+        digest = newDigest
+    }
 
     /// Verify that the input plaintext matches this secret's stored plaintext
     /// This might not be a simple string comparison, eg salts.
-    /// TODO: we can't update on validation until we can have mutations, which might require making this a class that implements ObservedObject
-//    mutating func validate(plaintextIn: String) -> Bool {
+    /// Update .lastQuizzed
+    /// If validation is successful, make sure we are using the best digest type and re-hash if not
     func validate(plaintextIn: String) -> Bool {
         guard let inputData = plaintextIn.data(using: .utf8) else {
             return false
@@ -139,16 +140,18 @@ struct Secret: Identifiable, Codable, Equatable {
             validated = sodium.pwHash.strVerify(hash: digest, passwd: Array(plaintextIn.utf8))
         }
         
+        lastQuizzed = Date()
+        
         // If we validate, make sure we are using the latest and most secure storage mechanism.
-//        if validated && (digestType != BestDigestType) {
-//            let logName = name
-//            let logId = id
-//            do {
-//                try update(newPlaintext: plaintextIn)
-//            } catch {
-//                appLogger.error("Could not update plaintext of Secret '\(logName)' (\(logId)) to \(BestDigestType.rawValue): \(error)")
-//            }
-//        }
+        if validated && (digestType != BestDigestType) {
+            let logName = name
+            let logId = id
+            do {
+                try update(newPlaintext: plaintextIn)
+            } catch {
+                appLogger.error("Could not update plaintext of Secret '\(logName)' (\(logId)) to \(BestDigestType.rawValue): \(error)")
+            }
+        }
         
         return validated
     }

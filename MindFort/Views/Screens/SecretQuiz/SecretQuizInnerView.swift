@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SecretQuizInnerView: View {
     /// The secret associated with this view
-    let secret: Secret
+    @Binding var secret: Secret
     
     /// The secret ID for the currently in-view quiz card - maybe this view, or another instance of it
     @Binding var currentSecretId: UUID?
@@ -122,7 +122,7 @@ struct SecretQuizInnerView_Previews: PreviewProvider {
         Group {
             NavigationView {
                 SecretQuizInnerView(
-                    secret: exampleSecrets[0],
+                    secret: .constant(exampleSecrets[0]),
                     currentSecretId: .constant(secretsModel.secrets[0].id),
                     activeView: $activeView,
                     onCorrectPassword: {}
@@ -133,7 +133,7 @@ struct SecretQuizInnerView_Previews: PreviewProvider {
             
             NavigationView {
                 SecretQuizInnerView(
-                    secret: exampleSecrets[0],
+                    secret: .constant(exampleSecrets[0]),
                     currentSecretId: .constant(nil),
                     activeView: $activeView,
                     onCorrectPassword: {}
