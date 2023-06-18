@@ -65,64 +65,63 @@ struct RegularIntervalScheduleControls: View {
 }
 
 
-//struct SpacedRepetitionScheduleControls: View {
-//    @AppStorage("spacedRepetitionIntervalDays") var spacedRepetitionIntervalDays: Int = 1
-//    @AppStorage("spacedRepetitionIntervalsPerDay") var spacedRepetitionIntervalsPerDay: Int = 1
-//
-//    var body: some View {
-//        Group {
-//            Stepper(value: $spacedRepetitionIntervalDays, in: 1...7) {
-//                Text(spacedRepetitionIntervalText)
-//            }
-//            TimeRangePicker()
-//            // TODO: show the time the notification will be delivered
-//            // TODO: if $spacedRepetitionIntervalDays == 1, allow more than one time, and show an Add button at the bottom.
-//        }
-//    }
-//
-//    var spacedRepetitionIntervalText: String {
-//        if spacedRepetitionIntervalDays > 1 {
-//            return "Every \(spacedRepetitionIntervalDays) days"
-//        } else if spacedRepetitionIntervalDays == 1 {
-//            return "Every \(spacedRepetitionIntervalDays) day"
-//        } else {
-//            if spacedRepetitionIntervalsPerDay == 0 {
-//                return "Never"
-//            } else if spacedRepetitionIntervalsPerDay == 1 {
-//                return "Once every day"
-//            } else if spacedRepetitionIntervalsPerDay == 2 {
-//                return "Twice every day"
-//            } else {
-//                return "\(spacedRepetitionIntervalsPerDay) times per day"
-//            }
-//        }
-//    }
-//}
+struct SpacedRepetitionScheduleControls: View {
+    @AppStorage("spacedRepetitionIntervalDays") var spacedRepetitionIntervalDays: Int = 1
+    @AppStorage("spacedRepetitionIntervalsPerDay") var spacedRepetitionIntervalsPerDay: Int = 1
+
+    var body: some View {
+        Group {
+            Stepper(value: $spacedRepetitionIntervalDays, in: 1...7) {
+                Text(spacedRepetitionIntervalText)
+            }
+            TimeRangePicker()
+            // TODO: show the time the notification will be delivered
+            // TODO: if $spacedRepetitionIntervalDays == 1, allow more than one time, and show an Add button at the bottom.
+        }
+    }
+
+    var spacedRepetitionIntervalText: String {
+        if spacedRepetitionIntervalDays > 1 {
+            return "Every \(spacedRepetitionIntervalDays) days"
+        } else if spacedRepetitionIntervalDays == 1 {
+            return "Every \(spacedRepetitionIntervalDays) day"
+        } else {
+            if spacedRepetitionIntervalsPerDay == 0 {
+                return "Never"
+            } else if spacedRepetitionIntervalsPerDay == 1 {
+                return "Once every day"
+            } else if spacedRepetitionIntervalsPerDay == 2 {
+                return "Twice every day"
+            } else {
+                return "\(spacedRepetitionIntervalsPerDay) times per day"
+            }
+        }
+    }
+}
 
 
 struct ScheduleControls: View {
     @EnvironmentObject var notificationsModel: NotificationsViewModel
     @Binding var notificationsAllowed: Bool
-    @AppStorage(MFAStorage.K.scheduleEnabled) var scheduleEnabled: Bool = MFAStorage.D.scheduleEnabled
     @AppStorage(MFAStorage.K.scheduleType) var scheduleType: ScheduleType = MFAStorage.D.scheduleType
 
     var body: some View {
         Section("Schedule") {
             if notificationsAllowed {
-                Toggle(isOn: $scheduleEnabled) {
-                    Text("Enable scheduled reminders")
+                Picker(selection: $scheduleType, label: Text("Schedule type")) {
+                    ForEach(ScheduleType.allCases) { schedType in
+                        Text(schedType.description).tag(schedType)
+                    }
                 }
-                .disabled(!notificationsAllowed)
-                Group {
-                    Picker(selection: $scheduleType, label: Text("Schedule type")) {
-                        ForEach(ScheduleType.allCases) { schedType in
-                            Text(schedType.description).tag(schedType)
-                        }
-                    }
-                    if scheduleType == .daily {
-                        RegularIntervalScheduleControls()
-                            .environmentObject(notificationsModel)
-                    }
+                switch scheduleType {
+                case .disabled:
+                    EmptyView()
+                case .daily:
+                    RegularIntervalScheduleControls()
+                        .environmentObject(notificationsModel)
+                case .spacedRepetition:
+                    SpacedRepetitionScheduleControls()
+                        .environmentObject(notificationsModel)
                 }
             } else {
                 Text("To schedule reminders, please enable notifications in Settings.")
