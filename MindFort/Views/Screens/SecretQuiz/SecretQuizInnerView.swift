@@ -23,7 +23,7 @@ struct SecretQuizInnerView: View {
     @State private var passphraseValid = false
     @State private var passphrase = ""
     
-    @EnvironmentObject var secretsModel: SecretsViewModel
+    @EnvironmentObject var secretsVm: SecretsViewModel
     
     var body: some View {
         ScrollView {
@@ -56,17 +56,17 @@ struct SecretQuizInnerView: View {
         .navigationBarTitle("Pop quiz!")
         .onAppear {
             if currentSecretId == nil {
-                currentSecretId = secretsModel.secrets[0].id
+                currentSecretId = secretsVm.secrets[0].id
             }
             CustomLogger.secretIds(message: "SecretQuizInnerView onAppear: currentSecretId: \(currentSecretId?.uuidString ?? "nil")")
-            for secret in secretsModel.secrets {
+            for secret in secretsVm.secrets {
                 CustomLogger.secretIds(message: " - SecretQuizInnerView onAppear: \(secret.id)")
             }
         }
     }
     
     var currentSecretIndex: Int? {
-        secretsModel.secrets.firstIndex { $0.id == currentSecretId }
+        secretsVm.secrets.firstIndex { $0.id == currentSecretId }
     }
     
     /// True if my .secret property has the same ID as currentSecretId
@@ -114,7 +114,7 @@ struct SecretQuizInnerView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", plaintext: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", plaintext: "showmethemoney"),
         ]
-        let secretsModel = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
+        let secretsPreviewVm = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
         
         /// Just a dummy to make the preview compile - doesn't actually set the focus
         @FocusState var activeView: UUID?
@@ -123,11 +123,10 @@ struct SecretQuizInnerView_Previews: PreviewProvider {
             NavigationView {
                 SecretQuizInnerView(
                     secret: .constant(exampleSecrets[0]),
-                    currentSecretId: .constant(secretsModel.secrets[0].id),
+                    currentSecretId: .constant(secretsPreviewVm.secrets[0].id),
                     activeView: $activeView,
                     onCorrectPassword: {}
                 )
-                .environmentObject(secretsModel)
             }
             .previewDisplayName("Secret 1/2")
             
@@ -138,7 +137,7 @@ struct SecretQuizInnerView_Previews: PreviewProvider {
                     activeView: $activeView,
                     onCorrectPassword: {}
                 )
-                .environmentObject(secretsModel)
+                .environmentObject(secretsPreviewVm)
             }
             .previewDisplayName("Invalid secret")
         }

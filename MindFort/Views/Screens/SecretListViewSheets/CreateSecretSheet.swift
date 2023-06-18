@@ -13,7 +13,7 @@ struct CreateSecretSheet: View {
     @Binding var newSecretValue: String
     @Binding var error: String?
     @FocusState private var newSecretFocusOnNameField: Bool
-    @EnvironmentObject var secretsModel: SecretsViewModel
+    @EnvironmentObject var secretsVm: SecretsViewModel
     @AppStorage(MFAStorage.K.demoMode) var demoMode: Bool = MFAStorage.D.demoMode
 
     var body: some View {
@@ -108,7 +108,7 @@ struct CreateSecretSheet: View {
             return
         }
         if let ns = newSecret {
-            secretsModel.addItem(ns)
+            secretsVm.addItem(ns)
         } else {
             error = "Could not create secret from input"
             feedbackGenerator.notificationOccurred(.error)

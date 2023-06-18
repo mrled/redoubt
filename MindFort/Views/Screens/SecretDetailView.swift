@@ -23,7 +23,7 @@ struct SecretDetailView: View {
     @State private var showingDeleteAlert = false
     @State private var validationWorkItem: DispatchWorkItem?
     @FocusState private var isFocused: Bool
-    @EnvironmentObject var secretsModel: SecretsViewModel
+    @EnvironmentObject var secretsVm: SecretsViewModel
     
     // Delay a bit before notifying the user that their password is .empty or .invalid.
     // A .valid result will happen right away, but for invalid or empty results,
@@ -74,18 +74,18 @@ struct SecretDetailView: View {
     }
     
     var secret: Secret? {
-        secretsModel.secrets.first(where: { $0.id == currentSecretId })
+        secretsVm.secrets.first(where: { $0.id == currentSecretId })
     }
     
     var currentSecretIndex: Int? {
-        secretsModel.secrets.firstIndex { $0.id == currentSecretId }
+        secretsVm.secrets.firstIndex { $0.id == currentSecretId }
     }
     
     var nextSecretId: UUID? {
         guard let currentIndex = currentSecretIndex else { return nil }
-        let nextIndex = secretsModel.secrets.index(after: currentIndex)
-        if nextIndex < secretsModel.secrets.count {
-            return secretsModel.secrets[nextIndex].id
+        let nextIndex = secretsVm.secrets.index(after: currentIndex)
+        if nextIndex < secretsVm.secrets.count {
+            return secretsVm.secrets[nextIndex].id
         } else {
             return nil
         }
@@ -93,9 +93,9 @@ struct SecretDetailView: View {
 
     var previousSecretId: UUID? {
         guard let currentIndex = currentSecretIndex else { return nil }
-        let prevIndex = secretsModel.secrets.index(before: currentIndex)
+        let prevIndex = secretsVm.secrets.index(before: currentIndex)
         if prevIndex >= 0 {
-            return secretsModel.secrets[prevIndex].id
+            return secretsVm.secrets[prevIndex].id
         } else {
             return nil
         }
@@ -116,7 +116,7 @@ struct SecretDetailView: View {
                       message: Text("Are you sure you want to delete this secret? This action cannot be undone."),
                       primaryButton: .destructive(Text("Delete")) {
                           guard let unwrappedSecret = secret else { return }
-                          secretsModel.deleteItem(unwrappedSecret)
+                          secretsVm.deleteItem(unwrappedSecret)
                           let feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
                           feedbackGenerator.impactOccurred()
                       },
@@ -138,7 +138,7 @@ struct SecretDetailView: View {
             }) {
                 Image(systemName: "arrow.right")
             }
-            .disabled(currentSecretIndex == secretsModel.secrets.count - 1)
+            .disabled(currentSecretIndex == secretsVm.secrets.count - 1)
         }
     }
     
@@ -229,16 +229,16 @@ struct SecretDetailView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", plaintext: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", plaintext: "showmethemoney"),
         ]
-        let secretsModel = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
+        let secretsPreviewVm = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
         Group {
             NavigationView {
-                SecretDetailView(currentSecretId: .constant(secretsModel.secrets[0].id))
-                    .environmentObject(secretsModel)
+                SecretDetailView(currentSecretId: .constant(secretsPreviewVm.secrets[0].id))
+                    .environmentObject(secretsPreviewVm)
             }
             .previewDisplayName("Secret 1/2")
             NavigationView {
                 SecretDetailView(currentSecretId: .constant(nil))
-                    .environmentObject(secretsModel)
+                    .environmentObject(secretsPreviewVm)
             }
             .previewDisplayName("Invalid secret")
         }

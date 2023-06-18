@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SecretListView: View {
-    @EnvironmentObject var secretsModel: SecretsViewModel
-    @EnvironmentObject var notificationsModel: NotificationsViewModel
+    @EnvironmentObject var secretsVm: SecretsViewModel
+    @EnvironmentObject var notificationsVm: NotificationsViewModel
     @Binding var openAction: OpenAction?
     @Binding var notificationsAllowed: Bool
     @State private var selectedSecretId: UUID? = nil
@@ -29,10 +29,10 @@ struct SecretListView: View {
     var body: some View {
         NavigationView {
             List {
-                if secretsModel.secrets.count > 0 {
+                if secretsVm.secrets.count > 0 {
                     Section() {
                         NavigationLink(
-                            destination: SecretQuizView(currentSecretId: $quizCurrentSecretId).environmentObject(secretsModel),
+                            destination: SecretQuizView(currentSecretId: $quizCurrentSecretId),
                             tag: OpenAction.startQuiz,
                             selection: $openAction
                         ) {
@@ -40,11 +40,9 @@ struct SecretListView: View {
                         }
                     }
                     Section() {
-                        ForEach(Array(secretsModel.secrets.enumerated()), id: \.element.id) { index, secret in
+                        ForEach(Array(secretsVm.secrets.enumerated()), id: \.element.id) { index, secret in
                             NavigationLink(
-                                destination:
-                                    SecretDetailView(currentSecretId: $selectedSecretId)
-                                    .environmentObject(secretsModel),
+                                destination: SecretDetailView(currentSecretId: $selectedSecretId),
                                 tag: secret.id,
                                 selection: $selectedSecretId
                             ) {
@@ -110,18 +108,16 @@ struct SecretListView: View {
                     newSecretValue: $newSecretValue,
                     error: $error
                 )
-                .environmentObject(secretsModel)
             }
             .sheet(isPresented: $isPresentingSettingsSheet) {
                 SettingsSheet(notificationsAllowed: $notificationsAllowed)
-                    .environmentObject(notificationsModel)
             }
             .sheet(isPresented: $isPresentingOnboardingSheet) {
                 OnboardingSheet(isPresentingOnboardingSheet: $isPresentingOnboardingSheet)
             }
             .onAppear {
-                secretsModel.loadItems()
-                notificationsModel.load()
+                secretsVm.loadItems()
+                notificationsVm.load()
                 if !onboardingHasShownOnce {
                     isPresentingOnboardingSheet = true
                 }
@@ -134,7 +130,7 @@ struct SecretListView: View {
             }
         }
         .onAppear(perform: {
-            for secret in secretsModel.secrets {
+            for secret in secretsVm.secrets {
                 CustomLogger.secretIds(message: " - SecretListView onAppear: \(secret.id)")
             }
             NotificationManager.shared.requestPermission { granted in
@@ -144,7 +140,7 @@ struct SecretListView: View {
     }
     
     func removeSecrets(at offsets: IndexSet) {
-        secretsModel.secrets.remove(atOffsets: offsets)
+        secretsVm.secrets.remove(atOffsets: offsets)
     }
     
     func dismissAllSheets() {
@@ -160,24 +156,25 @@ struct SecretListView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", plaintext: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", plaintext: "showmethemoney"),
         ]
-        let secretsModelTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
-        let notificationsViewModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
+        let secretsPreviewVmTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
+        let secretsPreviewVmZeroSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray([]))
+        let notificationsPreviewVm = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
         Group {
             SecretListView(openAction: .constant(.home), notificationsAllowed: .constant(true))
-                .environmentObject(secretsModelTwoSecrets)
-                .environmentObject(notificationsViewModel)
+                .environmentObject(secretsPreviewVmTwoSecrets)
+                .environmentObject(notificationsPreviewVm)
                 .previewDisplayName("Default values")
             SecretListView(openAction: .constant(.home), notificationsAllowed: .constant(true))
-                .environmentObject(SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray([])))
-                .environmentObject(notificationsViewModel)
+                .environmentObject(secretsPreviewVmZeroSecrets)
+                .environmentObject(notificationsPreviewVm)
                 .previewDisplayName("No secrets")
             SecretListView(
                 openAction: .constant(.home),
                 notificationsAllowed: .constant(true),
                 showOnboarding: true
             )
-            .environmentObject(secretsModelTwoSecrets)
-            .environmentObject(notificationsViewModel)
+            .environmentObject(secretsPreviewVmTwoSecrets)
+            .environmentObject(notificationsPreviewVm)
             .previewDisplayName("Show onboarding")
         }
     }

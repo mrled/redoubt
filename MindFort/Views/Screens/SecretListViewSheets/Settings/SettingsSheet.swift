@@ -23,21 +23,21 @@ enum VisualizationMode: String, Codable, CaseIterable, Identifiable {
 
 
 struct RegularIntervalScheduleControls: View {
-    @EnvironmentObject var notificationsModel: NotificationsViewModel
+    @EnvironmentObject var notificationsVm: NotificationsViewModel
     
     var body: some View {
         Group {
-            if notificationsModel.regularIntervalEntries.count > 0 {
+            if notificationsVm.regularIntervalEntries.count > 0 {
                 // WARNING: you cannot ForEach over a bound array and bind each element to a new child view!!!
                 // If you do, Xcode will give you the most insane errors, and put them on the wrong line.
                 // Instead you have to ForEach over indices, like this:
-                ForEach(notificationsModel.regularIntervalEntries.indices, id: \.self) { index in
+                ForEach(notificationsVm.regularIntervalEntries.indices, id: \.self) { index in
                     let dateBinding = Binding<Date>(
                         get: {
-                            Calendar.current.date(from: notificationsModel.regularIntervalEntries[index]) ?? Date()
+                            Calendar.current.date(from: notificationsVm.regularIntervalEntries[index]) ?? Date()
                         },
                         set: {
-                            notificationsModel.regularIntervalEntries[index] = Calendar.current.dateComponents([.hour, .minute], from: $0)
+                            notificationsVm.regularIntervalEntries[index] = Calendar.current.dateComponents([.hour, .minute], from: $0)
                         }
                     )
                     TimePickerExpandable(date: dateBinding)
@@ -52,27 +52,27 @@ struct RegularIntervalScheduleControls: View {
     }
      
     func addScheduleTime() {
-        notificationsModel.regularIntervalEntries.append(
+        notificationsVm.regularIntervalEntries.append(
             Calendar.current.dateComponents([.hour, .minute], from: Date())
         )
     }
 
     func removeScheduleTime(at offsets: IndexSet) {
         for index in offsets {
-            notificationsModel.regularIntervalEntries.remove(at: index)
+            notificationsVm.regularIntervalEntries.remove(at: index)
         }
     }
 }
 
 
 struct SpacedRepetitionScheduleControls: View {
-    @EnvironmentObject var spacedRepCategoriesVM: SpacedRepCategoriesViewModel
+    @EnvironmentObject var spacedRepCategoriesVm: SpacedRepCategoriesViewModel
 
     var body: some View {
         Group {
             Text("MindFort will prompt you for passwords at these intervals")
                 .foregroundColor(.gray)
-            ForEach(spacedRepCategoriesVM.categories) { category in
+            ForEach(spacedRepCategoriesVm.categories) { category in
                 Text("    \(category.name)")
                     .foregroundColor(.gray)
             }
@@ -84,7 +84,6 @@ struct SpacedRepetitionScheduleControls: View {
 
 
 struct ScheduleControls: View {
-    @EnvironmentObject var notificationsModel: NotificationsViewModel
     @Binding var notificationsAllowed: Bool
     @AppStorage(MFAStorage.K.scheduleType) var scheduleType: ScheduleType = MFAStorage.D.scheduleType
 
@@ -113,10 +112,8 @@ struct ScheduleControls: View {
                     EmptyView()
                 case .daily:
                     RegularIntervalScheduleControls()
-                        .environmentObject(notificationsModel)
                 case .spacedRepetition:
                     SpacedRepetitionScheduleControls()
-                        .environmentObject(notificationsModel)
                 }
             } else {
                 Text("To schedule reminders, please enable notifications in Settings.")
@@ -192,24 +189,22 @@ struct SettingsControls: View {
 }
 
 struct DeveloperOptions: View {
-    @EnvironmentObject var notificationsModel: NotificationsViewModel
-    @EnvironmentObject var secretsModel: SecretsViewModel
+    @EnvironmentObject var secretsVm: SecretsViewModel
     
     var body: some View {
         Section("Developer") {
-            NavigationLink(destination: DevNotifications().environmentObject(notificationsModel)) {
+            NavigationLink(destination: DevNotifications()) {
                 Text("Notifications debugger")
             }
             NavigationLink(destination: DevHapticPlayground()) {
                 Text("Haptic playground")
             }
-            if secretsModel.secrets.isEmpty {
+            if secretsVm.secrets.isEmpty {
                 Text("Add a secret to enable the text field playground")
             } else {
-                NavigationLink(destination: DevTextFieldPlayground(currentSecretId: .constant(secretsModel.secrets[0].id))) {
+                NavigationLink(destination: DevTextFieldPlayground(currentSecretId: .constant(secretsVm.secrets[0].id))) {
                     Text("Text field playground")
                 }
-                .environmentObject(secretsModel)
             }
         }
     }
@@ -224,15 +219,12 @@ struct SettingsSheet: View {
     @AppStorage(MFAStorage.K.visualizationMode) var visualizationMode: VisualizationMode = MFAStorage.D.visualizationMode
     @AppStorage(MFAStorage.K.demoMode) var demoMode: Bool = MFAStorage.D.demoMode
     @State private var scheduleEveryXDays: Int = 1
-    @EnvironmentObject var notificationsModel: NotificationsViewModel
-    @EnvironmentObject var secretsModel: SecretsViewModel
 
     var body: some View {
         VStack {
             NavigationView {
                 List {
                     ScheduleControls(notificationsAllowed: $notificationsAllowed)
-                        .environmentObject(notificationsModel)
                     SettingsControls(
                         showOnboarding: $showOnboarding,
                         showDeveloperOptions: $showDeveloperOptions,
@@ -250,8 +242,6 @@ struct SettingsSheet: View {
                     }
                     if showDeveloperOptions {
                         DeveloperOptions()
-                            .environmentObject(notificationsModel)
-                            .environmentObject(secretsModel)
                     }
                 }
                 .navigationBarTitle("Settings", displayMode: .inline)
@@ -271,33 +261,33 @@ struct SettingsView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", plaintext: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", plaintext: "showmethemoney"),
         ]
-        let secretsModelTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
-        let notificationsVmNoSchedules = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
-        let spacedRepCategoriesVM = SpacedRepCategoriesViewModel()
+        let secretsPreviewVmTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
+        let notificationsPreviewVmNoSchedules = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
+        let spacedRepCategoriesPreviewVm = SpacedRepCategoriesViewModel()
 
         Group {
             Text("Root view")
                 .sheet(isPresented: .constant(true)) {
                     SettingsSheet(notificationsAllowed: .constant(true))
-                        .environmentObject(notificationsVmNoSchedules)
-                        .environmentObject(secretsModelTwoSecrets)
-                        .environmentObject(spacedRepCategoriesVM)
+                        .environmentObject(notificationsPreviewVmNoSchedules)
+                        .environmentObject(secretsPreviewVmTwoSecrets)
+                        .environmentObject(spacedRepCategoriesPreviewVm)
             }
             .previewDisplayName("Simple, no schedules")
             Text("Root view")
                 .sheet(isPresented: .constant(true)) {
                     SettingsSheet(notificationsAllowed: .constant(true))
-                        .environmentObject(notificationsVmNoSchedules)
-                        .environmentObject(secretsModelTwoSecrets)
-                        .environmentObject(spacedRepCategoriesVM)
+                        .environmentObject(notificationsPreviewVmNoSchedules)
+                        .environmentObject(secretsPreviewVmTwoSecrets)
+                        .environmentObject(spacedRepCategoriesPreviewVm)
                 }
                 .previewDisplayName("Simple, one schedule")
             Text("Root view")
                 .sheet(isPresented: .constant(true)) {
                     SettingsSheet(notificationsAllowed: .constant(false))
-                        .environmentObject(notificationsVmNoSchedules)
-                        .environmentObject(secretsModelTwoSecrets)
-                        .environmentObject(spacedRepCategoriesVM)
+                        .environmentObject(notificationsPreviewVmNoSchedules)
+                        .environmentObject(secretsPreviewVmTwoSecrets)
+                        .environmentObject(spacedRepCategoriesPreviewVm)
                 }
                 .previewDisplayName("Notifications not allowed")
         }

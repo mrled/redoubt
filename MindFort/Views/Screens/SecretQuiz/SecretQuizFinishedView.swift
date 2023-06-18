@@ -9,10 +9,10 @@ import SwiftUI
 
 struct SecretQuizFinishedView: View {
     @Binding var finished: Bool
-    @EnvironmentObject var secretsModel: SecretsViewModel
+    @EnvironmentObject var secretsVm: SecretsViewModel
     
     var successText: String {
-        let total = secretsModel.secrets.count
+        let total = secretsVm.secrets.count
         return "Finished \(total)/\(total) secrets"
     }
 
@@ -42,11 +42,11 @@ struct SecretQuizFinishedView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", plaintext: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", plaintext: "showmethemoney"),
         ]
-        let secretsModel = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
+        let secretsPreviewVm = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
         Group {
             NavigationView {
                 SecretQuizFinishedView(finished: .constant(true))
-                .environmentObject(secretsModel)
+                .environmentObject(secretsPreviewVm)
             }
         }
     }

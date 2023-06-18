@@ -18,10 +18,10 @@ struct DevTextFieldPlayground: View {
     @State private var validationWorkItem: DispatchWorkItem?
     @FocusState private var isFocused: Bool
 
-    @EnvironmentObject var secretsModel: SecretsViewModel
+    @EnvironmentObject var secretsVm: SecretsViewModel
 
     var secret: Secret? {
-        secretsModel.secrets.first(where: { $0.id == currentSecretId })
+        secretsVm.secrets.first(where: { $0.id == currentSecretId })
     }
     
     
@@ -195,14 +195,14 @@ struct DevTextFieldPlayground: View {
     }
 
     var currentSecretIndex: Int? {
-        secretsModel.secrets.firstIndex { $0.id == currentSecretId }
+        secretsVm.secrets.firstIndex { $0.id == currentSecretId }
     }
     
     var nextSecretId: UUID? {
         guard let currentIndex = currentSecretIndex else { return nil }
-        let nextIndex = secretsModel.secrets.index(after: currentIndex)
-        if nextIndex < secretsModel.secrets.count {
-            return secretsModel.secrets[nextIndex].id
+        let nextIndex = secretsVm.secrets.index(after: currentIndex)
+        if nextIndex < secretsVm.secrets.count {
+            return secretsVm.secrets[nextIndex].id
         } else {
             return nil
         }
@@ -210,9 +210,9 @@ struct DevTextFieldPlayground: View {
 
     var previousSecretId: UUID? {
         guard let currentIndex = currentSecretIndex else { return nil }
-        let prevIndex = secretsModel.secrets.index(before: currentIndex)
+        let prevIndex = secretsVm.secrets.index(before: currentIndex)
         if prevIndex >= 0 {
-            return secretsModel.secrets[prevIndex].id
+            return secretsVm.secrets[prevIndex].id
         } else {
             return nil
         }
@@ -233,7 +233,7 @@ struct DevTextFieldPlayground: View {
                       message: Text("Are you sure you want to delete this secret? This action cannot be undone."),
                       primaryButton: .destructive(Text("Delete")) {
                           guard let unwrappedSecret = secret else { return }
-                          secretsModel.deleteItem(unwrappedSecret)
+                          secretsVm.deleteItem(unwrappedSecret)
                           let feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
                           feedbackGenerator.impactOccurred()
                       },
@@ -255,7 +255,7 @@ struct DevTextFieldPlayground: View {
             }) {
                 Image(systemName: "arrow.right")
             }
-            .disabled(currentSecretIndex == secretsModel.secrets.count - 1)
+            .disabled(currentSecretIndex == secretsVm.secrets.count - 1)
         }
     }
 
@@ -268,11 +268,11 @@ struct DevTextFieldPlayground_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", plaintext: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", plaintext: "showmethemoney"),
         ]
-        let secretsModel = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
+        let secretsPreviewVm = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
         Text("Root view")
             .sheet(isPresented: .constant(true)) {
-                DevTextFieldPlayground(currentSecretId: .constant(secretsModel.secrets[0].id))
-                    .environmentObject(secretsModel)
+                DevTextFieldPlayground(currentSecretId: .constant(secretsPreviewVm.secrets[0].id))
+                    .environmentObject(secretsPreviewVm)
             }
     }
 }
