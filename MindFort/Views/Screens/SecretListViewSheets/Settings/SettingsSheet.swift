@@ -66,35 +66,18 @@ struct RegularIntervalScheduleControls: View {
 
 
 struct SpacedRepetitionScheduleControls: View {
-    @AppStorage("spacedRepetitionIntervalDays") var spacedRepetitionIntervalDays: Int = 1
-    @AppStorage("spacedRepetitionIntervalsPerDay") var spacedRepetitionIntervalsPerDay: Int = 1
+    @EnvironmentObject var spacedRepCategoriesVM: SpacedRepCategoriesViewModel
 
     var body: some View {
         Group {
-            Stepper(value: $spacedRepetitionIntervalDays, in: 1...7) {
-                Text(spacedRepetitionIntervalText)
+            Text("MindFort will prompt you for passwords at these intervals")
+                .foregroundColor(.gray)
+            ForEach(spacedRepCategoriesVM.categories) { category in
+                Text("    \(category.name)")
+                    .foregroundColor(.gray)
             }
-            TimeRangePicker()
             // TODO: show the time the notification will be delivered
-            // TODO: if $spacedRepetitionIntervalDays == 1, allow more than one time, and show an Add button at the bottom.
-        }
-    }
-
-    var spacedRepetitionIntervalText: String {
-        if spacedRepetitionIntervalDays > 1 {
-            return "Every \(spacedRepetitionIntervalDays) days"
-        } else if spacedRepetitionIntervalDays == 1 {
-            return "Every \(spacedRepetitionIntervalDays) day"
-        } else {
-            if spacedRepetitionIntervalsPerDay == 0 {
-                return "Never"
-            } else if spacedRepetitionIntervalsPerDay == 1 {
-                return "Once every day"
-            } else if spacedRepetitionIntervalsPerDay == 2 {
-                return "Twice every day"
-            } else {
-                return "\(spacedRepetitionIntervalsPerDay) times per day"
-            }
+            // TODO: allow setting a daily time range like 9-5
         }
     }
 }
@@ -291,6 +274,7 @@ struct SettingsView_Previews: PreviewProvider {
         ]
         let secretsModelTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
         let notificationsVmNoSchedules = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
+        let spacedRepCategoriesVM = SpacedRepCategoriesViewModel()
 
         Group {
             Text("Root view")
@@ -298,6 +282,7 @@ struct SettingsView_Previews: PreviewProvider {
                     SettingsSheet(notificationsAllowed: .constant(true))
                         .environmentObject(notificationsVmNoSchedules)
                         .environmentObject(secretsModelTwoSecrets)
+                        .environmentObject(spacedRepCategoriesVM)
             }
             .previewDisplayName("Simple, no schedules")
             Text("Root view")
@@ -305,6 +290,7 @@ struct SettingsView_Previews: PreviewProvider {
                     SettingsSheet(notificationsAllowed: .constant(true))
                         .environmentObject(notificationsVmNoSchedules)
                         .environmentObject(secretsModelTwoSecrets)
+                        .environmentObject(spacedRepCategoriesVM)
                 }
                 .previewDisplayName("Simple, one schedule")
             Text("Root view")
@@ -312,6 +298,7 @@ struct SettingsView_Previews: PreviewProvider {
                     SettingsSheet(notificationsAllowed: .constant(false))
                         .environmentObject(notificationsVmNoSchedules)
                         .environmentObject(secretsModelTwoSecrets)
+                        .environmentObject(spacedRepCategoriesVM)
                 }
                 .previewDisplayName("Notifications not allowed")
         }

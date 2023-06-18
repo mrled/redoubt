@@ -14,6 +14,7 @@ struct ContentView: View {
     @StateObject private var secretsModel: SecretsViewModel
     @StateObject private var notificationsModel = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromPlist())
     @StateObject private var notificationActionHandler = NotificationActionHandler.shared
+    @StateObject private var spacedRepCategoriesVM = SpacedRepCategoriesViewModel()
     @State private var notificationsAllowed: Bool = false
     @Environment(\.scenePhase) var scenePhase
     
@@ -31,6 +32,7 @@ struct ContentView: View {
         SecretListView(openAction: $notificationActionHandler.openAction, notificationsAllowed: $notificationsAllowed)
             .environmentObject(secretsModel)
             .environmentObject(notificationsModel)
+            .environmentObject(spacedRepCategoriesVM)
             .onAppear(perform: {
                 // The action key is set by the notification delegate.
                 // We want to unset it as soon as we launch,
