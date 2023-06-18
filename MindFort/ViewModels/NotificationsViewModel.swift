@@ -10,11 +10,6 @@ import UserNotifications
 import Combine
 
 
-struct NotificationsVmData {
-    var scheduleType: ScheduleType
-}
-
-
 protocol NotificationsVmDataLoader {
     func loadRegularIntervals() -> [DateComponents]
     func saveRegularIntervals(schedules: [DateComponents]) -> ()
