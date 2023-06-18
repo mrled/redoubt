@@ -116,19 +116,6 @@ struct ScheduleControls: View {
             }
         }
     }
-    
-//    /// Combine the hours-and-minutes-only .scheduleTimes.dateComponents
-//    /// with the days/weeks/months controlled by scheduleEveryXDays
-//    var scheduleItems: [DateComponents] {
-//        if !scheduleEnabled {
-//            return []
-//        }
-//        let result: [DateComponents] = []
-//        for time in scheduleTimes {
-//            var component = DateComponents(
-//        }
-//        return result
-//    }
 }
 
 

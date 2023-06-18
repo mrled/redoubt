@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */; };
-		30286CD22A26912800456CA5 /* KeyboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CD12A26912800456CA5 /* KeyboardState.swift */; };
 		30286CD72A269B3600456CA5 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CD62A269B3600456CA5 /* NotificationManager.swift */; };
 		30286CD92A26A59E00456CA5 /* NotificationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CD82A26A59E00456CA5 /* NotificationList.swift */; };
 		30286CDD2A27092B00456CA5 /* TimeRangePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30286CDC2A27092B00456CA5 /* TimeRangePicker.swift */; };
@@ -79,7 +78,6 @@
 
 /* Begin PBXFileReference section */
 		30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecretSheet.swift; sourceTree = "<group>"; };
-		30286CD12A26912800456CA5 /* KeyboardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardState.swift; sourceTree = "<group>"; };
 		30286CD62A269B3600456CA5 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		30286CD82A26A59E00456CA5 /* NotificationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationList.swift; sourceTree = "<group>"; };
 		30286CDC2A27092B00456CA5 /* TimeRangePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRangePicker.swift; sourceTree = "<group>"; };
@@ -166,7 +164,6 @@
 		30286CD02A26910E00456CA5 /* Observables */ = {
 			isa = PBXGroup;
 			children = (
-				30286CD12A26912800456CA5 /* KeyboardState.swift */,
 				30286CD82A26A59E00456CA5 /* NotificationList.swift */,
 				30A814752A38FB340032456C /* NotificationActionHandler.swift */,
 			);
@@ -532,7 +529,6 @@
 			files = (
 				30E3FD152A2AD00C002BFE60 /* SecretQuizView.swift in Sources */,
 				302877FE2A2B917A0065FD0C /* Logging.swift in Sources */,
-				30286CD22A26912800456CA5 /* KeyboardState.swift in Sources */,
 				30A814892A3ECA8F0032456C /* SpacedRepCategoriesViewModel.swift in Sources */,
 				30A814762A38FB340032456C /* NotificationActionHandler.swift in Sources */,
 				30A8147A2A3E05FE0032456C /* UserDefaultsWrappers.swift in Sources */,

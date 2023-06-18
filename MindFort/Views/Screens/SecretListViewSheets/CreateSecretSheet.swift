@@ -14,7 +14,6 @@ struct CreateSecretSheet: View {
     @Binding var error: String?
     @FocusState private var newSecretFocusOnNameField: Bool
     @EnvironmentObject var secretsModel: SecretsViewModel
-    @ObservedObject var keyboardState = KeyboardState()
     @AppStorage(MFAStorage.K.demoMode) var demoMode: Bool = MFAStorage.D.demoMode
 
     var body: some View {
