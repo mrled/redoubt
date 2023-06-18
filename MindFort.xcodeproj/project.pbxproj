@@ -200,13 +200,13 @@
 			path = SecretListViewSheets;
 			sourceTree = "<group>";
 		};
-		304F43582A27C82800FE08DF /* Models */ = {
+		304F43582A27C82800FE08DF /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				30FD05BA2A1C6CA7006AB9CC /* SecretsViewModel.swift */,
 				304F43592A27C85800FE08DF /* NotificationsViewModel.swift */,
 			);
-			path = Models;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		307BEFF12A2950D9004D21AC /* Delegates */ = {
@@ -236,6 +236,36 @@
 			path = Storage;
 			sourceTree = "<group>";
 		};
+		30A814852A3EB20C0032456C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				30EB50CC2A25BF2E007550D3 /* Screens */,
+				30EB50C42A24E94F007550D3 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		30A814862A3EB23A0032456C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				30FD05B42A1C23CF006AB9CC /* Secret.swift */,
+				30C3DDA82A3121940095CB37 /* Hashes.swift */,
+				30DC65E32A32DB0900EDB001 /* BinaryDisplay.swift */,
+				30DC65E52A32DC9B00EDB001 /* BinaryDisplayConstants.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		30A814872A3EB26B0032456C /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */,
+				302877FD2A2B917A0065FD0C /* Logging.swift */,
+				30A8147B2A3E1EFC0032456C /* MindFortContext.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		30C3DDA02A3044DE0095CB37 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -245,16 +275,6 @@
 				30A8146E2A36657D0032456C /* DevSheets */,
 			);
 			path = Settings;
-			sourceTree = "<group>";
-		};
-		30C3DDA12A3120FF0095CB37 /* Binary */ = {
-			isa = PBXGroup;
-			children = (
-				30C3DDA82A3121940095CB37 /* Hashes.swift */,
-				30DC65E32A32DB0900EDB001 /* BinaryDisplay.swift */,
-				30DC65E52A32DC9B00EDB001 /* BinaryDisplayConstants.swift */,
-			);
-			path = Binary;
 			sourceTree = "<group>";
 		};
 		30C3DDAA2A3135EC0095CB37 /* Frameworks */ = {
@@ -274,7 +294,7 @@
 			path = Docs;
 			sourceTree = "<group>";
 		};
-		30EB50C42A24E94F007550D3 /* UtilityViews */ = {
+		30EB50C42A24E94F007550D3 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				30EB50C52A24E978007550D3 /* RowItemWithIcon.swift */,
@@ -288,10 +308,10 @@
 				30A8146C2A365D5F0032456C /* UIKitTextField.swift */,
 				30A814832A3E64B40032456C /* DemoNavbarToolbarButton.swift */,
 			);
-			path = UtilityViews;
+			path = Components;
 			sourceTree = "<group>";
 		};
-		30EB50CC2A25BF2E007550D3 /* Views */ = {
+		30EB50CC2A25BF2E007550D3 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
 				30FD057D2A1BDD5C006AB9CC /* ContentView.swift */,
@@ -300,7 +320,7 @@
 				302878042A2C523E0065FD0C /* SecretListViewSheets */,
 				302878032A2C522C0065FD0C /* SecretQuiz */,
 			);
-			path = Views;
+			path = Screens;
 			sourceTree = "<group>";
 		};
 		30FD056F2A1BDD5C006AB9CC = {
@@ -329,18 +349,14 @@
 			isa = PBXGroup;
 			children = (
 				30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */,
-				30FD05B42A1C23CF006AB9CC /* Secret.swift */,
-				30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */,
-				302877FD2A2B917A0065FD0C /* Logging.swift */,
-				30A8147B2A3E1EFC0032456C /* MindFortContext.swift */,
+				30A814852A3EB20C0032456C /* Views */,
+				304F43582A27C82800FE08DF /* ViewModels */,
+				30A814862A3EB23A0032456C /* Models */,
 				30A814782A3E05B50032456C /* Storage */,
-				30C3DDA12A3120FF0095CB37 /* Binary */,
-				30EB50CC2A25BF2E007550D3 /* Views */,
-				30EB50C42A24E94F007550D3 /* UtilityViews */,
 				30286CD02A26910E00456CA5 /* Observables */,
 				30286CD52A269B2000456CA5 /* Managers */,
-				304F43582A27C82800FE08DF /* Models */,
 				307BEFF12A2950D9004D21AC /* Delegates */,
+				30A814872A3EB26B0032456C /* Helpers */,
 				30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */,
 				30FD05812A1BDD5F006AB9CC /* MindFort.entitlements */,
 				30FD05822A1BDD5F006AB9CC /* Preview Content */,
