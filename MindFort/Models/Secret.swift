@@ -54,12 +54,17 @@ struct Secret: Identifiable, Codable, Equatable {
     var digest: String
     
     var digestType: SupportedDigestType
+    
+    var lastQuizzed: Date?
+    
+    var spacedRepetitionCategory: String?
+    
     var plaintext: String?
     
     private let sodium = Sodium()
     
     enum CodingKeys: String, CodingKey {
-        case name, digest, digestType
+        case name, digest, digestType, lastQuizzed, spacedRepetitionCategory
     }
     
     func encode(to encoder: Encoder) throws {
@@ -67,6 +72,8 @@ struct Secret: Identifiable, Codable, Equatable {
         try container.encode(name, forKey: .name)
         try container.encode(digest, forKey: .digest)
         try container.encode(digestType, forKey: .digestType)
+        try container.encode(lastQuizzed, forKey: .lastQuizzed)
+        try container.encode(spacedRepetitionCategory, forKey: .spacedRepetitionCategory)
     }
     
     /// The .id will be the raw data behind the .name string plus the .digest data
@@ -85,15 +92,18 @@ struct Secret: Identifiable, Codable, Equatable {
         digestType = SupportedDigestType(rawValue: digestTypeString)!
         digest = try container.decode(String.self, forKey: .digest)
         id = try Secret.calculateId(name, digest)
+        lastQuizzed = try container.decodeIfPresent(Date.self, forKey: .lastQuizzed)
+        spacedRepetitionCategory = try container.decodeIfPresent(String.self, forKey: .spacedRepetitionCategory)
     }
     
     /// Create a Secret by value
     /// Hash the value and return only the computed hash, not the secret
-    init(name nameIn: String, plaintext plaintextIn: String) throws {
-        name = nameIn
-        plaintext = plaintextIn
+    init(name: String, plaintext: String, spacedRepetitionCategory: String? = nil) throws {
+        self.name = name
+        self.plaintext = plaintext
+        self.spacedRepetitionCategory = spacedRepetitionCategory
         digestType = .Argon2
-        guard let newDigest = sodium.pwHash.str(passwd: Array(plaintextIn.utf8), opsLimit: sodium.pwHash.OpsLimitInteractive, memLimit: sodium.pwHash.MemLimitInteractive) else {
+        guard let newDigest = sodium.pwHash.str(passwd: Array(plaintext.utf8), opsLimit: sodium.pwHash.OpsLimitInteractive, memLimit: sodium.pwHash.MemLimitInteractive) else {
             throw SecretParsingError.invalidInputValue
         }
         digest = newDigest
