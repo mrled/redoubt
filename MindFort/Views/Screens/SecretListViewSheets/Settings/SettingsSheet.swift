@@ -96,6 +96,18 @@ struct ScheduleControls: View {
                         Text(schedType.description).tag(schedType)
                     }
                 }
+                .onChange(of: scheduleType) { newValue in
+                    // TODO: cancel all notifications from previous selection, add notifications from new selection
+                    switch newValue {
+                    case .disabled:
+                        break
+                    case .daily:
+                        break
+                    case .spacedRepetition:
+                        break
+                    }
+                }
+
                 switch scheduleType {
                 case .disabled:
                     EmptyView()
