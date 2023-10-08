@@ -20,6 +20,8 @@
 		307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */; };
 		307BEFF82A29B090004D21AC /* Roadmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF72A29B090004D21AC /* Roadmap.swift */; };
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
+		308B6D0A2AD349D9008A5857 /* ScheduleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308B6D092AD349D9008A5857 /* ScheduleType.swift */; };
+		308B6D0C2AD34DB0008A5857 /* NotificationHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308B6D0B2AD34DB0008A5857 /* NotificationHelpers.swift */; };
 		30A8146D2A365D5F0032456C /* UIKitTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A8146C2A365D5F0032456C /* UIKitTextField.swift */; };
 		30A814702A3665EB0032456C /* DevNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A8146F2A3665EB0032456C /* DevNotifications.swift */; };
 		30A814722A3665F80032456C /* DevHapticPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814712A3665F80032456C /* DevHapticPlayground.swift */; };
@@ -92,6 +94,8 @@
 		307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		307BEFF72A29B090004D21AC /* Roadmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Roadmap.swift; sourceTree = "<group>"; };
 		308025092A23B32300491DEA /* SecretDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretDetailView.swift; sourceTree = "<group>"; };
+		308B6D092AD349D9008A5857 /* ScheduleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleType.swift; sourceTree = "<group>"; };
+		308B6D0B2AD34DB0008A5857 /* NotificationHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelpers.swift; sourceTree = "<group>"; };
 		30A8146B2A33DAC40032456C /* Visualizations.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Visualizations.md; sourceTree = "<group>"; };
 		30A8146C2A365D5F0032456C /* UIKitTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTextField.swift; sourceTree = "<group>"; };
 		30A8146F2A3665EB0032456C /* DevNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevNotifications.swift; sourceTree = "<group>"; };
@@ -253,6 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				30FD05B42A1C23CF006AB9CC /* Secret.swift */,
+				308B6D092AD349D9008A5857 /* ScheduleType.swift */,
 				30A814902A400E200032456C /* SecretCollection.swift */,
 				30A8148C2A400D370032456C /* SpacedRepetitionCategory.swift */,
 				30C3DDA82A3121940095CB37 /* Hashes.swift */,
@@ -268,6 +273,7 @@
 				30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */,
 				302877FD2A2B917A0065FD0C /* Logging.swift */,
 				30A8147B2A3E1EFC0032456C /* MindFortContext.swift */,
+				308B6D0B2AD34DB0008A5857 /* NotificationHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -535,6 +541,7 @@
 			files = (
 				30E3FD152A2AD00C002BFE60 /* SecretQuizView.swift in Sources */,
 				302877FE2A2B917A0065FD0C /* Logging.swift in Sources */,
+				308B6D0C2AD34DB0008A5857 /* NotificationHelpers.swift in Sources */,
 				30A814912A400E200032456C /* SecretCollection.swift in Sources */,
 				30A814762A38FB340032456C /* NotificationActionHandler.swift in Sources */,
 				30A8147A2A3E05FE0032456C /* UserDefaultsWrappers.swift in Sources */,
@@ -547,6 +554,7 @@
 				307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */,
 				307BEFEE2A28071D004D21AC /* TimePickerExpandable.swift in Sources */,
 				30A814702A3665EB0032456C /* DevNotifications.swift in Sources */,
+				308B6D0A2AD349D9008A5857 /* ScheduleType.swift in Sources */,
 				30FD057E2A1BDD5C006AB9CC /* ContentView.swift in Sources */,
 				304F435A2A27C85800FE08DF /* NotificationsViewModel.swift in Sources */,
 				307BEFF82A29B090004D21AC /* Roadmap.swift in Sources */,
