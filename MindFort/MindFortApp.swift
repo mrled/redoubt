@@ -27,15 +27,14 @@ struct MindFortApp: App {
 
     @StateObject private var secretsVm: SecretsViewModel
     @StateObject private var notificationsVm = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromPlist())
-    @StateObject private var spacedRepCategoriesVm = SpacedRepCategoriesViewModel()
     
     init() {
         // We can't reference the class demoMode variable here because, we're in the initializer. bleh
         let initDemoMode = MFUDStorage().demoMode
         if initDemoMode {
-            _secretsVm = StateObject(wrappedValue: SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist(secretsPlist: MFFStorage().secretsDemoPlist)))
+            _secretsVm = StateObject(wrappedValue: SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist(collectionPlist: MFFStorage().secretsDemoPlist)))
         } else {
-            _secretsVm = StateObject(wrappedValue: SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist(secretsPlist: MFFStorage().secretsUserPlist)))
+            _secretsVm = StateObject(wrappedValue: SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist(collectionPlist: MFFStorage().secretsUserPlist)))
         }
     }
 
@@ -44,7 +43,6 @@ struct MindFortApp: App {
             ContentView()
                 .environmentObject(secretsVm)
                 .environmentObject(notificationsVm)
-                .environmentObject(spacedRepCategoriesVm)
         }
     }
 }

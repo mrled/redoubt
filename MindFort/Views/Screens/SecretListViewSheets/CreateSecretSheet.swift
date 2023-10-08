@@ -108,7 +108,7 @@ struct CreateSecretSheet: View {
             return
         }
         if let ns = newSecret {
-            secretsVm.addItem(ns)
+            secretsVm.addSecret(ns)
         } else {
             error = "Could not create secret from input"
             feedbackGenerator.notificationOccurred(.error)

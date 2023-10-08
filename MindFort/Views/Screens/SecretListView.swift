@@ -156,8 +156,10 @@ struct SecretListView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", plaintext: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", plaintext: "showmethemoney"),
         ]
-        let secretsPreviewVmTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
-        let secretsPreviewVmZeroSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray([]))
+        let exampleCollectionTwoSecrets = SecretCollection(secrets: exampleSecrets, regularIntervalNotifications: [], oneTimeNotifications: [], spacedRepetitionCategories: [])
+        let secretsPreviewVmTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleCollectionTwoSecrets))
+        let exampleCollectionZeroSecrets = SecretCollection(secrets: [], regularIntervalNotifications: [], oneTimeNotifications: [], spacedRepetitionCategories: [])
+        let secretsPreviewVmZeroSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleCollectionZeroSecrets))
         let notificationsPreviewVm = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
         Group {
             SecretListView(openAction: .constant(.home), notificationsAllowed: .constant(true))

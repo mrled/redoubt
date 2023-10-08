@@ -66,13 +66,13 @@ struct RegularIntervalScheduleControls: View {
 
 
 struct SpacedRepetitionScheduleControls: View {
-    @EnvironmentObject var spacedRepCategoriesVm: SpacedRepCategoriesViewModel
+    @EnvironmentObject var secretsVm: SecretsViewModel
 
     var body: some View {
         Group {
             Text("MindFort will prompt you for passwords at these intervals")
                 .foregroundColor(.gray)
-            ForEach(spacedRepCategoriesVm.categories) { category in
+            ForEach(secretsVm.spacedRepetitionCategories) { category in
                 Text("    \(category.name)")
                     .foregroundColor(.gray)
             }
@@ -261,9 +261,9 @@ struct SettingsView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", plaintext: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", plaintext: "showmethemoney"),
         ]
-        let secretsPreviewVmTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
+        let exampleCollection = SecretCollection(secrets: exampleSecrets, regularIntervalNotifications: [], oneTimeNotifications: [], spacedRepetitionCategories: [])
+        let secretsPreviewVmTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleCollection))
         let notificationsPreviewVmNoSchedules = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
-        let spacedRepCategoriesPreviewVm = SpacedRepCategoriesViewModel()
 
         Group {
             Text("Root view")
@@ -271,7 +271,6 @@ struct SettingsView_Previews: PreviewProvider {
                     SettingsSheet(notificationsAllowed: .constant(true))
                         .environmentObject(notificationsPreviewVmNoSchedules)
                         .environmentObject(secretsPreviewVmTwoSecrets)
-                        .environmentObject(spacedRepCategoriesPreviewVm)
             }
             .previewDisplayName("Simple, no schedules")
             Text("Root view")
@@ -279,7 +278,6 @@ struct SettingsView_Previews: PreviewProvider {
                     SettingsSheet(notificationsAllowed: .constant(true))
                         .environmentObject(notificationsPreviewVmNoSchedules)
                         .environmentObject(secretsPreviewVmTwoSecrets)
-                        .environmentObject(spacedRepCategoriesPreviewVm)
                 }
                 .previewDisplayName("Simple, one schedule")
             Text("Root view")
@@ -287,7 +285,6 @@ struct SettingsView_Previews: PreviewProvider {
                     SettingsSheet(notificationsAllowed: .constant(false))
                         .environmentObject(notificationsPreviewVmNoSchedules)
                         .environmentObject(secretsPreviewVmTwoSecrets)
-                        .environmentObject(spacedRepCategoriesPreviewVm)
                 }
                 .previewDisplayName("Notifications not allowed")
         }

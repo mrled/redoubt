@@ -116,7 +116,7 @@ struct SecretDetailView: View {
                       message: Text("Are you sure you want to delete this secret? This action cannot be undone."),
                       primaryButton: .destructive(Text("Delete")) {
                           guard let unwrappedSecret = secret else { return }
-                          secretsVm.deleteItem(unwrappedSecret)
+                          secretsVm.removeSecret(unwrappedSecret)
                           let feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
                           feedbackGenerator.impactOccurred()
                       },
@@ -229,7 +229,8 @@ struct SecretDetailView_Previews: PreviewProvider {
             try! Secret(name: "Secure passphrase", plaintext: "password"),
             try! Secret(name: "Bitcoin wallet passphrase", plaintext: "showmethemoney"),
         ]
-        let secretsPreviewVm = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleSecrets))
+        let exampleCollection = SecretCollection(secrets: exampleSecrets, regularIntervalNotifications: [], oneTimeNotifications: [], spacedRepetitionCategories: [])
+        let secretsPreviewVm = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleCollection))
         Group {
             NavigationView {
                 SecretDetailView(currentSecretId: .constant(secretsPreviewVm.secrets[0].id))
