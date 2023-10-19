@@ -26,7 +26,6 @@ struct MindFortApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     @StateObject private var secretsVm: SecretsViewModel
-    @StateObject private var notificationsVm = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromPlist())
     
     init() {
         // We can't reference the class demoMode variable here because, we're in the initializer. bleh
@@ -42,7 +41,6 @@ struct MindFortApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(secretsVm)
-                .environmentObject(notificationsVm)
         }
     }
 }

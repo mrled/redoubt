@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SecretListView: View {
     @EnvironmentObject var secretsVm: SecretsViewModel
-    @EnvironmentObject var notificationsVm: NotificationsViewModel
     @Binding var openAction: OpenAction?
     @Binding var notificationsAllowed: Bool
     @State private var selectedSecretId: UUID? = nil
@@ -117,7 +116,6 @@ struct SecretListView: View {
             }
             .onAppear {
                 secretsVm.loadItems()
-                notificationsVm.load()
                 if !onboardingHasShownOnce {
                     isPresentingOnboardingSheet = true
                 }
@@ -160,15 +158,12 @@ struct SecretListView_Previews: PreviewProvider {
         let secretsPreviewVmTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleCollectionTwoSecrets))
         let exampleCollectionZeroSecrets = SecretCollection(secrets: [], regularIntervalNotifications: [], oneTimeNotifications: [], spacedRepetitionCategories: [])
         let secretsPreviewVmZeroSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleCollectionZeroSecrets))
-        let notificationsPreviewVm = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
         Group {
             SecretListView(openAction: .constant(.home), notificationsAllowed: .constant(true))
                 .environmentObject(secretsPreviewVmTwoSecrets)
-                .environmentObject(notificationsPreviewVm)
                 .previewDisplayName("Default values")
             SecretListView(openAction: .constant(.home), notificationsAllowed: .constant(true))
                 .environmentObject(secretsPreviewVmZeroSecrets)
-                .environmentObject(notificationsPreviewVm)
                 .previewDisplayName("No secrets")
             SecretListView(
                 openAction: .constant(.home),
@@ -176,7 +171,6 @@ struct SecretListView_Previews: PreviewProvider {
                 showOnboarding: true
             )
             .environmentObject(secretsPreviewVmTwoSecrets)
-            .environmentObject(notificationsPreviewVm)
             .previewDisplayName("Show onboarding")
         }
     }

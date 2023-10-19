@@ -23,21 +23,21 @@ enum VisualizationMode: String, Codable, CaseIterable, Identifiable {
 
 
 struct RegularIntervalScheduleControls: View {
-    @EnvironmentObject var notificationsVm: NotificationsViewModel
+    @EnvironmentObject var secretsVm: SecretsViewModel
     
     var body: some View {
         Group {
-            if notificationsVm.regularIntervalEntries.count > 0 {
+            if secretsVm.regularIntervalNotifications.count > 0 {
                 // WARNING: you cannot ForEach over a bound array and bind each element to a new child view!!!
                 // If you do, Xcode will give you the most insane errors, and put them on the wrong line.
                 // Instead you have to ForEach over indices, like this:
-                ForEach(notificationsVm.regularIntervalEntries.indices, id: \.self) { index in
+                ForEach(secretsVm.regularIntervalNotifications.indices, id: \.self) { index in
                     let dateBinding = Binding<Date>(
                         get: {
-                            Calendar.current.date(from: notificationsVm.regularIntervalEntries[index]) ?? Date()
+                            Calendar.current.date(from: secretsVm.regularIntervalNotifications[index]) ?? Date()
                         },
                         set: {
-                            notificationsVm.regularIntervalEntries[index] = Calendar.current.dateComponents([.hour, .minute], from: $0)
+                            secretsVm.regularIntervalNotifications[index] = Calendar.current.dateComponents([.hour, .minute], from: $0)
                         }
                     )
                     TimePickerExpandable(date: dateBinding)
@@ -52,14 +52,14 @@ struct RegularIntervalScheduleControls: View {
     }
      
     func addScheduleTime() {
-        notificationsVm.regularIntervalEntries.append(
+        secretsVm.regularIntervalNotifications.append(
             Calendar.current.dateComponents([.hour, .minute], from: Date())
         )
     }
 
     func removeScheduleTime(at offsets: IndexSet) {
         for index in offsets {
-            notificationsVm.regularIntervalEntries.remove(at: index)
+            secretsVm.regularIntervalNotifications.remove(at: index)
         }
     }
 }
@@ -262,29 +262,25 @@ struct SettingsView_Previews: PreviewProvider {
             try! Secret(name: "Bitcoin wallet passphrase", plaintext: "showmethemoney"),
         ]
         let exampleCollection = SecretCollection(secrets: exampleSecrets, regularIntervalNotifications: [], oneTimeNotifications: [], spacedRepetitionCategories: [])
-        let secretsPreviewVmTwoSecrets = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleCollection))
-        let notificationsPreviewVmNoSchedules = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
+        let secretsPreviewVmTwoSecretsNoSchedules = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleCollection))
 
         Group {
             Text("Root view")
                 .sheet(isPresented: .constant(true)) {
                     SettingsSheet(notificationsAllowed: .constant(true))
-                        .environmentObject(notificationsPreviewVmNoSchedules)
-                        .environmentObject(secretsPreviewVmTwoSecrets)
+                        .environmentObject(secretsPreviewVmTwoSecretsNoSchedules)
             }
             .previewDisplayName("Simple, no schedules")
             Text("Root view")
                 .sheet(isPresented: .constant(true)) {
                     SettingsSheet(notificationsAllowed: .constant(true))
-                        .environmentObject(notificationsPreviewVmNoSchedules)
-                        .environmentObject(secretsPreviewVmTwoSecrets)
+                        .environmentObject(secretsPreviewVmTwoSecretsNoSchedules)
                 }
                 .previewDisplayName("Simple, one schedule")
             Text("Root view")
                 .sheet(isPresented: .constant(true)) {
                     SettingsSheet(notificationsAllowed: .constant(false))
-                        .environmentObject(notificationsPreviewVmNoSchedules)
-                        .environmentObject(secretsPreviewVmTwoSecrets)
+                        .environmentObject(secretsPreviewVmTwoSecretsNoSchedules)
                 }
                 .previewDisplayName("Notifications not allowed")
         }

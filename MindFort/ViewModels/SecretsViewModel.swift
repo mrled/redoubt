@@ -10,6 +10,8 @@ import Combine
 
 
 class SecretsViewModel: ObservableObject {
+    /// The type of notification schedule
+    @Published var scheduleType: ScheduleType = .daily
 
     /// All secrets that the user has entered
     @Published var secrets: [Secret] = [] {
@@ -49,8 +51,11 @@ class SecretsViewModel: ObservableObject {
     
     /// We listen to changes to UserDefaults using NotificationManager
     /// Keep track of cancellables from NotificationManager here
-//    private var cancellables = Set<AnyCancellable>()
     var cancellables: [ObjectIdentifier : AnyCancellable] = [:]
+    /// It's easier to keep track of cancellables for regularIntervalsNotifications and oneTimeNotifications in separate arrays
+    private var regularIntervalsNotificationsCancellables = Set<AnyCancellable>()
+    private var oneTimeNotificationsCancellables = Set<AnyCancellable>()
+
     
     /// An implementation of the DataLoader protocol lets us swap out data storage.
     /// When the app is running, we use a plist; in tests and preview functions we can use a simple array backend.
@@ -97,6 +102,24 @@ class SecretsViewModel: ObservableObject {
             // We don't get the new value for demoMode
             self?.userDefaultsDidChange()
         }
+        
+        // These subscritions handle making the change in the Notification Center when we change entries
+        // We store these in the cancellables property, so they are valid for the lifetime of the SecretsViewModel.
+        // ([weak self] prevents a memory leak with automatic reference counting.)
+        // These are passed by value so we can just use the simpler @Published and don't need to deal with them in setupPublishers()
+        $regularIntervalNotifications
+            .sink { [weak self] _ in
+                appLogger.debug("SecretsViewModel $regularIntervalEntries .sink: noticed change, reregistering...")
+                self?.reregisterAllNotifications()
+            }
+            .store(in: &regularIntervalsNotificationsCancellables)
+        $oneTimeNotifications
+            .sink { [weak self] _ in
+                appLogger.debug("SecretsViewModel $oneTimeEntries .sink: noticed change, reregistering...")
+                self?.reregisterAllNotifications()
+            }
+            .store(in: &oneTimeNotificationsCancellables)
+
 
         loadItems()
         setupPublishers()
@@ -206,6 +229,41 @@ class SecretsViewModel: ObservableObject {
         }
     }
     
+    
+    // MARK: - One Time Notifications
+    
+    func addOneTimeNotification(_ dateComponents: DateComponents, completion: @escaping () -> Void) {
+        oneTimeNotifications.append(dateComponents)
+        saveItems()
+        reregisterAllNotifications()
+        completion()
+    }
+
+    func deleteOneTimeNotification(_ dateComponents: DateComponents) {
+        if let index = oneTimeNotifications.firstIndex(of: dateComponents) {
+            oneTimeNotifications.remove(at: index)
+            saveItems()
+            reregisterAllNotifications()
+        }
+    }
+    
+    // MARK: - Regular Interval Notifications
+    
+    func addRegularIntervalNotification(_ dateComponents: DateComponents, completion: @escaping () -> Void) {
+        regularIntervalNotifications.append(dateComponents)
+        saveItems()
+        reregisterAllNotifications()
+        completion()
+    }
+
+    func deleteRegularIntervalNotification(_ dateComponents: DateComponents) {
+        if let index = regularIntervalNotifications.firstIndex(of: dateComponents) {
+            regularIntervalNotifications.remove(at: index)
+            saveItems()
+            reregisterAllNotifications()
+        }
+    }
+    
     func saveItems() {
         let collection = SecretCollection(
             secrets: secrets,
@@ -233,5 +291,32 @@ class SecretsViewModel: ObservableObject {
         
         dataLoader.deleteAllData()
         setupPublishers()
+        
+        reregisterAllNotifications()
     }
+    
+    /// Remove all notifications from the Notification Center for the app, and register all notifications in this view model.
+    /// Uses the view model as the source of truth.
+    func reregisterAllNotifications() {
+        // Don't do anything if the user hasn't granted us notification permissions
+        NotificationManager.shared.requestPermission { granted in
+            if granted {
+                appLogger.debug("reregisterAllNotifications: granted permission to notify, registering...")
+                NotificationManager.shared.removeNotifications()
+                
+                for schedule in self.regularIntervalNotifications {
+                    addQuizNotification(components: schedule, prefix: "RegularIntervals-", repeats: true)
+                }
+                
+                for components in self.oneTimeNotifications {
+                    addQuizNotification(components: components, prefix: "OneTime-", repeats: false)
+                }
+                
+                // TODO: configure spaced repetition notifications here!!
+            } else {
+                appLogger.debug("reregisterAllNotifications: not granted permission to notify, nothing we can do")
+            }
+        }
+    }
+
 }

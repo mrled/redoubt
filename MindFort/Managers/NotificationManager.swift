@@ -28,7 +28,13 @@ class NotificationManager {
     }
 
     /// Register a notification to be presented by any trigger
-    func registerNotification(title: String, body: String, identifier: String, trigger: UNNotificationTrigger) {
+    /// Arguments:
+    /// title:              Title to display to user
+    /// body:           Notification body to display to user
+    /// identifier:     A unique identifier for storing the notification, see notificationIdentifierFromDateComponents()
+    /// trigger:        A trigger for when the notification should run
+    /// completion: A function that will run on the main thread if the notification is added successfully
+    func registerNotification(title: String, body: String, identifier: String, trigger: UNNotificationTrigger, completion: @escaping () -> Void) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
@@ -39,6 +45,10 @@ class NotificationManager {
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 appLogger.error("Failed to register notification with error: \(error.localizedDescription)")
+            } else {
+                DispatchQueue.main.async {
+                    completion()
+                }
             }
         }
     }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DevNotifications: View {
-    @EnvironmentObject var notificationsVm: NotificationsViewModel
+    @EnvironmentObject var secretsVm: SecretsViewModel
     @StateObject var notificationList = NotificationList()
     
     var body: some View {
@@ -33,13 +33,13 @@ struct DevNotifications: View {
                 }
 
                 Section(header: Text("Notifications from ViewModel")) {
-                    if (notificationsVm.regularIntervalEntries + notificationsVm.oneTimeEntries).isEmpty {
+                    if (secretsVm.regularIntervalNotifications + secretsVm.oneTimeNotifications).isEmpty {
                         Text("No saved notifications")
                     } else {
-                        ForEach(notificationsVm.regularIntervalEntries, id: \.description) { entry in
+                        ForEach(secretsVm.regularIntervalNotifications, id: \.description) { entry in
                             Text("Interval: " + entry.description)
                         }
-                        ForEach(notificationsVm.oneTimeEntries, id: \.description) { entry in
+                        ForEach(secretsVm.oneTimeNotifications, id: \.description) { entry in
                             Text("One time: " + entry.description)
                         }
                     }
@@ -47,19 +47,23 @@ struct DevNotifications: View {
                 
                 Section(header: Text("Notification actions")) {
                     Button("Refresh Notifications") {
+                        secretsVm.loadItems()
                         notificationList.refreshNotifications()
-                        notificationsVm.load()
                     }
                     Button("Notify me when minute changes") {
-                        notificationsVm.oneTimeEntries.append(Calendar.current.dateComponents([.hour, .minute], from: Date().addingTimeInterval(60)))
+                        secretsVm.oneTimeNotifications.append(Calendar.current.dateComponents([.hour, .minute], from: Date().addingTimeInterval(60)))
+                        secretsVm.loadItems()
                         notificationList.refreshNotifications()
                     }
                     Button("Notify me in five seconds") {
-                        notificationsVm.oneTimeEntries.append(Calendar.current.dateComponents([.hour, .minute, .second], from: Date().addingTimeInterval(5)))
+                        secretsVm.oneTimeNotifications.append(Calendar.current.dateComponents([.hour, .minute, .second], from: Date().addingTimeInterval(5)))
+                        secretsVm.loadItems()
                         notificationList.refreshNotifications()
                     }
                     Button("Delete All Notifications") {
-                        notificationsVm.deleteAllData()
+                        secretsVm.oneTimeNotifications = []
+                        secretsVm.regularIntervalNotifications = []
+                        secretsVm.saveItems()
                         notificationList.refreshNotifications()
                     }
                     .foregroundColor(.red)
@@ -72,12 +76,13 @@ struct DevNotifications: View {
 }
 
 struct DevNotifications_Previews: PreviewProvider {
-    static let notificationsPreviewVm = NotificationsViewModel(dataLoader: NotificationsVmDataLoaderFromArray(schedules: [], oneTimes: []))
+    static let exampleEmptyCollection = SecretCollection(secrets: [], regularIntervalNotifications: [], oneTimeNotifications: [], spacedRepetitionCategories: [])
+    static let secretsPreviewVm = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleEmptyCollection))
     static var previews: some View {
         Text("Root view")
             .sheet(isPresented: .constant(true)) {
                 DevNotifications()
-                    .environmentObject(notificationsPreviewVm)
+                    .environmentObject(secretsPreviewVm)
             }
     }
 }
