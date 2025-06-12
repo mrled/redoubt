@@ -30,19 +30,21 @@ struct MindFortApp: App {
     init() {
         // We can't reference the class demoMode variable here because, we're in the initializer. bleh
         var storage = MFUDStorage()
+        let fileStorage = MFFStorage()
 
         // Auto-enable demo mode in simulator
         #if targetEnvironment(simulator)
-        if !storage.demoMode {
-            storage.demoMode = true
-        }
+        storage.demoMode = true
+        let demoDataLoader = SecretsVmDataLoaderFromPlist(collectionPlist: fileStorage.secretsDemoPlist)
+        // In the sim, a fresh batch of demo secrets on every app launch.
+        demoDataLoader.save(collection: getDemoModeSecretCollection())
         #endif
 
         let initDemoMode = storage.demoMode
         if initDemoMode {
-            _secretsVm = StateObject(wrappedValue: SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist(collectionPlist: MFFStorage().secretsDemoPlist)))
+            _secretsVm = StateObject(wrappedValue: SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist(collectionPlist: fileStorage.secretsDemoPlist)))
         } else {
-            _secretsVm = StateObject(wrappedValue: SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist(collectionPlist: MFFStorage().secretsUserPlist)))
+            _secretsVm = StateObject(wrappedValue: SecretsViewModel(dataLoader: SecretsVmDataLoaderFromPlist(collectionPlist: fileStorage.secretsUserPlist)))
         }
     }
 
