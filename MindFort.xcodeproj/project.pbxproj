@@ -111,6 +111,7 @@
 		30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		30DC65E32A32DB0900EDB001 /* BinaryDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDisplay.swift; sourceTree = "<group>"; };
 		30DC65E52A32DC9B00EDB001 /* BinaryDisplayConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDisplayConstants.swift; sourceTree = "<group>"; };
+		30DE2D7A2DFAFCE700F9E465 /* NOTES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = NOTES.md; sourceTree = "<group>"; };
 		30E3FD142A2AD00C002BFE60 /* SecretQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretQuizView.swift; sourceTree = "<group>"; };
 		30E3FD162A2AD6EF002BFE60 /* H4XX0RC0D3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H4XX0RC0D3.swift; sourceTree = "<group>"; };
 		30E3FD182A2AF538002BFE60 /* SecretQuizInnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretQuizInnerView.swift; sourceTree = "<group>"; };
@@ -280,6 +281,7 @@
 		30E816632A2EEE16002CDD75 /* Docs */ = {
 			isa = PBXGroup;
 			children = (
+				30DE2D7A2DFAFCE700F9E465 /* NOTES.md */,
 				30E816642A2EEE43002CDD75 /* Ideas.md */,
 				30E816652A2EEE64002CDD75 /* Encryption.md */,
 				30A8146B2A33DAC40032456C /* Visualizations.md */,
