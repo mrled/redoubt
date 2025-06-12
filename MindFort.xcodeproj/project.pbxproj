@@ -39,6 +39,15 @@
 		30DC65E22A32D07E00EDB001 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 30DC65E12A32D07E00EDB001 /* Sodium */; };
 		30DC65E42A32DB0900EDB001 /* BinaryDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DC65E32A32DB0900EDB001 /* BinaryDisplay.swift */; };
 		30DC65E62A32DC9B00EDB001 /* BinaryDisplayConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DC65E52A32DC9B00EDB001 /* BinaryDisplayConstants.swift */; };
+		30DE2D7C2DFB02EE00F9E465 /* SecretsNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D7B2DFB02EE00F9E465 /* SecretsNotificationManager.swift */; };
+		30DE2D7D2DFB02EE00F9E465 /* SecretsNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D7B2DFB02EE00F9E465 /* SecretsNotificationManager.swift */; };
+		30DE2D7E2DFB02EE00F9E465 /* SecretsNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D7B2DFB02EE00F9E465 /* SecretsNotificationManager.swift */; };
+		30DE2D802DFB031E00F9E465 /* SecretsPublisherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D7F2DFB031E00F9E465 /* SecretsPublisherManager.swift */; };
+		30DE2D812DFB031E00F9E465 /* SecretsPublisherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D7F2DFB031E00F9E465 /* SecretsPublisherManager.swift */; };
+		30DE2D822DFB031E00F9E465 /* SecretsPublisherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D7F2DFB031E00F9E465 /* SecretsPublisherManager.swift */; };
+		30DE2D842DFB032C00F9E465 /* SecretsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D832DFB032C00F9E465 /* SecretsDataManager.swift */; };
+		30DE2D852DFB032C00F9E465 /* SecretsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D832DFB032C00F9E465 /* SecretsDataManager.swift */; };
+		30DE2D862DFB032C00F9E465 /* SecretsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D832DFB032C00F9E465 /* SecretsDataManager.swift */; };
 		30E3FD152A2AD00C002BFE60 /* SecretQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD142A2AD00C002BFE60 /* SecretQuizView.swift */; };
 		30E3FD172A2AD6EF002BFE60 /* H4XX0RC0D3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD162A2AD6EF002BFE60 /* H4XX0RC0D3.swift */; };
 		30E3FD192A2AF538002BFE60 /* SecretQuizInnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD182A2AF538002BFE60 /* SecretQuizInnerView.swift */; };
@@ -112,6 +121,9 @@
 		30DC65E32A32DB0900EDB001 /* BinaryDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDisplay.swift; sourceTree = "<group>"; };
 		30DC65E52A32DC9B00EDB001 /* BinaryDisplayConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDisplayConstants.swift; sourceTree = "<group>"; };
 		30DE2D7A2DFAFCE700F9E465 /* NOTES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = NOTES.md; sourceTree = "<group>"; };
+		30DE2D7B2DFB02EE00F9E465 /* SecretsNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsNotificationManager.swift; sourceTree = "<group>"; };
+		30DE2D7F2DFB031E00F9E465 /* SecretsPublisherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsPublisherManager.swift; sourceTree = "<group>"; };
+		30DE2D832DFB032C00F9E465 /* SecretsDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsDataManager.swift; sourceTree = "<group>"; };
 		30E3FD142A2AD00C002BFE60 /* SecretQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretQuizView.swift; sourceTree = "<group>"; };
 		30E3FD162A2AD6EF002BFE60 /* H4XX0RC0D3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H4XX0RC0D3.swift; sourceTree = "<group>"; };
 		30E3FD182A2AF538002BFE60 /* SecretQuizInnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretQuizInnerView.swift; sourceTree = "<group>"; };
@@ -171,6 +183,7 @@
 		30286CD02A26910E00456CA5 /* Observables */ = {
 			isa = PBXGroup;
 			children = (
+				30DE2D7F2DFB031E00F9E465 /* SecretsPublisherManager.swift */,
 				30286CD82A26A59E00456CA5 /* NotificationList.swift */,
 				30A814752A38FB340032456C /* NotificationActionHandler.swift */,
 			);
@@ -181,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				30286CD62A269B3600456CA5 /* NotificationManager.swift */,
+				30DE2D7B2DFB02EE00F9E465 /* SecretsNotificationManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -231,6 +245,7 @@
 		30A814782A3E05B50032456C /* Storage */ = {
 			isa = PBXGroup;
 			children = (
+				30DE2D832DFB032C00F9E465 /* SecretsDataManager.swift */,
 				302877FF2A2B921A0065FD0C /* Storage.swift */,
 				30A814792A3E05FE0032456C /* UserDefaultsWrappers.swift */,
 			);
@@ -546,6 +561,8 @@
 				30FD057C2A1BDD5C006AB9CC /* MindFortApp.swift in Sources */,
 				30286CD72A269B3600456CA5 /* NotificationManager.swift in Sources */,
 				302878002A2B921A0065FD0C /* Storage.swift in Sources */,
+				30DE2D7E2DFB02EE00F9E465 /* SecretsNotificationManager.swift in Sources */,
+				30DE2D802DFB031E00F9E465 /* SecretsPublisherManager.swift in Sources */,
 				30FD05B72A1C2BAD006AB9CC /* SecretListView.swift in Sources */,
 				30EB50C62A24E978007550D3 /* RowItemWithIcon.swift in Sources */,
 				30A8147C2A3E1EFC0032456C /* MindFortContext.swift in Sources */,
@@ -553,6 +570,7 @@
 				302878022A2BCFD00065FD0C /* HackerCodeRawString.swift in Sources */,
 				302878062A2C52AF0065FD0C /* OnboardingSheet.swift in Sources */,
 				30E3FD192A2AF538002BFE60 /* SecretQuizInnerView.swift in Sources */,
+				30DE2D862DFB032C00F9E465 /* SecretsDataManager.swift in Sources */,
 				30DC65E42A32DB0900EDB001 /* BinaryDisplay.swift in Sources */,
 				30FD05B92A1C2DC9006AB9CC /* MindFortUtilities.swift in Sources */,
 				30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */,
@@ -574,7 +592,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30DE2D7D2DFB02EE00F9E465 /* SecretsNotificationManager.swift in Sources */,
 				30FD058E2A1BDD5F006AB9CC /* MindFortTests.swift in Sources */,
+				30DE2D842DFB032C00F9E465 /* SecretsDataManager.swift in Sources */,
+				30DE2D812DFB031E00F9E465 /* SecretsPublisherManager.swift in Sources */,
 				30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -583,7 +604,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30DE2D7C2DFB02EE00F9E465 /* SecretsNotificationManager.swift in Sources */,
 				30FD059A2A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift in Sources */,
+				30DE2D852DFB032C00F9E465 /* SecretsDataManager.swift in Sources */,
+				30DE2D822DFB031E00F9E465 /* SecretsPublisherManager.swift in Sources */,
 				30FD05982A1BDD5F006AB9CC /* MindFortUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

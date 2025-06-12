@@ -44,7 +44,7 @@ MindFort/
 ├── Storage/                       # Data persistence
 │   ├── Storage.swift              # Storage configuration
 │   └── UserDefaultsWrappers.swift
-├── Managers/                      # System integration
+├── Managers/                      # System sssintegration
 │   └── NotificationManager.swift  # iOS notification handling
 ├── Helpers/                       # Utility functions
 └── Observables/                   # Reactive state objects
