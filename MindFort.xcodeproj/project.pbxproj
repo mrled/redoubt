@@ -197,10 +197,15 @@
 		302878042A2C523E0065FD0C /* SecretListViewSheets */ = {
 			isa = PBXGroup;
 			children = (
+				30EB50C22A24E534007550D3 /* AboutSheet.swift */,
 				30286CCC2A25C08B00456CA5 /* CreateSecretSheet.swift */,
-				302878052A2C52AF0065FD0C /* OnboardingSheet.swift */,
 				30A814812A3E5DE70032456C /* DemoModeSheet.swift */,
-				30C3DDA02A3044DE0095CB37 /* Settings */,
+				30A814712A3665F80032456C /* DevHapticPlayground.swift */,
+				30A8146F2A3665EB0032456C /* DevNotifications.swift */,
+				30A814732A37BDA30032456C /* DevTextFieldPlayground.swift */,
+				302878052A2C52AF0065FD0C /* OnboardingSheet.swift */,
+				307BEFF72A29B090004D21AC /* Roadmap.swift */,
+				30EB50BF2A246D96007550D3 /* SettingsSheet.swift */,
 			);
 			path = SecretListViewSheets;
 			sourceTree = "<group>";
@@ -220,16 +225,6 @@
 				307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */,
 			);
 			path = Delegates;
-			sourceTree = "<group>";
-		};
-		30A8146E2A36657D0032456C /* DevSheets */ = {
-			isa = PBXGroup;
-			children = (
-				30A8146F2A3665EB0032456C /* DevNotifications.swift */,
-				30A814712A3665F80032456C /* DevHapticPlayground.swift */,
-				30A814732A37BDA30032456C /* DevTextFieldPlayground.swift */,
-			);
-			path = DevSheets;
 			sourceTree = "<group>";
 		};
 		30A814782A3E05B50032456C /* Storage */ = {
@@ -273,17 +268,6 @@
 				308B6D0B2AD34DB0008A5857 /* NotificationHelpers.swift */,
 			);
 			path = Helpers;
-			sourceTree = "<group>";
-		};
-		30C3DDA02A3044DE0095CB37 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				30EB50BF2A246D96007550D3 /* SettingsSheet.swift */,
-				30EB50C22A24E534007550D3 /* AboutSheet.swift */,
-				307BEFF72A29B090004D21AC /* Roadmap.swift */,
-				30A8146E2A36657D0032456C /* DevSheets */,
-			);
-			path = Settings;
 			sourceTree = "<group>";
 		};
 		30C3DDAA2A3135EC0095CB37 /* Frameworks */ = {
