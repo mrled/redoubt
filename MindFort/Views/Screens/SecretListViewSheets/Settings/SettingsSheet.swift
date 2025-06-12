@@ -134,7 +134,6 @@ struct SettingsControls: View {
     @Binding var enableEasterEggs: Bool
     @Binding var visualizationMode: VisualizationMode
     @Binding var demoMode: Bool
-    @State private var isPresentingDemoModeSheet = false
     var body: some View {
         Section("Settings") {
             // Not sure if it's the Toggles or what, but the spacing doesn't match RowItemWithIcon.
@@ -170,7 +169,7 @@ struct SettingsControls: View {
                     Text("Show developer options")
                 }
             }
-            Button(action: { isPresentingDemoModeSheet = true }) {
+            NavigationLink(destination: DemoModeSheet(isPresentingDemoMode: .constant(false))) {
                 HStack {
                     Image(systemName: "tv")
                         .frame(width: 32, height: 32)
@@ -181,9 +180,6 @@ struct SettingsControls: View {
                     }
                 }
             }
-        }
-        .sheet(isPresented: $isPresentingDemoModeSheet) {
-            DemoModeSheet(isPresentingDemoMode: $isPresentingDemoModeSheet)
         }
     }
 }
