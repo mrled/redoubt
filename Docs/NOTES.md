@@ -38,16 +38,16 @@ MindFort/
 │   ├── SecretsViewModel.swift     # Main view model
 │   └── SecretsVmDataLoaders.swift # Storage abstraction
 ├── Models/                        # Data models
-│   ├── Secret.swift              # Core secret model with encryption
-│   ├── SecretCollection.swift    # Collection wrapper
+│   ├── Secret.swift               # Core secret model with encryption
+│   ├── SecretCollection.swift     # Collection wrapper
 │   └── SpacedRepetitionCategory.swift
 ├── Storage/                       # Data persistence
-│   ├── Storage.swift             # Storage configuration
+│   ├── Storage.swift              # Storage configuration
 │   └── UserDefaultsWrappers.swift
 ├── Managers/                      # System integration
-│   └── NotificationManager.swift # iOS notification handling
+│   └── NotificationManager.swift  # iOS notification handling
 ├── Helpers/                       # Utility functions
-└── Observables/                  # Reactive state objects
+└── Observables/                   # Reactive state objects
 ```
 
 ## Key Functionality Locations
