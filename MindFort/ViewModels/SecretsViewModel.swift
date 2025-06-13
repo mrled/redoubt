@@ -73,12 +73,6 @@ class SecretsViewModel: ObservableObject {
         publisherManager.setupPublishers()
     }
     
-    /// Delegate to publisherManager for setting up publishers
-    func setupPublishers() {
-        publisherManager.setupPublishers()
-    }
-    
-    
     func addSecret(_ secret: Secret) {
         secrets.append(secret)
         publisherManager.addSecretPublisher(secret)
@@ -101,45 +95,6 @@ class SecretsViewModel: ObservableObject {
             spacedRepetitionCategories.remove(at: index)
             publisherManager.removeSpacedRepCategoryPublisher(category)
         }
-    }
-    
-    
-    // MARK: - One Time Notifications
-    
-    func addOneTimeNotification(_ dateComponents: DateComponents, completion: @escaping () -> Void) {
-        notificationManager.addOneTimeNotification(dateComponents, completion: completion)
-    }
-
-    func deleteOneTimeNotification(_ dateComponents: DateComponents) {
-        notificationManager.deleteOneTimeNotification(dateComponents)
-    }
-    
-    // MARK: - Regular Interval Notifications
-    
-    func addRegularIntervalNotification(_ dateComponents: DateComponents, completion: @escaping () -> Void) {
-        notificationManager.addRegularIntervalNotification(dateComponents, completion: completion)
-    }
-
-    func deleteRegularIntervalNotification(_ dateComponents: DateComponents) {
-        notificationManager.deleteRegularIntervalNotification(dateComponents)
-    }
-    
-    func saveItems() {
-        dataManager.saveItems()
-    }
-    
-    func loadItems() {
-        dataManager.loadItems()
-    }
-    
-    func deleteAllData() {
-        dataManager.deleteAllData()
-    }
-    
-    /// Remove all notifications from the Notification Center for the app, and register all notifications in this view model.
-    /// Uses the view model as the source of truth.
-    func reregisterAllNotifications() {
-        notificationManager.reregisterAllNotifications()
     }
 
 }

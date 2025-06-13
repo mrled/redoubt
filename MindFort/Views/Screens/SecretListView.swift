@@ -115,7 +115,7 @@ struct SecretListView: View {
                 OnboardingSheet(isPresentingOnboardingSheet: $isPresentingOnboardingSheet)
             }
             .onAppear {
-                secretsVm.loadItems()
+                secretsVm.dataManager.loadItems()
                 if !onboardingHasShownOnce {
                     isPresentingOnboardingSheet = true
                 }

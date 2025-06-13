@@ -57,7 +57,7 @@ class SecretsNotificationManager: ObservableObject {
     func addOneTimeNotification(_ dateComponents: DateComponents, completion: @escaping () -> Void) {
         guard let viewModel = secretsViewModel else { return }
         viewModel.oneTimeNotifications.append(dateComponents)
-        viewModel.saveItems()
+        viewModel.dataManager.saveItems()
         reregisterAllNotifications()
         completion()
     }
@@ -66,7 +66,7 @@ class SecretsNotificationManager: ObservableObject {
         guard let viewModel = secretsViewModel else { return }
         if let index = viewModel.oneTimeNotifications.firstIndex(of: dateComponents) {
             viewModel.oneTimeNotifications.remove(at: index)
-            viewModel.saveItems()
+            viewModel.dataManager.saveItems()
             reregisterAllNotifications()
         }
     }
@@ -76,7 +76,7 @@ class SecretsNotificationManager: ObservableObject {
     func addRegularIntervalNotification(_ dateComponents: DateComponents, completion: @escaping () -> Void) {
         guard let viewModel = secretsViewModel else { return }
         viewModel.regularIntervalNotifications.append(dateComponents)
-        viewModel.saveItems()
+        viewModel.dataManager.saveItems()
         reregisterAllNotifications()
         completion()
     }
@@ -85,7 +85,7 @@ class SecretsNotificationManager: ObservableObject {
         guard let viewModel = secretsViewModel else { return }
         if let index = viewModel.regularIntervalNotifications.firstIndex(of: dateComponents) {
             viewModel.regularIntervalNotifications.remove(at: index)
-            viewModel.saveItems()
+            viewModel.dataManager.saveItems()
             reregisterAllNotifications()
         }
     }

@@ -105,7 +105,7 @@ class SecretsDataManager: ObservableObject {
         viewModel.regularIntervalNotifications = collection.regularIntervalNotifications
         viewModel.oneTimeNotifications = collection.oneTimeNotifications
         viewModel.spacedRepetitionCategories = collection.spacedRepetitionCategories
-        viewModel.setupPublishers()
+        viewModel.publisherManager.setupPublishers()
     }
     
     func deleteAllData() {
@@ -116,7 +116,7 @@ class SecretsDataManager: ObservableObject {
         viewModel.spacedRepetitionCategories = []
         
         dataLoader.deleteAllData()
-        viewModel.setupPublishers()
+        viewModel.publisherManager.setupPublishers()
         
         viewModel.notificationManager.reregisterAllNotifications()
     }

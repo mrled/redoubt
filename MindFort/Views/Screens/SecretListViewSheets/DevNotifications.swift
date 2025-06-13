@@ -47,23 +47,23 @@ struct DevNotifications: View {
                 
                 Section(header: Text("Notification actions")) {
                     Button("Refresh Notifications") {
-                        secretsVm.loadItems()
+                        secretsVm.dataManager.loadItems()
                         notificationList.refreshNotifications()
                     }
                     Button("Notify me when minute changes") {
                         secretsVm.oneTimeNotifications.append(Calendar.current.dateComponents([.hour, .minute], from: Date().addingTimeInterval(60)))
-                        secretsVm.loadItems()
+                        secretsVm.dataManager.loadItems()
                         notificationList.refreshNotifications()
                     }
                     Button("Notify me in five seconds") {
                         secretsVm.oneTimeNotifications.append(Calendar.current.dateComponents([.hour, .minute, .second], from: Date().addingTimeInterval(5)))
-                        secretsVm.loadItems()
+                        secretsVm.dataManager.loadItems()
                         notificationList.refreshNotifications()
                     }
                     Button("Delete All Notifications") {
                         secretsVm.oneTimeNotifications = []
                         secretsVm.regularIntervalNotifications = []
-                        secretsVm.saveItems()
+                        secretsVm.dataManager.saveItems()
                         notificationList.refreshNotifications()
                     }
                     .foregroundColor(.red)
