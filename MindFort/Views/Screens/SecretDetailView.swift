@@ -154,7 +154,7 @@ struct SecretDetailView: View {
         
         /// We can't capture the whole struct in the thread closures,
         /// which means we have to copy specific variables we want to use in the closures into tmp variables rather than relying on instance properties.
-        var tmpSecret = secret
+        let tmpSecret = secret
         let tmpPassphrase = passphrase
         let tmpValidationDelaySecs = validationDelaySecs
         

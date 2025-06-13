@@ -136,18 +136,14 @@ struct DevTextFieldPlayground: View {
     
     private func validatePassphraseFAST() {
         validationWorkItem?.cancel()
-        var tmpPreviousCompletedValidity = previousCompletedValidity
-        if validity != .validating {
-            tmpPreviousCompletedValidity = validity
-        }
         validity = .validating
-        var tmpPreviousMessage = message ?? ""
+        let tmpPreviousMessage = message ?? ""
         let tmpPassphrase = passphrase
         let tmpSecretName = secret?.name ?? "(nil)"
         let tmpSecret = secret
 
         let item = DispatchWorkItem {
-            var tmpMessage = "Trying \(tmpPassphrase.count) letters for \(tmpSecretName)"
+            let tmpMessage = "Trying \(tmpPassphrase.count) letters for \(tmpSecretName)"
             var tmpValidity: PasswordValidationStatus
             if tmpSecret?.validate(plaintextIn: tmpPassphrase) ?? false {
                 tmpValidity = .valid
