@@ -39,14 +39,8 @@
 		30DC65E22A32D07E00EDB001 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 30DC65E12A32D07E00EDB001 /* Sodium */; };
 		30DC65E42A32DB0900EDB001 /* BinaryDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DC65E32A32DB0900EDB001 /* BinaryDisplay.swift */; };
 		30DC65E62A32DC9B00EDB001 /* BinaryDisplayConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DC65E52A32DC9B00EDB001 /* BinaryDisplayConstants.swift */; };
-		30DE2D7C2DFB02EE00F9E465 /* SecretsNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D7B2DFB02EE00F9E465 /* SecretsNotificationManager.swift */; };
-		30DE2D7D2DFB02EE00F9E465 /* SecretsNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D7B2DFB02EE00F9E465 /* SecretsNotificationManager.swift */; };
 		30DE2D7E2DFB02EE00F9E465 /* SecretsNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D7B2DFB02EE00F9E465 /* SecretsNotificationManager.swift */; };
 		30DE2D802DFB031E00F9E465 /* SecretsPublisherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D7F2DFB031E00F9E465 /* SecretsPublisherManager.swift */; };
-		30DE2D812DFB031E00F9E465 /* SecretsPublisherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D7F2DFB031E00F9E465 /* SecretsPublisherManager.swift */; };
-		30DE2D822DFB031E00F9E465 /* SecretsPublisherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D7F2DFB031E00F9E465 /* SecretsPublisherManager.swift */; };
-		30DE2D842DFB032C00F9E465 /* SecretsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D832DFB032C00F9E465 /* SecretsDataManager.swift */; };
-		30DE2D852DFB032C00F9E465 /* SecretsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D832DFB032C00F9E465 /* SecretsDataManager.swift */; };
 		30DE2D862DFB032C00F9E465 /* SecretsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE2D832DFB032C00F9E465 /* SecretsDataManager.swift */; };
 		30E3FD152A2AD00C002BFE60 /* SecretQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD142A2AD00C002BFE60 /* SecretQuizView.swift */; };
 		30E3FD172A2AD6EF002BFE60 /* H4XX0RC0D3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E3FD162A2AD6EF002BFE60 /* H4XX0RC0D3.swift */; };
@@ -592,10 +586,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30DE2D7D2DFB02EE00F9E465 /* SecretsNotificationManager.swift in Sources */,
 				30FD058E2A1BDD5F006AB9CC /* MindFortTests.swift in Sources */,
-				30DE2D842DFB032C00F9E465 /* SecretsDataManager.swift in Sources */,
-				30DE2D812DFB031E00F9E465 /* SecretsPublisherManager.swift in Sources */,
 				30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -604,10 +595,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30DE2D7C2DFB02EE00F9E465 /* SecretsNotificationManager.swift in Sources */,
 				30FD059A2A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift in Sources */,
-				30DE2D852DFB032C00F9E465 /* SecretsDataManager.swift in Sources */,
-				30DE2D822DFB031E00F9E465 /* SecretsPublisherManager.swift in Sources */,
 				30FD05982A1BDD5F006AB9CC /* MindFortUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
