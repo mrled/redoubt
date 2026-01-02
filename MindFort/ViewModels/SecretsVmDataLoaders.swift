@@ -1,10 +1,3 @@
-//
-//  SecretsVmDataLoaders.swift
-//  MindFort
-//
-//  Created by Micah R Ledbetter on 2023-06-18.
-//
-
 import Foundation
 
 

@@ -1,10 +1,3 @@
-//
-//  ReadSizeModifier.swift
-//  MindFort
-//
-//  Created by Micah R Ledbetter on 2023-06-04.
-//
-
 import SwiftUI
 
 

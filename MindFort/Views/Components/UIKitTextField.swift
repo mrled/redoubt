@@ -1,10 +1,3 @@
-//
-//  MFTextField.swift
-//  MindFort
-//
-//  Created by Micah R Ledbetter on 2023-06-11.
-//
-
 import SwiftUI
 
 

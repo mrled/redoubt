@@ -1,10 +1,3 @@
-//
-//  DemoNavbarToolbarButton.swift
-//  MindFort
-//
-//  Created by Micah R Ledbetter on 2023-06-17.
-//
-
 import SwiftUI
 
 struct DemoNavbarToolbarButton: View {

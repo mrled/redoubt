@@ -1,10 +1,3 @@
-//
-//  SecretQuizView.swift
-//  MindFort
-//
-//  Created by Micah R Ledbetter on 2023-06-02.
-//
-
 import SwiftUI
 
 struct SecretQuizInnerView: View {

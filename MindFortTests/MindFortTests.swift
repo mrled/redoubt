@@ -1,10 +1,3 @@
-//
-//  MindFortTests.swift
-//  MindFortTests
-//
-//  Created by Micah R Ledbetter on 2023-05-22.
-//
-
 import XCTest
 
 final class MindFortTests: XCTestCase {

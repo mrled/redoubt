@@ -1,10 +1,3 @@
-//
-//  CryptographyTests.swift
-//  MindFortTests
-//
-//  Created by Micah R Ledbetter on 2023-06-07.
-//
-
 import XCTest
 
 import Sodium

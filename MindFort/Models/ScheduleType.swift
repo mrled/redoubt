@@ -1,10 +1,3 @@
-//
-//  ScheduleType.swift
-//  MindFort
-//
-//  Created by Micah R Ledbetter on 2023-10-08.
-//
-
 import Foundation
 
 

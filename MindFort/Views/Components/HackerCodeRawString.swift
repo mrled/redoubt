@@ -1,10 +1,3 @@
-//
-//  HackerCodeRawString.swift
-//  MindFort
-//
-//  Created by Micah R Ledbetter on 2023-06-03.
-//
-
 import SwiftUI
 
 struct HackerCodeRawString: View {
