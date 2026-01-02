@@ -2,7 +2,7 @@ import XCTest
 
 import Sodium
 
-@testable import MindFort
+@testable import Redoubt
 
 final class CryptographyTests: XCTestCase {
     

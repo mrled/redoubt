@@ -1,6 +1,6 @@
 import XCTest
 
-final class MindFortUITestsLaunchTests: XCTestCase {
+final class RedoubtUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

@@ -56,12 +56,12 @@
 		30FD057E2A1BDD5C006AB9CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD057D2A1BDD5C006AB9CC /* ContentView.swift */; };
 		30FD05802A1BDD5F006AB9CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */; };
 		30FD05842A1BDD5F006AB9CC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30FD05832A1BDD5F006AB9CC /* Preview Assets.xcassets */; };
-		30FD058E2A1BDD5F006AB9CC /* MindFortTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD058D2A1BDD5F006AB9CC /* MindFortTests.swift */; };
-		30FD05982A1BDD5F006AB9CC /* MindFortUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05972A1BDD5F006AB9CC /* MindFortUITests.swift */; };
-		30FD059A2A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05992A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift */; };
+		30FD058E2A1BDD5F006AB9CC /* RedoubtTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD058D2A1BDD5F006AB9CC /* RedoubtTests.swift */; };
+		30FD05982A1BDD5F006AB9CC /* RedoubtUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05972A1BDD5F006AB9CC /* RedoubtUITests.swift */; };
+		30FD059A2A1BDD5F006AB9CC /* RedoubtUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05992A1BDD5F006AB9CC /* RedoubtUITestsLaunchTests.swift */; };
 		30FD05B52A1C23CF006AB9CC /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05B42A1C23CF006AB9CC /* Secret.swift */; };
 		30FD05B72A1C2BAD006AB9CC /* SecretListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05B62A1C2BAD006AB9CC /* SecretListView.swift */; };
-		30FD05B92A1C2DC9006AB9CC /* MindFortUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */; };
+		30FD05B92A1C2DC9006AB9CC /* RedoubtUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05B82A1C2DC9006AB9CC /* RedoubtUtilities.swift */; };
 		30FD05BB2A1C6CA7006AB9CC /* SecretsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05BA2A1C6CA7006AB9CC /* SecretsViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -137,13 +137,13 @@
 		30FD05812A1BDD5F006AB9CC /* Redoubt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Redoubt.entitlements; sourceTree = "<group>"; };
 		30FD05832A1BDD5F006AB9CC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		30FD05892A1BDD5F006AB9CC /* RedoubtTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RedoubtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		30FD058D2A1BDD5F006AB9CC /* MindFortTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortTests.swift; sourceTree = "<group>"; };
+		30FD058D2A1BDD5F006AB9CC /* RedoubtTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedoubtTests.swift; sourceTree = "<group>"; };
 		30FD05932A1BDD5F006AB9CC /* RedoubtUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RedoubtUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		30FD05972A1BDD5F006AB9CC /* MindFortUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortUITests.swift; sourceTree = "<group>"; };
-		30FD05992A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		30FD05972A1BDD5F006AB9CC /* RedoubtUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedoubtUITests.swift; sourceTree = "<group>"; };
+		30FD05992A1BDD5F006AB9CC /* RedoubtUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedoubtUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		30FD05B42A1C23CF006AB9CC /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		30FD05B62A1C2BAD006AB9CC /* SecretListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretListView.swift; sourceTree = "<group>"; };
-		30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortUtilities.swift; sourceTree = "<group>"; };
+		30FD05B82A1C2DC9006AB9CC /* RedoubtUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedoubtUtilities.swift; sourceTree = "<group>"; };
 		30FD05BA2A1C6CA7006AB9CC /* SecretsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -272,7 +272,7 @@
 		30A814872A3EB26B0032456C /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				30FD05B82A1C2DC9006AB9CC /* MindFortUtilities.swift */,
+				30FD05B82A1C2DC9006AB9CC /* RedoubtUtilities.swift */,
 				302877FD2A2B917A0065FD0C /* Logging.swift */,
 				30A8147B2A3E1EFC0032456C /* MindFortContext.swift */,
 				308B6D0B2AD34DB0008A5857 /* NotificationHelpers.swift */,
@@ -379,7 +379,7 @@
 		30FD058C2A1BDD5F006AB9CC /* RedoubtTests */ = {
 			isa = PBXGroup;
 			children = (
-				30FD058D2A1BDD5F006AB9CC /* MindFortTests.swift */,
+				30FD058D2A1BDD5F006AB9CC /* RedoubtTests.swift */,
 				30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */,
 			);
 			path = RedoubtTests;
@@ -388,8 +388,8 @@
 		30FD05962A1BDD5F006AB9CC /* RedoubtUITests */ = {
 			isa = PBXGroup;
 			children = (
-				30FD05972A1BDD5F006AB9CC /* MindFortUITests.swift */,
-				30FD05992A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift */,
+				30FD05972A1BDD5F006AB9CC /* RedoubtUITests.swift */,
+				30FD05992A1BDD5F006AB9CC /* RedoubtUITestsLaunchTests.swift */,
 			);
 			path = RedoubtUITests;
 			sourceTree = "<group>";
@@ -566,7 +566,7 @@
 				30E3FD192A2AF538002BFE60 /* SecretQuizInnerView.swift in Sources */,
 				30DE2D862DFB032C00F9E465 /* SecretsDataManager.swift in Sources */,
 				30DC65E42A32DB0900EDB001 /* BinaryDisplay.swift in Sources */,
-				30FD05B92A1C2DC9006AB9CC /* MindFortUtilities.swift in Sources */,
+				30FD05B92A1C2DC9006AB9CC /* RedoubtUtilities.swift in Sources */,
 				30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */,
 				30A814842A3E64B40032456C /* DemoNavbarToolbarButton.swift in Sources */,
 				30A814722A3665F80032456C /* DevHapticPlayground.swift in Sources */,
@@ -586,7 +586,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30FD058E2A1BDD5F006AB9CC /* MindFortTests.swift in Sources */,
+				30FD058E2A1BDD5F006AB9CC /* RedoubtTests.swift in Sources */,
 				30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -595,8 +595,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30FD059A2A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift in Sources */,
-				30FD05982A1BDD5F006AB9CC /* MindFortUITests.swift in Sources */,
+				30FD059A2A1BDD5F006AB9CC /* RedoubtUITestsLaunchTests.swift in Sources */,
+				30FD05982A1BDD5F006AB9CC /* RedoubtUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
