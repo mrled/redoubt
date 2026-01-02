@@ -130,15 +130,15 @@
 		30EB50C22A24E534007550D3 /* AboutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSheet.swift; sourceTree = "<group>"; };
 		30EB50C52A24E978007550D3 /* RowItemWithIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowItemWithIcon.swift; sourceTree = "<group>"; };
 		30EB50C72A24E9FA007550D3 /* RowItemUrlWithIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowItemUrlWithIcon.swift; sourceTree = "<group>"; };
-		30FD05782A1BDD5C006AB9CC /* MindFort.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MindFort.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		30FD05782A1BDD5C006AB9CC /* Redoubt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redoubt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortApp.swift; sourceTree = "<group>"; };
 		30FD057D2A1BDD5C006AB9CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		30FD05812A1BDD5F006AB9CC /* MindFort.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MindFort.entitlements; sourceTree = "<group>"; };
 		30FD05832A1BDD5F006AB9CC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		30FD05892A1BDD5F006AB9CC /* MindFortTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MindFortTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		30FD05892A1BDD5F006AB9CC /* RedoubtTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RedoubtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		30FD058D2A1BDD5F006AB9CC /* MindFortTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortTests.swift; sourceTree = "<group>"; };
-		30FD05932A1BDD5F006AB9CC /* MindFortUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MindFortUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		30FD05932A1BDD5F006AB9CC /* RedoubtUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RedoubtUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		30FD05972A1BDD5F006AB9CC /* MindFortUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortUITests.swift; sourceTree = "<group>"; };
 		30FD05992A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		30FD05B42A1C23CF006AB9CC /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
@@ -342,9 +342,9 @@
 		30FD05792A1BDD5C006AB9CC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				30FD05782A1BDD5C006AB9CC /* MindFort.app */,
-				30FD05892A1BDD5F006AB9CC /* MindFortTests.xctest */,
-				30FD05932A1BDD5F006AB9CC /* MindFortUITests.xctest */,
+				30FD05782A1BDD5C006AB9CC /* Redoubt.app */,
+				30FD05892A1BDD5F006AB9CC /* RedoubtTests.xctest */,
+				30FD05932A1BDD5F006AB9CC /* RedoubtUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -397,9 +397,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		30FD05772A1BDD5C006AB9CC /* MindFort */ = {
+		30FD05772A1BDD5C006AB9CC /* Redoubt */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 30FD059D2A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "MindFort" */;
+			buildConfigurationList = 30FD059D2A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "Redoubt" */;
 			buildPhases = (
 				30FD05742A1BDD5C006AB9CC /* Sources */,
 				30FD05752A1BDD5C006AB9CC /* Frameworks */,
@@ -409,18 +409,18 @@
 			);
 			dependencies = (
 			);
-			name = MindFort;
+			name = Redoubt;
 			packageProductDependencies = (
 				30DC65DF2A32D07E00EDB001 /* Clibsodium */,
 				30DC65E12A32D07E00EDB001 /* Sodium */,
 			);
 			productName = MindFort;
-			productReference = 30FD05782A1BDD5C006AB9CC /* MindFort.app */;
+			productReference = 30FD05782A1BDD5C006AB9CC /* Redoubt.app */;
 			productType = "com.apple.product-type.application";
 		};
-		30FD05882A1BDD5F006AB9CC /* MindFortTests */ = {
+		30FD05882A1BDD5F006AB9CC /* RedoubtTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 30FD05A02A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "MindFortTests" */;
+			buildConfigurationList = 30FD05A02A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "RedoubtTests" */;
 			buildPhases = (
 				30FD05852A1BDD5F006AB9CC /* Sources */,
 				30FD05862A1BDD5F006AB9CC /* Frameworks */,
@@ -431,14 +431,14 @@
 			dependencies = (
 				30FD058B2A1BDD5F006AB9CC /* PBXTargetDependency */,
 			);
-			name = MindFortTests;
+			name = RedoubtTests;
 			productName = MindFortTests;
-			productReference = 30FD05892A1BDD5F006AB9CC /* MindFortTests.xctest */;
+			productReference = 30FD05892A1BDD5F006AB9CC /* RedoubtTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		30FD05922A1BDD5F006AB9CC /* MindFortUITests */ = {
+		30FD05922A1BDD5F006AB9CC /* RedoubtUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 30FD05A32A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "MindFortUITests" */;
+			buildConfigurationList = 30FD05A32A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "RedoubtUITests" */;
 			buildPhases = (
 				30FD058F2A1BDD5F006AB9CC /* Sources */,
 				30FD05902A1BDD5F006AB9CC /* Frameworks */,
@@ -449,9 +449,9 @@
 			dependencies = (
 				30FD05952A1BDD5F006AB9CC /* PBXTargetDependency */,
 			);
-			name = MindFortUITests;
+			name = RedoubtUITests;
 			productName = MindFortUITests;
-			productReference = 30FD05932A1BDD5F006AB9CC /* MindFortUITests.xctest */;
+			productReference = 30FD05932A1BDD5F006AB9CC /* RedoubtUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -477,7 +477,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 30FD05732A1BDD5C006AB9CC /* Build configuration list for PBXProject "MindFort" */;
+			buildConfigurationList = 30FD05732A1BDD5C006AB9CC /* Build configuration list for PBXProject "Redoubt" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -493,9 +493,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				30FD05772A1BDD5C006AB9CC /* MindFort */,
-				30FD05882A1BDD5F006AB9CC /* MindFortTests */,
-				30FD05922A1BDD5F006AB9CC /* MindFortUITests */,
+				30FD05772A1BDD5C006AB9CC /* Redoubt */,
+				30FD05882A1BDD5F006AB9CC /* RedoubtTests */,
+				30FD05922A1BDD5F006AB9CC /* RedoubtUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -605,12 +605,12 @@
 /* Begin PBXTargetDependency section */
 		30FD058B2A1BDD5F006AB9CC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 30FD05772A1BDD5C006AB9CC /* MindFort */;
+			target = 30FD05772A1BDD5C006AB9CC /* Redoubt */;
 			targetProxy = 30FD058A2A1BDD5F006AB9CC /* PBXContainerItemProxy */;
 		};
 		30FD05952A1BDD5F006AB9CC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 30FD05772A1BDD5C006AB9CC /* MindFort */;
+			target = 30FD05772A1BDD5C006AB9CC /* Redoubt */;
 			targetProxy = 30FD05942A1BDD5F006AB9CC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -833,7 +833,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MindFort.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MindFort";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Redoubt.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Redoubt";
 			};
 			name = Debug;
 		};
@@ -857,7 +857,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MindFort.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MindFort";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Redoubt.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Redoubt";
 			};
 			name = Release;
 		};
@@ -910,7 +910,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		30FD05732A1BDD5C006AB9CC /* Build configuration list for PBXProject "MindFort" */ = {
+		30FD05732A1BDD5C006AB9CC /* Build configuration list for PBXProject "Redoubt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				30FD059B2A1BDD5F006AB9CC /* Debug */,
@@ -919,7 +919,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		30FD059D2A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "MindFort" */ = {
+		30FD059D2A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "Redoubt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				30FD059E2A1BDD5F006AB9CC /* Debug */,
@@ -928,7 +928,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		30FD05A02A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "MindFortTests" */ = {
+		30FD05A02A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "RedoubtTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				30FD05A12A1BDD5F006AB9CC /* Debug */,
@@ -937,7 +937,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		30FD05A32A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "MindFortUITests" */ = {
+		30FD05A32A1BDD5F006AB9CC /* Build configuration list for PBXNativeTarget "RedoubtUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				30FD05A42A1BDD5F006AB9CC /* Debug */,
