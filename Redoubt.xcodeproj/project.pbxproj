@@ -134,7 +134,7 @@
 		30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortApp.swift; sourceTree = "<group>"; };
 		30FD057D2A1BDD5C006AB9CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		30FD05812A1BDD5F006AB9CC /* MindFort.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MindFort.entitlements; sourceTree = "<group>"; };
+		30FD05812A1BDD5F006AB9CC /* Redoubt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Redoubt.entitlements; sourceTree = "<group>"; };
 		30FD05832A1BDD5F006AB9CC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		30FD05892A1BDD5F006AB9CC /* RedoubtTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RedoubtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		30FD058D2A1BDD5F006AB9CC /* MindFortTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortTests.swift; sourceTree = "<group>"; };
@@ -331,9 +331,9 @@
 			isa = PBXGroup;
 			children = (
 				30E816632A2EEE16002CDD75 /* Docs */,
-				30FD057A2A1BDD5C006AB9CC /* MindFort */,
-				30FD058C2A1BDD5F006AB9CC /* MindFortTests */,
-				30FD05962A1BDD5F006AB9CC /* MindFortUITests */,
+				30FD057A2A1BDD5C006AB9CC /* Redoubt */,
+				30FD058C2A1BDD5F006AB9CC /* RedoubtTests */,
+				30FD05962A1BDD5F006AB9CC /* RedoubtUITests */,
 				30FD05792A1BDD5C006AB9CC /* Products */,
 				30C3DDAA2A3135EC0095CB37 /* Frameworks */,
 			);
@@ -349,7 +349,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		30FD057A2A1BDD5C006AB9CC /* MindFort */ = {
+		30FD057A2A1BDD5C006AB9CC /* Redoubt */ = {
 			isa = PBXGroup;
 			children = (
 				30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */,
@@ -362,10 +362,10 @@
 				307BEFF12A2950D9004D21AC /* Delegates */,
 				30A814872A3EB26B0032456C /* Helpers */,
 				30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */,
-				30FD05812A1BDD5F006AB9CC /* MindFort.entitlements */,
+				30FD05812A1BDD5F006AB9CC /* Redoubt.entitlements */,
 				30FD05822A1BDD5F006AB9CC /* Preview Content */,
 			);
-			path = MindFort;
+			path = Redoubt;
 			sourceTree = "<group>";
 		};
 		30FD05822A1BDD5F006AB9CC /* Preview Content */ = {
@@ -376,22 +376,22 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		30FD058C2A1BDD5F006AB9CC /* MindFortTests */ = {
+		30FD058C2A1BDD5F006AB9CC /* RedoubtTests */ = {
 			isa = PBXGroup;
 			children = (
 				30FD058D2A1BDD5F006AB9CC /* MindFortTests.swift */,
 				30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */,
 			);
-			path = MindFortTests;
+			path = RedoubtTests;
 			sourceTree = "<group>";
 		};
-		30FD05962A1BDD5F006AB9CC /* MindFortUITests */ = {
+		30FD05962A1BDD5F006AB9CC /* RedoubtUITests */ = {
 			isa = PBXGroup;
 			children = (
 				30FD05972A1BDD5F006AB9CC /* MindFortUITests.swift */,
 				30FD05992A1BDD5F006AB9CC /* MindFortUITestsLaunchTests.swift */,
 			);
-			path = MindFortUITests;
+			path = RedoubtUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -734,12 +734,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = MindFort/MindFort.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Redoubt/Redoubt.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"MindFort/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Redoubt/Preview Content\"";
 				DEVELOPMENT_TEAM = Z6P9UD2GQT;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -776,12 +776,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = MindFort/MindFort.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Redoubt/Redoubt.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"MindFort/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Redoubt/Preview Content\"";
 				DEVELOPMENT_TEAM = Z6P9UD2GQT;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
