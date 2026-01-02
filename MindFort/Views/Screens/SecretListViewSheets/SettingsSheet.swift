@@ -63,7 +63,7 @@ struct SpacedRepetitionScheduleControls: View {
 
     var body: some View {
         Group {
-            Text("MindFort will prompt you for passwords at these intervals")
+            Text("Redoubt will prompt you for passwords at these intervals")
                 .foregroundColor(.gray)
             ForEach(secretsVm.spacedRepetitionCategories) { category in
                 Text("    \(category.name)")
@@ -223,7 +223,7 @@ struct SettingsSheet: View {
                     )
                     Section("About") {
                         NavigationLink(destination: AboutSheet()) {
-                            Text("About MindFort")
+                            Text("About Redoubt")
                         }
                         NavigationLink(destination: Roadmap()) {
                             Text("Development Roadmap")

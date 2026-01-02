@@ -10,7 +10,7 @@ struct OnboardingSheet: View {
             HStack {
                 Spacer() // The spacers center content horizontally even though the parent VStack is alignment:.leading
                 Image(uiImage: UIImage(named: "AppIcon") ?? UIImage())
-                Text("MindFort")
+                Text("Redoubt")
                     .font(.title)
                     .bold()
                     .padding()
@@ -34,7 +34,7 @@ struct OnboardingSheet: View {
                 RowItemWithIcon(title: "Enter your passwords correctly and the time until the next quiz increases", systemImageName: "calendar")
             }
             Group {
-                Text("MindFort is secure")
+                Text("Redoubt is secure")
                     .font(.title2)
                     .padding([.top, .bottom])
                 VStack(alignment: .leading) {

@@ -1,7 +1,7 @@
 import Foundation
 
 
-/// MindFort AppStorage keys and defaults
+/// Redoubt AppStorage keys and defaults
 /// Also used for UserDefaults and UNNotificationResponse.notification.request.content.userInfo
 struct MFAStorage {
     /// AppStorage keys
@@ -29,7 +29,7 @@ struct MFAStorage {
 }
 
 
-/// MindFort file storage keys and defaults
+/// Redoubt file storage keys and defaults
 struct MFFStorage {
     let documents: URL
     
@@ -48,7 +48,7 @@ struct MFFStorage {
 }
 
 
-/// MindFort storage for UserDefaults (see also UserDefaultsWrappers file)
+/// Redoubt storage for UserDefaults (see also UserDefaultsWrappers file)
 extension UserDefaultsWrapperKey {
     static let demoMode: UserDefaultsWrapperKey = "demoMode"
 }

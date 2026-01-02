@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 @main
-struct MindFortApp: App {
+struct RedoubtApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     @StateObject private var secretsVm: SecretsViewModel

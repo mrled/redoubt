@@ -8,7 +8,7 @@ struct AboutSheet: View {
             // We make a bunch of unnecessary Group views in here to work around this
             VStack(alignment: .leading) {
                 Group {
-                    Text("MindFort is an app designed to help you remember passwords, especially passwords that you must not forget, like for your password database, GPG key, or Monero wallet.")
+                    Text("Redoubt is an app designed to help you remember passwords, especially passwords that you must not forget, like for your password database, GPG key, or Monero wallet.")
                         .lineLimit(nil)
                         .padding([.top, .bottom])
                     Text("It quizzes you in increasing intervals, a method known as spaced repetition that works well for memorizing facts in other contexts, like technical terms or foreign language vocabulary.")
