@@ -142,7 +142,7 @@
 		30FD05B62A1C2BAD006AB9CC /* SecretListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretListView.swift; sourceTree = "<group>"; };
 		30FD05B82A1C2DC9006AB9CC /* RedoubtUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedoubtUtilities.swift; sourceTree = "<group>"; };
 		30FD05BA2A1C6CA7006AB9CC /* SecretsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsViewModel.swift; sourceTree = "<group>"; };
-		30FD617D2F0951DA00EF1F9B /* Date+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Date+Formatting.swift"; path = "Redoubt/Extensions/Date+Formatting.swift"; sourceTree = "<group>"; };
+		30FD617D2F0951DA00EF1F9B /* Date+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Formatting.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -325,7 +325,6 @@
 		30FD056F2A1BDD5C006AB9CC = {
 			isa = PBXGroup;
 			children = (
-				30FD617D2F0951DA00EF1F9B /* Date+Formatting.swift */,
 				30E816632A2EEE16002CDD75 /* Docs */,
 				30FD057A2A1BDD5C006AB9CC /* Redoubt */,
 				30FD058C2A1BDD5F006AB9CC /* RedoubtTests */,
@@ -394,6 +393,7 @@
 		30FD617B2F09519C00EF1F9B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				30FD617D2F0951DA00EF1F9B /* Date+Formatting.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
