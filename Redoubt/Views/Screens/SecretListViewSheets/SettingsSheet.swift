@@ -225,9 +225,6 @@ struct SettingsSheet: View {
                         NavigationLink(destination: AboutSheet()) {
                             Text("About Redoubt")
                         }
-                        NavigationLink(destination: Roadmap()) {
-                            Text("Development Roadmap")
-                        }
                     }
                     if showDeveloperOptions {
                         DeveloperOptions()
