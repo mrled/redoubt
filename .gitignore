@@ -1,2 +1,6 @@
 xcdebugger
 .DS_Store
+**/*.xcodeproj/xcuserdata/
+**/*.xcuserstate
+xcuserdata/
+**/*.xcworkspace/xcuserdata/
