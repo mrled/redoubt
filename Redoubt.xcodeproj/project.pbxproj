@@ -27,7 +27,7 @@
 		30A814742A37BDA30032456C /* DevTextFieldPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814732A37BDA30032456C /* DevTextFieldPlayground.swift */; };
 		30A814762A38FB340032456C /* NotificationActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814752A38FB340032456C /* NotificationActionHandler.swift */; };
 		30A8147A2A3E05FE0032456C /* UserDefaultsWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814792A3E05FE0032456C /* UserDefaultsWrappers.swift */; };
-		30A8147C2A3E1EFC0032456C /* MindFortContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A8147B2A3E1EFC0032456C /* MindFortContext.swift */; };
+		30A8147C2A3E1EFC0032456C /* RedoubtContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A8147B2A3E1EFC0032456C /* RedoubtContext.swift */; };
 		30A814822A3E5DE70032456C /* DemoModeSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814812A3E5DE70032456C /* DemoModeSheet.swift */; };
 		30A814842A3E64B40032456C /* DemoNavbarToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814832A3E64B40032456C /* DemoNavbarToolbarButton.swift */; };
 		30A8148D2A400D370032456C /* SpacedRepetitionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A8148C2A400D370032456C /* SpacedRepetitionCategory.swift */; };
@@ -52,7 +52,7 @@
 		30EB50C32A24E534007550D3 /* AboutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C22A24E534007550D3 /* AboutSheet.swift */; };
 		30EB50C62A24E978007550D3 /* RowItemWithIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C52A24E978007550D3 /* RowItemWithIcon.swift */; };
 		30EB50C82A24E9FA007550D3 /* RowItemUrlWithIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB50C72A24E9FA007550D3 /* RowItemUrlWithIcon.swift */; };
-		30FD057C2A1BDD5C006AB9CC /* MindFortApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */; };
+		30FD057C2A1BDD5C006AB9CC /* RedoubtApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD057B2A1BDD5C006AB9CC /* RedoubtApp.swift */; };
 		30FD057E2A1BDD5C006AB9CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD057D2A1BDD5C006AB9CC /* ContentView.swift */; };
 		30FD05802A1BDD5F006AB9CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */; };
 		30FD05842A1BDD5F006AB9CC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30FD05832A1BDD5F006AB9CC /* Preview Assets.xcassets */; };
@@ -104,7 +104,7 @@
 		30A814732A37BDA30032456C /* DevTextFieldPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevTextFieldPlayground.swift; sourceTree = "<group>"; };
 		30A814752A38FB340032456C /* NotificationActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionHandler.swift; sourceTree = "<group>"; };
 		30A814792A3E05FE0032456C /* UserDefaultsWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsWrappers.swift; sourceTree = "<group>"; };
-		30A8147B2A3E1EFC0032456C /* MindFortContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortContext.swift; sourceTree = "<group>"; };
+		30A8147B2A3E1EFC0032456C /* RedoubtContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedoubtContext.swift; sourceTree = "<group>"; };
 		30A814812A3E5DE70032456C /* DemoModeSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoModeSheet.swift; sourceTree = "<group>"; };
 		30A814832A3E64B40032456C /* DemoNavbarToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoNavbarToolbarButton.swift; sourceTree = "<group>"; };
 		30A8148C2A400D370032456C /* SpacedRepetitionCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacedRepetitionCategory.swift; sourceTree = "<group>"; };
@@ -131,7 +131,7 @@
 		30EB50C52A24E978007550D3 /* RowItemWithIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowItemWithIcon.swift; sourceTree = "<group>"; };
 		30EB50C72A24E9FA007550D3 /* RowItemUrlWithIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowItemUrlWithIcon.swift; sourceTree = "<group>"; };
 		30FD05782A1BDD5C006AB9CC /* Redoubt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redoubt.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindFortApp.swift; sourceTree = "<group>"; };
+		30FD057B2A1BDD5C006AB9CC /* RedoubtApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedoubtApp.swift; sourceTree = "<group>"; };
 		30FD057D2A1BDD5C006AB9CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		30FD057F2A1BDD5F006AB9CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		30FD05812A1BDD5F006AB9CC /* Redoubt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Redoubt.entitlements; sourceTree = "<group>"; };
@@ -274,7 +274,7 @@
 			children = (
 				30FD05B82A1C2DC9006AB9CC /* RedoubtUtilities.swift */,
 				302877FD2A2B917A0065FD0C /* Logging.swift */,
-				30A8147B2A3E1EFC0032456C /* MindFortContext.swift */,
+				30A8147B2A3E1EFC0032456C /* RedoubtContext.swift */,
 				308B6D0B2AD34DB0008A5857 /* NotificationHelpers.swift */,
 			);
 			path = Helpers;
@@ -352,7 +352,7 @@
 		30FD057A2A1BDD5C006AB9CC /* Redoubt */ = {
 			isa = PBXGroup;
 			children = (
-				30FD057B2A1BDD5C006AB9CC /* MindFortApp.swift */,
+				30FD057B2A1BDD5C006AB9CC /* RedoubtApp.swift */,
 				30A814852A3EB20C0032456C /* Views */,
 				304F43582A27C82800FE08DF /* ViewModels */,
 				30A814862A3EB23A0032456C /* Models */,
@@ -552,14 +552,14 @@
 				30DC65E62A32DC9B00EDB001 /* BinaryDisplayConstants.swift in Sources */,
 				30A814742A37BDA30032456C /* DevTextFieldPlayground.swift in Sources */,
 				30A8146D2A365D5F0032456C /* UIKitTextField.swift in Sources */,
-				30FD057C2A1BDD5C006AB9CC /* MindFortApp.swift in Sources */,
+				30FD057C2A1BDD5C006AB9CC /* RedoubtApp.swift in Sources */,
 				30286CD72A269B3600456CA5 /* NotificationManager.swift in Sources */,
 				302878002A2B921A0065FD0C /* Storage.swift in Sources */,
 				30DE2D7E2DFB02EE00F9E465 /* SecretsNotificationManager.swift in Sources */,
 				30DE2D802DFB031E00F9E465 /* SecretsPublisherManager.swift in Sources */,
 				30FD05B72A1C2BAD006AB9CC /* SecretListView.swift in Sources */,
 				30EB50C62A24E978007550D3 /* RowItemWithIcon.swift in Sources */,
-				30A8147C2A3E1EFC0032456C /* MindFortContext.swift in Sources */,
+				30A8147C2A3E1EFC0032456C /* RedoubtContext.swift in Sources */,
 				3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */,
 				302878022A2BCFD00065FD0C /* HackerCodeRawString.swift in Sources */,
 				302878062A2C52AF0065FD0C /* OnboardingSheet.swift in Sources */,
@@ -760,7 +760,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFort;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.Redoubt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
@@ -802,7 +802,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFort;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.Redoubt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
@@ -826,7 +826,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFortTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.RedoubtTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -850,7 +850,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFortTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.RedoubtTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -873,7 +873,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFortUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.RedoubtUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -896,7 +896,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.MindFortUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micahrl.RedoubtUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
