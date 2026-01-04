@@ -13,51 +13,77 @@
 - **Notifications are generic** ("time to practice"), not per-secret
 - **Simple expanding intervals** (Fibonacci-like), not complex SR algorithms
 - **Failure resets progress** to the beginning
+- **Start fresh**: No data migration - existing secrets/settings will be cleared (app is in alpha)
 
 ## Data Model
 
 ### Secret (revised)
 
 ```swift
-struct Secret {
+class Secret {
     let id: UUID
     var name: String
-    var value: String
+    var digest: String
+    var digestType: SupportedDigestType
     var lastQuizzed: Date?
-    var lastQuizPassed: Bool?
-    var consecutiveSuccesses: Int  // Resets to 0 on failure
+    var lastQuizPassed: Bool = false      // Default: false (never passed)
+    var consecutiveSuccesses: Int = 0     // Default: 0, resets on failure
 }
 ```
 
 Remove: `spacedRepetitionCategory: String?`
 
-### ReviewSchedule (new)
+### ReviewSchedule (enum with associated values - Codable friendly)
 
 ```swift
-protocol ReviewSchedule {
-    var id: UUID { get }
-    var name: String { get }
-    func nextReviewDate(lastQuizzed: Date?, consecutiveSuccesses: Int) -> Date?
+enum ReviewSchedule: Codable, Identifiable {
+    case expanding(ExpandingIntervalSchedule)
+    // Future: case custom(CustomSchedule)
+
+    var id: UUID {
+        switch self {
+        case .expanding(let schedule): return schedule.id
+        }
+    }
+
+    var name: String {
+        switch self {
+        case .expanding(let schedule): return schedule.name
+        }
+    }
+
+    func nextReviewDate(lastQuizzed: Date?, consecutiveSuccesses: Int) -> Date? {
+        switch self {
+        case .expanding(let schedule):
+            return schedule.nextReviewDate(lastQuizzed: lastQuizzed, consecutiveSuccesses: consecutiveSuccesses)
+        }
+    }
 }
 ```
 
-### ExpandingIntervalSchedule (new)
+### ExpandingIntervalSchedule
 
 ```swift
-struct ExpandingIntervalSchedule: ReviewSchedule {
+struct ExpandingIntervalSchedule: Codable {
     let id: UUID
     var name: String
-    let intervals: [Int] = [1, 2, 3, 5, 8, 13, 21, 34] // days
+    let intervals: [Int]  // days, e.g. [1, 2, 3, 5, 8, 13, 21, 34]
 
     func nextReviewDate(lastQuizzed: Date?, consecutiveSuccesses: Int) -> Date? {
         guard let last = lastQuizzed else { return Date() }
         let index = min(consecutiveSuccesses, intervals.count - 1)
         return Calendar.current.date(byAdding: .day, value: intervals[index], to: last)
     }
+
+    static let `default` = ExpandingIntervalSchedule(
+        id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
+        name: "Expanding Intervals",
+        intervals: [1, 2, 3, 5, 8, 13, 21, 34]
+    )
 }
 ```
 
-### ScheduleSettings (in SecretCollection or ViewModel)
+### ScheduleSettings (in SecretCollection)
 
 ```swift
 var availableSchedules: [ReviewSchedule]
@@ -82,14 +108,16 @@ On notification fire:
 
 | File | Changes |
 |------|---------|
-| `Secret.swift` | Add `lastQuizPassed`, `consecutiveSuccesses`; remove `spacedRepetitionCategory` |
-| `SpacedRepetitionCategory.swift` | Delete or repurpose into `ReviewSchedule` protocol |
-| New: `ReviewSchedule.swift` | Protocol + `ExpandingIntervalSchedule` implementation |
-| `SecretCollection.swift` | Add `availableSchedules`, `activeScheduleId`, `notificationSlots` |
-| `SecretsViewModel.swift` | Add `secretsDue` logic, schedule switching |
-| `SecretsNotificationManager.swift` | Implement due-check + slot-based notification scheduling |
-| `RedoubtApp.swift` or lifecycle | Trigger notification re-evaluation on launch/resume |
-| Settings UI | Allow user to pick active schedule, configure time slots |
+| `Models/Secret.swift` | Add `lastQuizPassed`, `consecutiveSuccesses`; remove `spacedRepetitionCategory` |
+| `Models/SpacedRepetitionCategory.swift` | **Delete** |
+| `Models/ScheduleType.swift` | **Delete** (replaced by ReviewSchedule) |
+| **New:** `Models/ReviewSchedule.swift` | Enum + `ExpandingIntervalSchedule` struct |
+| `Models/SecretCollection.swift` | Add `availableSchedules`, `activeScheduleId`, `notificationSlots`; remove `spacedRepetitionCategories` |
+| `ViewModels/SecretsViewModel.swift` | Add `secretsDue` computed property, schedule switching |
+| `Managers/SecretsNotificationManager.swift` | Implement due-check + slot-based notification scheduling |
+| `Views/Screens/ContentView.swift:18` | Add notification re-evaluation in existing `.onChange(of: scenePhase)` |
+| `Views/Screens/SecretListViewSheets/SettingsSheet.swift` | Update `ScheduleControls` (~line 79) and replace `SpacedRepetitionScheduleControls` (~line 61) with new schedule picker |
+| `Storage/Storage.swift` | Remove `scheduleType` key if stored there |
 
 ## Quiz Flow Update
 
