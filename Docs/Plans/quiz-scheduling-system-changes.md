@@ -89,19 +89,47 @@ struct ExpandingIntervalSchedule: Codable {
 var availableSchedules: [ReviewSchedule]
 var activeScheduleId: UUID?
 var notificationSlots: [DateComponents]  // e.g., 9am, 6pm
+var minimumSlotBuffer: TimeInterval      // e.g., 6 hours (21600 seconds)
 ```
+
+## Notification Slots
+
+Slots are a **generic delivery mechanism** independent of schedule logic.
+
+**Concept:**
+- Slots define "good times to notify" (e.g., 9am, 6pm)
+- Schedule determines when a secret is "due"
+- Once due, notify at the **next available slot** that respects the buffer
+
+**Buffer rule:** Minimum time between notification opportunities (e.g., 6 hours) to prevent clustering like 11:30am → 12:30pm.
+
+**Finding next notification time:**
+```swift
+func nextNotificationTime(dueDate: Date, slots: [DateComponents], buffer: TimeInterval, now: Date = Date()) -> Date? {
+    // Find the earliest slot that is:
+    // 1. On or after dueDate
+    // 2. At least `buffer` from now (to prevent immediate re-fire)
+    // 3. In the future
+}
+```
+
+**Examples:**
+- Daily schedule, slots = [9am]: notify every day at 9am
+- Expanding interval, slots = [9am, 6pm]: once due, notify at next 9am or 6pm
+- If user ignores 9am, re-notify at 6pm (6hr buffer satisfied)
+- If slots = [9am, 10am], buffer = 6hr: effectively only 9am fires (10am skipped due to buffer)
 
 ## Notification Logic
 
 ```
-On app launch / after quiz completion:
+On app launch / scene becomes active / after quiz completion:
   1. Check if any secret is due (using active schedule)
-  2. If due → ensure notification scheduled for next time slot
-  3. If not due → cancel pending notifications
+  2. If due → schedule notification for next valid slot (respecting buffer)
+  3. If not due → cancel pending notifications, optionally schedule for future due date
 
 On notification fire:
   - Generic message: "Time to practice"
-  - If user ignores, next slot will re-check and re-notify if still due
+  - If user ignores, next app activation will re-check and re-schedule if still due
 ```
 
 ## Files to Change
