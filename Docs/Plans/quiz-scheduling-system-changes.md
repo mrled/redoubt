@@ -251,3 +251,38 @@ When `SecretCollection` is decoded and required fields are missing:
 - Presence of deprecated `spacedRepetitionCategory` field
 
 **User experience:** On first launch after update, user sees empty secrets list and default schedule. No migration prompt needed (alpha app).
+
+## Tests
+
+Focus on algorithm correctness with minimal, high-value tests.
+
+### NotificationSchedulingTests
+
+Test `nextNotificationTime(dueDate:slots:buffer:now:)`:
+
+| Case | now | dueDate | slots | buffer | expected |
+|------|-----|---------|-------|--------|----------|
+| Due in past, before first slot | 7am | yesterday | [9am, 6pm] | 6h | 9am today |
+| Due in past, between slots | 2pm | yesterday | [9am, 6pm] | 6h | 6pm today |
+| Due in past, after last slot | 10pm | yesterday | [9am, 6pm] | 6h | 9am tomorrow |
+| Due in future | 7am | tomorrow 8am | [9am, 6pm] | 6h | 9am tomorrow |
+| Buffer enforcement | 9:30am | yesterday | [9am, 6pm] | 6h | 6pm today (9am too close) |
+| Empty slots | 9am | yesterday | [] | 6h | nil |
+
+### ReviewScheduleTests
+
+Test `ExpandingIntervalSchedule.nextReviewDate(lastQuizzed:consecutiveSuccesses:)`:
+
+| Case | lastQuizzed | consecutiveSuccesses | intervals | expected |
+|------|-------------|---------------------|-----------|----------|
+| Never quizzed | nil | 0 | [1,2,3,5,8] | now |
+| After first success | today | 0 | [1,2,3,5,8] | today + 1 day |
+| After 3 successes | today | 3 | [1,2,3,5,8] | today + 5 days |
+| Beyond interval count | today | 10 | [1,2,3,5,8] | today + 8 days (clamped) |
+
+### Files
+
+| File | Contents |
+|------|----------|
+| **New:** `MindFortTests/NotificationSchedulingTests.swift` | `nextNotificationTime` tests |
+| **New:** `MindFortTests/ReviewScheduleTests.swift` | `nextReviewDate` tests |
