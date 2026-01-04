@@ -102,10 +102,81 @@ class SecretsNotificationManager: ObservableObject {
                     addQuizNotification(components: components, prefix: "OneTime-", repeats: false)
                 }
                 
-                // TODO: configure spaced repetition notifications here!!
+                // Schedule notifications based on the new schedule system
+                self.scheduleBasedOnActiveSchedule()
             } else {
                 appLogger.debug("reregisterAllNotifications: not granted permission to notify, nothing we can do")
             }
+        }
+    }
+
+    // MARK: - Schedule-Based Notifications
+
+    /// Schedule notifications based on the active review schedule.
+    /// Evaluates due secrets and schedules notifications at the next appropriate time slot.
+    /// This method implements the new slot-based notification system with buffer enforcement.
+    func scheduleBasedOnActiveSchedule() {
+        guard let viewModel = secretsViewModel else { return }
+
+        // Only proceed if there's an active schedule configured
+        guard let scheduleId = viewModel.activeScheduleId,
+              let schedule = viewModel.availableSchedules.first(where: { $0.id == scheduleId }) else {
+            appLogger.debug("No active schedule configured, skipping schedule-based notifications")
+            return
+        }
+
+        // Get notification slots (use custom or schedule defaults)
+        let slots: [DateComponents]
+        if let customSlots = viewModel.notificationSlots {
+            slots = customSlots
+        } else {
+            // Get default slots from the schedule
+            switch schedule {
+            case .expanding(let expandingSchedule):
+                slots = expandingSchedule.defaultSlots
+            }
+        }
+
+        // Get buffer from the schedule
+        let buffer: TimeInterval
+        switch schedule {
+        case .expanding(let expandingSchedule):
+            buffer = expandingSchedule.minimumSlotBuffer
+        }
+
+        // Find the earliest due date across all secrets
+        // This works for both currently-due and future secrets since nextNotificationTime
+        // will find the next valid slot whether the due date is in the past or future
+        let nextDueDates: [Date] = viewModel.secrets.compactMap { secret in
+            schedule.nextReviewDate(
+                lastQuizzed: secret.lastQuizzed,
+                consecutiveSuccesses: secret.consecutiveSuccesses
+            )
+        }
+
+        guard let earliestDue = nextDueDates.min() else {
+            appLogger.debug("No secrets to schedule notifications for")
+            return
+        }
+
+        let now = Date()
+        if let nextTime = nextNotificationTime(
+            dueDate: earliestDue,
+            slots: slots,
+            buffer: buffer,
+            now: now
+        ) {
+            let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: nextTime)
+            addQuizNotification(components: components, prefix: "ScheduleBased-", repeats: false)
+
+            let dueCount = viewModel.secretsDue.count
+            if dueCount > 0 {
+                appLogger.debug("Scheduled schedule-based notification for \(dueCount) due secret(s) at \(nextTime)")
+            } else {
+                appLogger.debug("Scheduled schedule-based notification for next due date at \(nextTime)")
+            }
+        } else {
+            appLogger.warning("Could not calculate next notification time")
         }
     }
 }

@@ -4,6 +4,7 @@ import CryptoKit
 
 struct ContentView: View {
     @StateObject private var notificationActionHandler = NotificationActionHandler.shared
+    @EnvironmentObject var secretsVm: SecretsViewModel
     @State private var notificationsAllowed: Bool = false
     @Environment(\.scenePhase) var scenePhase
 
@@ -16,10 +17,18 @@ struct ContentView: View {
                 UserDefaults.standard.removeObject(forKey: MFAStorage.K.notificationAction)
             })
             .onChange(of: scenePhase) { newScenePhase in
-                /// This code runs whenever the scene changes phases.
-                /// That includes when the app becomes active, inactive, and backgrounsed. (Maybe more?)
-                NotificationManager.shared.requestPermission { granted in
-                    notificationsAllowed = granted
+                // Only re-evaluate notifications when the app becomes active
+                // This prevents unnecessary calls when the app goes to background or becomes inactive
+                if newScenePhase == .active {
+                    NotificationManager.shared.requestPermission { granted in
+                        notificationsAllowed = granted
+
+                        // Re-evaluate and update notifications based on current state
+                        // This handles cases where secrets may have become due while the app was inactive
+                        if granted {
+                            secretsVm.notificationManager.reregisterAllNotifications()
+                        }
+                    }
                 }
             }
     }
