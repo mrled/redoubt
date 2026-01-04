@@ -41,7 +41,29 @@ class SecretsViewModel: ObservableObject {
             publisherManager.setupPublishers()
         }
     }
-    
+
+    // New schedule system properties
+    /// Available review schedules
+    @Published var availableSchedules: [ReviewSchedule] = [.expanding(.default)] {
+        didSet {
+            dataManager.saveItems()
+        }
+    }
+
+    /// ID of the currently active schedule (nil = notifications disabled)
+    @Published var activeScheduleId: UUID? = nil {
+        didSet {
+            dataManager.saveItems()
+        }
+    }
+
+    /// User-customized notification slots (nil = use schedule defaults)
+    @Published var notificationSlots: [DateComponents]? = nil {
+        didSet {
+            dataManager.saveItems()
+        }
+    }
+
     /// Manager for notification scheduling and handling
     let notificationManager = SecretsNotificationManager()
     

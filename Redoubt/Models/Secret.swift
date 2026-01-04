@@ -58,15 +58,19 @@ class Secret: Identifiable, ObservableObject, Codable, Equatable {
     @Published var digestType: SupportedDigestType
     
     @Published var lastQuizzed: Date?
-    
+
+    @Published var lastQuizPassed: Bool = false
+
+    @Published var consecutiveSuccesses: Int = 0
+
     @Published var spacedRepetitionCategory: String?
-    
+
     @Published var plaintext: String?
     
     private let sodium = Sodium()
     
     enum CodingKeys: String, CodingKey {
-        case name, digest, digestType, lastQuizzed, spacedRepetitionCategory
+        case name, digest, digestType, lastQuizzed, lastQuizPassed, consecutiveSuccesses, spacedRepetitionCategory
     }
     
     func encode(to encoder: Encoder) throws {
@@ -75,6 +79,8 @@ class Secret: Identifiable, ObservableObject, Codable, Equatable {
         try container.encode(digest, forKey: .digest)
         try container.encode(digestType, forKey: .digestType)
         try container.encode(lastQuizzed, forKey: .lastQuizzed)
+        try container.encode(lastQuizPassed, forKey: .lastQuizPassed)
+        try container.encode(consecutiveSuccesses, forKey: .consecutiveSuccesses)
         try container.encode(spacedRepetitionCategory, forKey: .spacedRepetitionCategory)
     }
     
@@ -88,6 +94,8 @@ class Secret: Identifiable, ObservableObject, Codable, Equatable {
         digest = decodedDigest
         id = try calculateSecretId(name: decodedName, digest: decodedDigest)
         lastQuizzed = try container.decodeIfPresent(Date.self, forKey: .lastQuizzed)
+        lastQuizPassed = try container.decodeIfPresent(Bool.self, forKey: .lastQuizPassed) ?? false
+        consecutiveSuccesses = try container.decodeIfPresent(Int.self, forKey: .consecutiveSuccesses) ?? 0
         spacedRepetitionCategory = try container.decodeIfPresent(String.self, forKey: .spacedRepetitionCategory)
     }
     

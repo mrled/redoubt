@@ -86,7 +86,10 @@ class SecretsDataManager: ObservableObject {
             secrets: viewModel.secrets,
             regularIntervalNotifications: viewModel.regularIntervalNotifications,
             oneTimeNotifications: viewModel.oneTimeNotifications,
-            spacedRepetitionCategories: viewModel.spacedRepetitionCategories
+            spacedRepetitionCategories: viewModel.spacedRepetitionCategories,
+            availableSchedules: viewModel.availableSchedules,
+            activeScheduleId: viewModel.activeScheduleId,
+            notificationSlots: viewModel.notificationSlots
         )
         dataLoader.save(collection: collection)
     }
@@ -97,7 +100,7 @@ class SecretsDataManager: ObservableObject {
         viewModel.secrets = collection.secrets
         viewModel.regularIntervalNotifications = collection.regularIntervalNotifications
         viewModel.oneTimeNotifications = collection.oneTimeNotifications
-        
+
         // If loaded spaced repetition categories are empty, populate with defaults
         if collection.spacedRepetitionCategories.isEmpty {
             viewModel.spacedRepetitionCategories = getDefaultSpacedRepetitionCategories()
@@ -106,7 +109,12 @@ class SecretsDataManager: ObservableObject {
         } else {
             viewModel.spacedRepetitionCategories = collection.spacedRepetitionCategories
         }
-        
+
+        // Load new schedule system fields
+        viewModel.availableSchedules = collection.availableSchedules
+        viewModel.activeScheduleId = collection.activeScheduleId
+        viewModel.notificationSlots = collection.notificationSlots
+
         viewModel.publisherManager.setupPublishers()
     }
     
