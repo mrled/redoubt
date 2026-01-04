@@ -76,6 +76,110 @@ struct SpacedRepetitionScheduleControls: View {
 }
 
 
+// MARK: - Notification Slot Validation
+
+struct NotificationSlotValidator {
+    static func validate(slots: [DateComponents], minimumBuffer: TimeInterval) -> Bool {
+        let sortedTimes = slots.compactMap { Calendar.current.date(from: $0) }.sorted()
+
+        // Check consecutive slots
+        for i in 0..<(sortedTimes.count - 1) {
+            let timeDiff = sortedTimes[i + 1].timeIntervalSince(sortedTimes[i])
+            if timeDiff < minimumBuffer {
+                return false
+            }
+        }
+
+        // Check wrap-around (last slot to first slot of next day)
+        if sortedTimes.count >= 2, let first = sortedTimes.first, let last = sortedTimes.last {
+            let wrapAroundDiff = (24 * 3600) - last.timeIntervalSince(first)
+            if wrapAroundDiff < minimumBuffer {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    static func formatHours(_ seconds: TimeInterval) -> String {
+        let hours = Int(seconds / 3600)
+        return hours == 1 ? "1 hour" : "\(hours) hours"
+    }
+}
+
+
+// MARK: - Notification Slots Editor
+
+struct NotificationSlotsEditor: View {
+    @Binding var slots: [DateComponents]
+    let minimumBuffer: TimeInterval
+    let onSlotsChanged: () -> Void
+
+    @State private var showBufferWarning: Bool = false
+
+    private let slotLabels = ["Morning", "Evening", "Night", "Late Night"]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Notification Times")
+                .font(.headline)
+
+            ForEach(slots.indices, id: \.self) { index in
+                HStack {
+                    Text(slotLabel(for: index))
+                        .frame(width: 80, alignment: .leading)
+
+                    DatePicker(
+                        "",
+                        selection: binding(for: index),
+                        displayedComponents: .hourAndMinute
+                    )
+                    .labelsHidden()
+                }
+            }
+
+            // Buffer validation message
+            if showBufferWarning {
+                Text("⚠️ Times must be at least \(NotificationSlotValidator.formatHours(minimumBuffer)) apart")
+                    .font(.caption)
+                    .foregroundColor(.orange)
+            } else {
+                Text("Times must be at least \(NotificationSlotValidator.formatHours(minimumBuffer)) apart")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
+        }
+    }
+
+    private func slotLabel(for index: Int) -> String {
+        index < slotLabels.count ? slotLabels[index] : "Slot \(index + 1)"
+    }
+
+    private func binding(for index: Int) -> Binding<Date> {
+        Binding(
+            get: {
+                Calendar.current.date(from: slots[index]) ?? Date()
+            },
+            set: { newDate in
+                let components = Calendar.current.dateComponents([.hour, .minute], from: newDate)
+                slots[index] = components
+                validateAndNotify()
+            }
+        )
+    }
+
+    private func validateAndNotify() {
+        showBufferWarning = !NotificationSlotValidator.validate(slots: slots, minimumBuffer: minimumBuffer)
+
+        if !showBufferWarning {
+            onSlotsChanged()
+        }
+    }
+}
+
+
+// MARK: - New Schedule Controls
+
 struct NewScheduleControls: View {
     @EnvironmentObject var secretsVm: SecretsViewModel
     @Binding var notificationsAllowed: Bool
@@ -83,116 +187,92 @@ struct NewScheduleControls: View {
     @State private var selectedScheduleId: UUID?
     @State private var notificationsEnabled: Bool = false
     @State private var customSlots: [DateComponents] = []
-    @State private var showBufferWarning: Bool = false
 
     var body: some View {
         Section("Schedule") {
             if notificationsAllowed {
-                // Notifications enabled toggle
-                Toggle(isOn: $notificationsEnabled) {
-                    HStack {
-                        Image(systemName: "bell.fill")
-                            .frame(width: 32, height: 32)
-                        Text("Notifications enabled")
-                    }
-                }
-                .onChange(of: notificationsEnabled) { enabled in
-                    if enabled {
-                        // Enable notifications: set active schedule to the selected one
-                        secretsVm.activeScheduleId = selectedScheduleId ?? secretsVm.availableSchedules.first?.id
-                    } else {
-                        // Disable notifications: clear active schedule
-                        secretsVm.activeScheduleId = nil
-                    }
-                }
+                notificationsToggle
 
                 if notificationsEnabled {
-                    // Schedule picker
-                    Picker(selection: $selectedScheduleId, label: Text("Schedule")) {
-                        ForEach(secretsVm.availableSchedules) { schedule in
-                            Text(schedule.name).tag(schedule.id as UUID?)
-                        }
-                    }
-                    .onChange(of: selectedScheduleId) { newScheduleId in
-                        // Update active schedule
-                        secretsVm.activeScheduleId = newScheduleId
+                    schedulePicker
 
-                        // Reset notification slots to schedule defaults when schedule changes
-                        if let scheduleId = newScheduleId,
-                           let schedule = secretsVm.availableSchedules.first(where: { $0.id == scheduleId }),
-                           case .expanding(let expandingSchedule) = schedule {
-                            customSlots = expandingSchedule.defaultSlots
-                            secretsVm.notificationSlots = nil // Use schedule defaults
-                        }
-                    }
-
-                    // Notification time slots
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Notification Times")
-                            .font(.headline)
-
-                        ForEach(customSlots.indices, id: \.self) { index in
-                            HStack {
-                                Text(slotLabel(for: index))
-                                    .frame(width: 80, alignment: .leading)
-                                DatePicker(
-                                    "",
-                                    selection: Binding(
-                                        get: {
-                                            Calendar.current.date(from: customSlots[index]) ?? Date()
-                                        },
-                                        set: { newDate in
-                                            let components = Calendar.current.dateComponents([.hour, .minute], from: newDate)
-                                            customSlots[index] = components
-                                            validateAndUpdateSlots()
-                                        }
-                                    ),
-                                    displayedComponents: .hourAndMinute
-                                )
-                                .labelsHidden()
-                            }
-                        }
-
-                        // Buffer validation warning
-                        if showBufferWarning {
-                            Text("⚠️ Times must be at least \(formatBuffer()) apart")
-                                .font(.caption)
-                                .foregroundColor(.orange)
-                        } else if let bufferHours = currentMinimumBuffer() {
-                            Text("Times must be at least \(formatHours(bufferHours)) apart")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
+                    if let minimumBuffer = currentMinimumBuffer() {
+                        NotificationSlotsEditor(
+                            slots: $customSlots,
+                            minimumBuffer: minimumBuffer,
+                            onSlotsChanged: { secretsVm.notificationSlots = customSlots }
+                        )
                     }
                 }
             } else {
-                Text("To schedule reminders, please enable notifications in Settings.")
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    if UIApplication.shared.canOpenURL(url) {
-                        RowItemUrlWithIcon(title: "Open Settings", systemImageName: "gear", destination: url)
-                    }
-                }
+                notificationPermissionPrompt
             }
         }
-        .onAppear {
-            // Initialize state from view model
-            selectedScheduleId = secretsVm.activeScheduleId ?? secretsVm.availableSchedules.first?.id
-            notificationsEnabled = secretsVm.activeScheduleId != nil
+        .onAppear(perform: initializeState)
+    }
 
-            // Initialize custom slots
-            if let slots = secretsVm.notificationSlots {
-                customSlots = slots
-            } else if let scheduleId = selectedScheduleId,
-                      let schedule = secretsVm.availableSchedules.first(where: { $0.id == scheduleId }),
-                      case .expanding(let expandingSchedule) = schedule {
-                customSlots = expandingSchedule.defaultSlots
+    // MARK: - Subviews
+
+    private var notificationsToggle: some View {
+        Toggle(isOn: $notificationsEnabled) {
+            HStack {
+                Image(systemName: "bell.fill")
+                    .frame(width: 32, height: 32)
+                Text("Notifications enabled")
+            }
+        }
+        .onChange(of: notificationsEnabled) { enabled in
+            secretsVm.activeScheduleId = enabled
+                ? (selectedScheduleId ?? secretsVm.availableSchedules.first?.id)
+                : nil
+        }
+    }
+
+    private var schedulePicker: some View {
+        Picker(selection: $selectedScheduleId, label: Text("Schedule")) {
+            ForEach(secretsVm.availableSchedules) { schedule in
+                Text(schedule.name).tag(schedule.id as UUID?)
+            }
+        }
+        .onChange(of: selectedScheduleId, perform: handleScheduleChange)
+    }
+
+    private var notificationPermissionPrompt: some View {
+        Group {
+            Text("To schedule reminders, please enable notifications in Settings.")
+            if let url = URL(string: UIApplication.openSettingsURLString),
+               UIApplication.shared.canOpenURL(url) {
+                RowItemUrlWithIcon(title: "Open Settings", systemImageName: "gear", destination: url)
             }
         }
     }
 
-    private func slotLabel(for index: Int) -> String {
-        let labels = ["Morning", "Evening", "Night", "Late Night"]
-        return index < labels.count ? labels[index] : "Slot \(index + 1)"
+    // MARK: - Helper Methods
+
+    private func initializeState() {
+        selectedScheduleId = secretsVm.activeScheduleId ?? secretsVm.availableSchedules.first?.id
+        notificationsEnabled = secretsVm.activeScheduleId != nil
+
+        // Initialize custom slots
+        if let slots = secretsVm.notificationSlots {
+            customSlots = slots
+        } else if let scheduleId = selectedScheduleId,
+                  let schedule = secretsVm.availableSchedules.first(where: { $0.id == scheduleId }),
+                  case .expanding(let expandingSchedule) = schedule {
+            customSlots = expandingSchedule.defaultSlots
+        }
+    }
+
+    private func handleScheduleChange(_ newScheduleId: UUID?) {
+        secretsVm.activeScheduleId = newScheduleId
+
+        // Reset notification slots to schedule defaults when schedule changes
+        if let scheduleId = newScheduleId,
+           let schedule = secretsVm.availableSchedules.first(where: { $0.id == scheduleId }),
+           case .expanding(let expandingSchedule) = schedule {
+            customSlots = expandingSchedule.defaultSlots
+            secretsVm.notificationSlots = nil // Use schedule defaults
+        }
     }
 
     private func currentMinimumBuffer() -> TimeInterval? {
@@ -202,55 +282,6 @@ struct NewScheduleControls: View {
             return nil
         }
         return expandingSchedule.minimumSlotBuffer
-    }
-
-    private func formatBuffer() -> String {
-        guard let buffer = currentMinimumBuffer() else { return "" }
-        return formatHours(buffer)
-    }
-
-    private func formatHours(_ seconds: TimeInterval) -> String {
-        let hours = Int(seconds / 3600)
-        if hours == 1 {
-            return "1 hour"
-        } else {
-            return "\(hours) hours"
-        }
-    }
-
-    private func validateAndUpdateSlots() {
-        guard let buffer = currentMinimumBuffer() else {
-            secretsVm.notificationSlots = customSlots
-            showBufferWarning = false
-            return
-        }
-
-        // Check if slots meet minimum buffer requirement
-        let sortedTimes = customSlots.compactMap { Calendar.current.date(from: $0) }.sorted()
-        var isValid = true
-
-        for i in 0..<(sortedTimes.count - 1) {
-            let timeDiff = sortedTimes[i + 1].timeIntervalSince(sortedTimes[i])
-            if timeDiff < buffer {
-                isValid = false
-                break
-            }
-        }
-
-        // Check wrap-around (last slot to first slot of next day)
-        if sortedTimes.count >= 2, let first = sortedTimes.first, let last = sortedTimes.last {
-            let wrapAroundDiff = (24 * 3600) - last.timeIntervalSince(first)
-            if wrapAroundDiff < buffer {
-                isValid = false
-            }
-        }
-
-        showBufferWarning = !isValid
-
-        // Only update if valid
-        if isValid {
-            secretsVm.notificationSlots = customSlots
-        }
     }
 }
 
