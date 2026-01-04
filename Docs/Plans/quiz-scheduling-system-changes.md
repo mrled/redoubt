@@ -13,7 +13,9 @@
 - **Notifications are generic** ("time to practice"), not per-secret
 - **Simple expanding intervals** (Fibonacci-like), not complex SR algorithms
 - **Failure resets progress** to the beginning
-- **Start fresh**: No data migration - existing secrets/settings will be cleared (app is in alpha)
+- **Start fresh**: No explicit migration - if app reads data missing required fields, reset to defaults (app is in alpha)
+- **All secrets enrolled**: No per-secret opt-in; all secrets participate in the active schedule
+- **No schedule = no notifications**: If `activeScheduleId` is nil, no notifications are scheduled
 
 ## Data Model
 
@@ -69,6 +71,10 @@ struct ExpandingIntervalSchedule: Codable {
     var name: String
     let intervals: [Int]  // days, e.g. [1, 2, 3, 5, 8, 13, 21, 34]
 
+    // Notification configuration (schedule provides defaults, user can customize)
+    let defaultSlots: [DateComponents]    // e.g., [9am, 6pm]
+    let minimumSlotBuffer: TimeInterval   // e.g., 6 hours (21600 seconds)
+
     func nextReviewDate(lastQuizzed: Date?, consecutiveSuccesses: Int) -> Date? {
         guard let last = lastQuizzed else { return Date() }
         let index = min(consecutiveSuccesses, intervals.count - 1)
@@ -78,7 +84,12 @@ struct ExpandingIntervalSchedule: Codable {
     static let `default` = ExpandingIntervalSchedule(
         id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
         name: "Expanding Intervals",
-        intervals: [1, 2, 3, 5, 8, 13, 21, 34]
+        intervals: [1, 2, 3, 5, 8, 13, 21, 34],
+        defaultSlots: [
+            DateComponents(hour: 9, minute: 0),   // 9:00 AM
+            DateComponents(hour: 18, minute: 0)   // 6:00 PM
+        ],
+        minimumSlotBuffer: 6 * 60 * 60  // 6 hours
     )
 }
 ```
@@ -87,10 +98,14 @@ struct ExpandingIntervalSchedule: Codable {
 
 ```swift
 var availableSchedules: [ReviewSchedule]
-var activeScheduleId: UUID?
-var notificationSlots: [DateComponents]  // e.g., 9am, 6pm
-var minimumSlotBuffer: TimeInterval      // e.g., 6 hours (21600 seconds)
+var activeScheduleId: UUID?              // nil = notifications disabled
+var notificationSlots: [DateComponents]? // User-customized slots; nil = use schedule defaults
 ```
+
+**Slot customization rules:**
+- Schedule provides `defaultSlots` and `minimumSlotBuffer`
+- User can override slot times but must maintain at least `minimumSlotBuffer` between slots
+- If user sets slots closer than buffer allows, UI should prevent/warn
 
 ## Notification Slots
 
@@ -110,6 +125,32 @@ func nextNotificationTime(dueDate: Date, slots: [DateComponents], buffer: TimeIn
     // 1. On or after dueDate
     // 2. At least `buffer` from now (to prevent immediate re-fire)
     // 3. In the future
+
+    guard !slots.isEmpty else { return nil }
+
+    let calendar = Calendar.current
+    let earliestAllowed = max(dueDate, now.addingTimeInterval(buffer))
+
+    // Generate candidate slot times for today and tomorrow (covers all cases)
+    var candidates: [Date] = []
+    for dayOffset in 0...1 {
+        guard let day = calendar.date(byAdding: .day, value: dayOffset, to: earliestAllowed) else { continue }
+        for slot in slots {
+            var components = calendar.dateComponents([.year, .month, .day], from: day)
+            components.hour = slot.hour
+            components.minute = slot.minute
+            components.second = 0
+            if let candidate = calendar.date(from: components) {
+                candidates.append(candidate)
+            }
+        }
+    }
+
+    // Return the earliest candidate that meets all criteria
+    return candidates
+        .filter { $0 >= earliestAllowed }
+        .sorted()
+        .first
 }
 ```
 
@@ -147,6 +188,36 @@ On notification fire:
 | `Views/Screens/SecretListViewSheets/SettingsSheet.swift` | Update `ScheduleControls` (~line 79) and replace `SpacedRepetitionScheduleControls` (~line 61) with new schedule picker |
 | `Storage/Storage.swift` | Remove `scheduleType` key if stored there |
 
+## UI Changes
+
+### Settings Sheet (`SettingsSheet.swift`)
+
+Replace existing schedule controls with:
+
+```
+┌─────────────────────────────────────────┐
+│ Schedule                                │
+│ ┌─────────────────────────────────────┐ │
+│ │ Expanding Intervals              ▼  │ │  ← Picker for available schedules
+│ └─────────────────────────────────────┘ │
+│                                         │
+│ Notification Times                      │
+│ ┌─────────────────────────────────────┐ │
+│ │ Morning    [9:00 AM]                │ │  ← Time pickers
+│ │ Evening    [6:00 PM]                │ │
+│ └─────────────────────────────────────┘ │
+│ ⓘ Times must be at least 6 hours apart │  ← Dynamic based on buffer
+│                                         │
+│ [ ] Notifications enabled               │  ← Toggle; off = activeScheduleId nil
+└─────────────────────────────────────────┘
+```
+
+**Behavior:**
+- Schedule picker shows `availableSchedules` by name
+- Changing schedule resets notification slots to that schedule's defaults
+- Time pickers validate against `minimumSlotBuffer`
+- Notifications toggle controls whether `activeScheduleId` is set or nil
+
 ## Quiz Flow Update
 
 ```
@@ -161,3 +232,22 @@ User completes quiz:
 
   → Re-evaluate notifications
 ```
+
+## Data Reset on Load
+
+When `SecretCollection` is decoded and required fields are missing:
+
+```swift
+// In SecretCollection init(from decoder:)
+// If decoding fails for new fields or old fields exist that shouldn't:
+// - Clear secrets array
+// - Reset to default schedule settings
+// - Log that data was reset due to schema change
+```
+
+**What triggers reset:**
+- Missing `consecutiveSuccesses` or `lastQuizPassed` on any Secret
+- Missing `availableSchedules` on SecretCollection
+- Presence of deprecated `spacedRepetitionCategory` field
+
+**User experience:** On first launch after update, user sees empty secrets list and default schedule. No migration prompt needed (alpha app).
