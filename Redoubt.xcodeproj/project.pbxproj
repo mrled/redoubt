@@ -63,6 +63,9 @@
 		30FD05B92A1C2DC9006AB9CC /* RedoubtUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05B82A1C2DC9006AB9CC /* RedoubtUtilities.swift */; };
 		30FD05BB2A1C6CA7006AB9CC /* SecretsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD05BA2A1C6CA7006AB9CC /* SecretsViewModel.swift */; };
 		30FD617E2F0951DA00EF1F9B /* Date+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD617D2F0951DA00EF1F9B /* Date+Formatting.swift */; };
+		30FD61812F0AF93700EF1F9B /* ReviewSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD61802F0AF93700EF1F9B /* ReviewSchedule.swift */; };
+		30FD61842F0AFBD500EF1F9B /* ReviewScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD61832F0AFBD500EF1F9B /* ReviewScheduleTests.swift */; };
+		30FD61852F0AFBD500EF1F9B /* NotificationSchedulingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD61822F0AFBD500EF1F9B /* NotificationSchedulingTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,6 +146,9 @@
 		30FD05B82A1C2DC9006AB9CC /* RedoubtUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedoubtUtilities.swift; sourceTree = "<group>"; };
 		30FD05BA2A1C6CA7006AB9CC /* SecretsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsViewModel.swift; sourceTree = "<group>"; };
 		30FD617D2F0951DA00EF1F9B /* Date+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Formatting.swift"; sourceTree = "<group>"; };
+		30FD61802F0AF93700EF1F9B /* ReviewSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSchedule.swift; sourceTree = "<group>"; };
+		30FD61822F0AFBD500EF1F9B /* NotificationSchedulingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSchedulingTests.swift; sourceTree = "<group>"; };
+		30FD61832F0AFBD500EF1F9B /* ReviewScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewScheduleTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -255,6 +261,7 @@
 		30A814862A3EB23A0032456C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				30FD61802F0AF93700EF1F9B /* ReviewSchedule.swift */,
 				30FD05B42A1C23CF006AB9CC /* Secret.swift */,
 				308B6D092AD349D9008A5857 /* ScheduleType.swift */,
 				30A814902A400E200032456C /* SecretCollection.swift */,
@@ -375,6 +382,8 @@
 		30FD058C2A1BDD5F006AB9CC /* RedoubtTests */ = {
 			isa = PBXGroup;
 			children = (
+				30FD61822F0AFBD500EF1F9B /* NotificationSchedulingTests.swift */,
+				30FD61832F0AFBD500EF1F9B /* ReviewScheduleTests.swift */,
 				30FD058D2A1BDD5F006AB9CC /* RedoubtTests.swift */,
 				30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */,
 			);
@@ -546,6 +555,7 @@
 				30E8165E2A2C57F7002CDD75 /* ShimmeringSystemImage.swift in Sources */,
 				30EB50C02A246D96007550D3 /* SettingsSheet.swift in Sources */,
 				30A8148F2A400D7C0032456C /* SecretsVmDataLoaders.swift in Sources */,
+				30FD61812F0AF93700EF1F9B /* ReviewSchedule.swift in Sources */,
 				30EB50C82A24E9FA007550D3 /* RowItemUrlWithIcon.swift in Sources */,
 				307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */,
 				307BEFEE2A28071D004D21AC /* TimePickerExpandable.swift in Sources */,
@@ -592,6 +602,8 @@
 			files = (
 				30FD058E2A1BDD5F006AB9CC /* RedoubtTests.swift in Sources */,
 				30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */,
+				30FD61842F0AFBD500EF1F9B /* ReviewScheduleTests.swift in Sources */,
+				30FD61852F0AFBD500EF1F9B /* NotificationSchedulingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
