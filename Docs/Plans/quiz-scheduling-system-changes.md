@@ -286,3 +286,159 @@ Test `ExpandingIntervalSchedule.nextReviewDate(lastQuizzed:consecutiveSuccesses:
 |------|----------|
 | **New:** `MindFortTests/NotificationSchedulingTests.swift` | `nextNotificationTime` tests |
 | **New:** `MindFortTests/ReviewScheduleTests.swift` | `nextReviewDate` tests |
+
+## Implementation Phases
+
+The implementation is broken into phases where each phase builds on the previous while keeping the app functional. Phases 1-5 are additive/parallel changes that don't break existing functionality. Phase 6 is cleanup that removes old code once everything new is working.
+
+### Phase 1: Add New Types (Zero Risk)
+
+New code with no dependencies on existing code. Can be added and tested in isolation.
+
+**Step 1: Create `ReviewSchedule.swift`**
+- Add new file `Models/ReviewSchedule.swift`
+- Implement `ReviewSchedule` enum and `ExpandingIntervalSchedule` struct
+- Include `nextReviewDate()` logic and `static let default`
+- No existing code touches this yet
+
+**Step 2: Add `ReviewScheduleTests.swift`**
+- Create `MindFortTests/ReviewScheduleTests.swift`
+- Test `nextReviewDate(lastQuizzed:consecutiveSuccesses:)` with table-driven cases
+- Validates interval logic before any integration
+
+**Step 3: Add slot calculation function**
+- Add `nextNotificationTime(dueDate:slots:buffer:now:)` to `Helpers/NotificationHelpers.swift`
+- Pure function with no side effects or dependencies
+
+**Step 4: Add `NotificationSchedulingTests.swift`**
+- Create `MindFortTests/NotificationSchedulingTests.swift`
+- Test slot calculation with all edge cases (buffer enforcement, empty slots, etc.)
+
+### Phase 2: Extend Models (Additive, Backward Compatible)
+
+Add new fields to existing models without removing old ones. Existing data continues to load.
+
+**Step 5: Add new fields to `Secret`**
+- Add `lastQuizPassed: Bool = false`
+- Add `consecutiveSuccesses: Int = 0`
+- Make Codable with defaults via `decodeIfPresent` so existing data loads
+- Keep `spacedRepetitionCategory` field for now (removed in Phase 6)
+
+**Step 6: Add new fields to `SecretCollection`**
+- Add `availableSchedules: [ReviewSchedule]`
+- Add `activeScheduleId: UUID?`
+- Add `notificationSlots: [DateComponents]?`
+- Provide defaults in `init(from decoder:)` for backward compatibility
+- Keep `spacedRepetitionCategories` temporarily
+
+**Step 7: Add `@Published` properties to `SecretsViewModel`**
+- Add properties mirroring new `SecretCollection` fields
+- Update `SecretsDataManager.saveItems()` to include new fields in saved collection
+- Update `SecretsDataManager.loadItems()` to populate new properties from loaded collection
+
+### Phase 3: Wire Up Quiz Logic
+
+Connect new fields to quiz completion flow.
+
+**Step 8: Update quiz completion in `Secret.validate()`**
+- On successful validation: increment `consecutiveSuccesses`, set `lastQuizPassed = true`
+- On failure (if tracked): reset `consecutiveSuccesses = 0`, set `lastQuizPassed = false`
+- `lastQuizzed = Date()` already happens
+
+**Step 9: Add `secretsDue` computed property to `SecretsViewModel`**
+```swift
+var secretsDue: [Secret] {
+    guard let scheduleId = activeScheduleId,
+          let schedule = availableSchedules.first(where: { $0.id == scheduleId }) else {
+        return []
+    }
+    return secrets.filter { secret in
+        guard let dueDate = schedule.nextReviewDate(
+            lastQuizzed: secret.lastQuizzed,
+            consecutiveSuccesses: secret.consecutiveSuccesses
+        ) else { return false }
+        return dueDate <= Date()
+    }
+}
+```
+
+### Phase 4: Update Notification System
+
+Implement the new slot-based notification scheduling.
+
+**Step 10: Add new scheduling logic to `SecretsNotificationManager`**
+- Implement the TODO at line 105
+- Add method that uses `secretsDue` + `nextNotificationTime()` to schedule notifications
+- Conditional on `activeScheduleId != nil` so old system continues working if new system not configured
+
+**Step 11: Update `ContentView` scene phase handler**
+- Filter `.onChange(of: scenePhase)` to only trigger on `.active`
+- Call notification re-evaluation when app becomes active
+- Current implementation calls `requestPermission()` on every phase change (inefficient)
+
+### Phase 5: Update UI
+
+Add new UI controls for the new scheduling system.
+
+**Step 12: Create new schedule picker in `SettingsSheet`**
+- Add `Picker` for `availableSchedules` (by name)
+- Add `DatePicker`s for notification slot times
+- Add `Toggle` for notifications enabled (controls `activeScheduleId`)
+- Validate slot times against `minimumSlotBuffer`
+- Can initially coexist with old controls
+
+**Step 13: Fix `scheduleType` sync issue**
+- Current bug: `@AppStorage(MFAStorage.K.scheduleType)` in SettingsSheet is separate from `SecretsViewModel.scheduleType`
+- Option A: Remove `@AppStorage` version, use only ViewModel (preferred)
+- Option B: Sync `@AppStorage` to ViewModel on change
+- This affects the old system but prevents confusion during transition
+
+### Phase 6: Clean Up (Breaking Changes)
+
+Remove deprecated code once new system is fully working.
+
+**Step 14: Remove deprecated `Secret` field**
+- Remove `spacedRepetitionCategory: String?`
+- Add reset logic in `init(from decoder:)`: if old field detected, reset to defaults
+
+**Step 15: Remove deprecated `SecretCollection` fields**
+- Remove `spacedRepetitionCategories: [SpacedRepetitionCategory]`
+- Consider removing `regularIntervalNotifications` and `oneTimeNotifications` if fully replaced
+- Add reset logic for old data
+
+**Step 16: Delete obsolete files**
+- Delete `Models/SpacedRepetitionCategory.swift`
+- Delete `Models/ScheduleType.swift`
+
+**Step 17: Remove old UI controls from `SettingsSheet`**
+- Remove `RegularIntervalScheduleControls` (lines 18-58)
+- Remove `SpacedRepetitionScheduleControls` (lines 61-76)
+- Simplify `ScheduleControls` to only use new system
+- Remove `@AppStorage(MFAStorage.K.scheduleType)` binding
+
+**Step 18: Remove `SecretsPublisherManager` category tracking**
+- Remove `spRepCatCancellables` dictionary
+- Remove `addSpacedRepCategoryPublisher()` / `removeSpacedRepCategoryPublisher()` methods
+- Remove category subscription setup from `setupPublishers()`
+
+**Step 19: Clean up `Storage.swift`**
+- Remove `MFAStorage.K.scheduleType` key definition
+- Remove any other obsolete keys
+
+## Implementation Notes
+
+### Recommended Starting Point
+
+Start with **Phase 1** (Steps 1-4) since they have zero risk and validate core algorithms. Then proceed to **Phase 2** (Steps 5-7) which extends models without breaking existing functionality.
+
+### Testing Strategy
+
+- Run existing tests after each step to catch regressions
+- New tests in Steps 2 and 4 validate algorithms before integration
+- Manual testing of notification flow after Phase 4
+
+### Rollback Safety
+
+- Phases 1-5 are fully reversible (additive changes only)
+- Phase 6 is the point of no return for old data format
+- Consider tagging a release before Phase 6 for easy rollback
