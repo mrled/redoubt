@@ -64,6 +64,21 @@ class SecretsViewModel: ObservableObject {
         }
     }
 
+    /// Secrets that are currently due for review based on the active schedule
+    var secretsDue: [Secret] {
+        guard let scheduleId = activeScheduleId,
+              let schedule = availableSchedules.first(where: { $0.id == scheduleId }) else {
+            return []
+        }
+        return secrets.filter { secret in
+            guard let dueDate = schedule.nextReviewDate(
+                lastQuizzed: secret.lastQuizzed,
+                consecutiveSuccesses: secret.consecutiveSuccesses
+            ) else { return false }
+            return dueDate <= Date()
+        }
+    }
+
     /// Manager for notification scheduling and handling
     let notificationManager = SecretsNotificationManager()
     

@@ -125,14 +125,14 @@ class Secret: Identifiable, ObservableObject, Codable, Equatable {
 
     /// Verify that the input plaintext matches this secret's stored plaintext
     /// This might not be a simple string comparison, eg salts.
-    /// Update .lastQuizzed
+    /// Update .lastQuizzed, .lastQuizPassed, and .consecutiveSuccesses
     /// If validation is successful, make sure we are using the best digest type and re-hash if not
     func validate(plaintextIn: String) -> Bool {
         guard let inputData = plaintextIn.data(using: .utf8) else {
             return false
         }
         var validated = false
-        
+
         switch digestType {
         case .SHA512:
             let newDigest = sha512(data: inputData)
@@ -140,9 +140,18 @@ class Secret: Identifiable, ObservableObject, Codable, Equatable {
         case .Argon2:
             validated = sodium.pwHash.strVerify(hash: digest, passwd: Array(plaintextIn.utf8))
         }
-        
+
         lastQuizzed = Date()
-        
+
+        // Update quiz tracking based on validation result
+        if validated {
+            consecutiveSuccesses += 1
+            lastQuizPassed = true
+        } else {
+            consecutiveSuccesses = 0
+            lastQuizPassed = false
+        }
+
         // If we validate, make sure we are using the latest and most secure storage mechanism.
         if validated && (digestType != BestDigestType) {
             let logName = name
@@ -153,7 +162,7 @@ class Secret: Identifiable, ObservableObject, Codable, Equatable {
                 appLogger.error("Could not update plaintext of Secret '\(logName)' (\(logId)) to \(BestDigestType.rawValue): \(error)")
             }
         }
-        
+
         return validated
     }
     
