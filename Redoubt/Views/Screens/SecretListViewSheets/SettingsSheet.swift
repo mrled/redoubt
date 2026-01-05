@@ -85,8 +85,6 @@ struct NotificationSlotsEditor: View {
 
     @State private var showBufferWarning: Bool = false
 
-    private let slotLabels = ["Morning", "Evening", "Night", "Late Night"]
-
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Notification Times")
@@ -94,7 +92,7 @@ struct NotificationSlotsEditor: View {
 
             ForEach(slots.indices, id: \.self) { index in
                 HStack {
-                    Text(slotLabel(for: index))
+                    Text(schedule.labelForSlot(at: index))
                         .frame(width: 80, alignment: .leading)
 
                     DatePicker(
@@ -117,10 +115,6 @@ struct NotificationSlotsEditor: View {
                     .foregroundColor(.gray)
             }
         }
-    }
-
-    private func slotLabel(for index: Int) -> String {
-        index < slotLabels.count ? slotLabels[index] : "Slot \(index + 1)"
     }
 
     private func binding(for index: Int) -> Binding<Date> {

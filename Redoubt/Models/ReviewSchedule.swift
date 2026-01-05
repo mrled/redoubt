@@ -60,6 +60,16 @@ enum ReviewSchedule: Codable, Identifiable {
             return schedule.formattedMinimumBuffer()
         }
     }
+
+    /// Get a human-readable label for a notification slot
+    /// - Parameter index: The index of the slot (0-based)
+    /// - Returns: A label like "Morning", "Evening", or a generic "Slot N" for undefined indices
+    func labelForSlot(at index: Int) -> String {
+        switch self {
+        case .expanding(let schedule):
+            return schedule.labelForSlot(at: index)
+        }
+    }
 }
 
 /// An expanding interval schedule with predefined intervals that grow over time.
@@ -119,6 +129,15 @@ struct ExpandingIntervalSchedule: Codable {
     /// - Returns: Formatted string like "1 hour" or "6 hours"
     func formattedMinimumBuffer() -> String {
         Duration.seconds(minimumSlotBuffer).formatted(.units(allowed: [.hours], width: .wide))
+    }
+
+    /// Get a human-readable label for a notification slot
+    /// - Parameter index: The index of the slot (0-based)
+    /// - Returns: A label appropriate for the time of day, or a generic "Slot N" for undefined indices
+    func labelForSlot(at index: Int) -> String {
+        // Labels for the 2-slot configuration (9am, 6pm)
+        let labels = ["Morning", "Evening"]
+        return index < labels.count ? labels[index] : "Slot \(index + 1)"
     }
 
     /// Default expanding interval schedule with Fibonacci-like intervals
