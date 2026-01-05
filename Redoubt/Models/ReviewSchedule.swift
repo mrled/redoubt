@@ -118,8 +118,7 @@ struct ExpandingIntervalSchedule: Codable {
     /// Format the minimum buffer as a human-readable string
     /// - Returns: Formatted string like "1 hour" or "6 hours"
     func formattedMinimumBuffer() -> String {
-        let hours = Int(minimumSlotBuffer / 3600)
-        return hours == 1 ? "1 hour" : "\(hours) hours"
+        Duration.seconds(minimumSlotBuffer).formatted(.units(allowed: [.hours], width: .wide))
     }
 
     /// Default expanding interval schedule with Fibonacci-like intervals
