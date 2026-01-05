@@ -27,7 +27,7 @@ struct SecretCollection: Codable {
          regularIntervalNotifications: [DateComponents],
          oneTimeNotifications: [DateComponents],
          spacedRepetitionCategories: [SpacedRepetitionCategory],
-         availableSchedules: [ReviewSchedule] = [.expanding(.default)],
+         availableSchedules: [ReviewSchedule] = [.expanding(.default), .expanding(.onceDaily)],
          activeScheduleId: UUID? = nil,
          notificationSlots: [DateComponents]? = nil) {
         self.secrets = secrets
@@ -47,7 +47,7 @@ struct SecretCollection: Codable {
         spacedRepetitionCategories = try container.decode([SpacedRepetitionCategory].self, forKey: .spacedRepetitionCategories)
 
         // Provide defaults for new fields for backward compatibility
-        availableSchedules = try container.decodeIfPresent([ReviewSchedule].self, forKey: .availableSchedules) ?? [.expanding(.default)]
+        availableSchedules = try container.decodeIfPresent([ReviewSchedule].self, forKey: .availableSchedules) ?? [.expanding(.default), .expanding(.onceDaily)]
         activeScheduleId = try container.decodeIfPresent(UUID.self, forKey: .activeScheduleId)
         notificationSlots = try container.decodeIfPresent([DateComponents].self, forKey: .notificationSlots)
     }

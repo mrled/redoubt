@@ -13,7 +13,8 @@ final class ReviewScheduleTests: XCTestCase {
             name: "Test Schedule",
             intervals: [1, 2, 3, 5, 8],
             defaultSlots: [DateComponents(hour: 9, minute: 0)],
-            minimumSlotBuffer: 6 * 60 * 60
+            minimumSlotBuffer: 6 * 60 * 60,
+            slotLabels: ["Morning"]
         )
     }
 
@@ -105,7 +106,8 @@ final class ReviewScheduleTests: XCTestCase {
             name: "Test Enum Schedule",
             intervals: [1, 2, 3],
             defaultSlots: [DateComponents(hour: 9, minute: 0)],
-            minimumSlotBuffer: 6 * 60 * 60
+            minimumSlotBuffer: 6 * 60 * 60,
+            slotLabels: ["Daily"]
         )
 
         let reviewSchedule = ReviewSchedule.expanding(expandingSchedule)
@@ -122,5 +124,41 @@ final class ReviewScheduleTests: XCTestCase {
         let timeDifference = abs(result!.timeIntervalSince(expectedDate))
 
         XCTAssertLessThan(timeDifference, 5.0, "Should calculate correctly through enum wrapper")
+    }
+
+    // Test Case: Default schedule has two slots
+    func testDefaultScheduleHasTwoSlots() throws {
+        let defaultSchedule = ExpandingIntervalSchedule.default
+
+        XCTAssertEqual(defaultSchedule.defaultSlots.count, 2, "Default schedule should have 2 notification slots")
+        XCTAssertEqual(defaultSchedule.slotLabels.count, 2, "Default schedule should have 2 slot labels")
+        XCTAssertEqual(defaultSchedule.slotLabels[0], "Morning", "First slot should be 'Morning'")
+        XCTAssertEqual(defaultSchedule.slotLabels[1], "Evening", "Second slot should be 'Evening'")
+    }
+
+    // Test Case: Once daily schedule has one slot
+    func testOnceDailyScheduleHasOneSlot() throws {
+        let onceDailySchedule = ExpandingIntervalSchedule.onceDaily
+
+        XCTAssertEqual(onceDailySchedule.defaultSlots.count, 1, "Once daily schedule should have 1 notification slot")
+        XCTAssertEqual(onceDailySchedule.slotLabels.count, 1, "Once daily schedule should have 1 slot label")
+        XCTAssertEqual(onceDailySchedule.slotLabels[0], "Daily", "Slot should be labeled 'Daily'")
+        XCTAssertEqual(onceDailySchedule.minimumSlotBuffer, 0, "Once daily schedule should have no minimum buffer")
+    }
+
+    // Test Case: Both predefined schedules use same intervals
+    func testPredefinedSchedulesUseSameIntervals() throws {
+        let defaultSchedule = ExpandingIntervalSchedule.default
+        let onceDailySchedule = ExpandingIntervalSchedule.onceDaily
+
+        XCTAssertEqual(defaultSchedule.intervals, onceDailySchedule.intervals, "Both schedules should use the same Fibonacci-like intervals")
+    }
+
+    // Test Case: Slot labels work correctly
+    func testSlotLabels() throws {
+        let schedule = ExpandingIntervalSchedule.onceDaily
+
+        XCTAssertEqual(schedule.labelForSlot(at: 0), "Daily", "First slot should have correct label")
+        XCTAssertEqual(schedule.labelForSlot(at: 1), "Slot 2", "Out of bounds slot should return generic label")
     }
 }

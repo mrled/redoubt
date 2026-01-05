@@ -139,10 +139,10 @@ struct ExpandingIntervalSchedule: Codable {
         return index < slotLabels.count ? slotLabels[index] : "Slot \(index + 1)"
     }
 
-    /// Default expanding interval schedule with Fibonacci-like intervals
+    /// Default expanding interval schedule with Fibonacci-like intervals (twice daily)
     static let `default` = ExpandingIntervalSchedule(
         id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
-        name: "Expanding Intervals",
+        name: "Expanding Intervals (2x daily)",
         intervals: [1, 2, 3, 5, 8, 13, 21, 34],
         defaultSlots: [
             DateComponents(hour: 9, minute: 0),   // 9:00 AM
@@ -150,5 +150,17 @@ struct ExpandingIntervalSchedule: Codable {
         ],
         minimumSlotBuffer: 6 * 60 * 60,  // 6 hours in seconds
         slotLabels: ["Morning", "Evening"]
+    )
+
+    /// Expanding interval schedule with once-per-day notifications
+    static let onceDaily = ExpandingIntervalSchedule(
+        id: UUID(uuidString: "00000000-0000-0000-0000-000000000002")!,
+        name: "Expanding Intervals (1x daily)",
+        intervals: [1, 2, 3, 5, 8, 13, 21, 34],
+        defaultSlots: [
+            DateComponents(hour: 9, minute: 0)    // 9:00 AM
+        ],
+        minimumSlotBuffer: 0,  // No minimum buffer needed for single daily slot
+        slotLabels: ["Daily"]
     )
 }

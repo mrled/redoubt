@@ -44,7 +44,10 @@ class SecretsViewModel: ObservableObject {
 
     // New schedule system properties
     /// Available review schedules
-    @Published var availableSchedules: [ReviewSchedule] = [.expanding(.default)] {
+    @Published var availableSchedules: [ReviewSchedule] = [
+        .expanding(.default),
+        .expanding(.onceDaily)
+    ] {
         didSet {
             dataManager.saveItems()
         }
