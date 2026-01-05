@@ -76,43 +76,11 @@ struct SpacedRepetitionScheduleControls: View {
 }
 
 
-// MARK: - Notification Slot Validation
-
-struct NotificationSlotValidator {
-    static func validate(slots: [DateComponents], minimumBuffer: TimeInterval) -> Bool {
-        let sortedTimes = slots.compactMap { Calendar.current.date(from: $0) }.sorted()
-
-        // Check consecutive slots
-        for i in 0..<(sortedTimes.count - 1) {
-            let timeDiff = sortedTimes[i + 1].timeIntervalSince(sortedTimes[i])
-            if timeDiff < minimumBuffer {
-                return false
-            }
-        }
-
-        // Check wrap-around (last slot to first slot of next day)
-        if sortedTimes.count >= 2, let first = sortedTimes.first, let last = sortedTimes.last {
-            let wrapAroundDiff = (24 * 3600) - last.timeIntervalSince(first)
-            if wrapAroundDiff < minimumBuffer {
-                return false
-            }
-        }
-
-        return true
-    }
-
-    static func formatHours(_ seconds: TimeInterval) -> String {
-        let hours = Int(seconds / 3600)
-        return hours == 1 ? "1 hour" : "\(hours) hours"
-    }
-}
-
-
 // MARK: - Notification Slots Editor
 
 struct NotificationSlotsEditor: View {
     @Binding var slots: [DateComponents]
-    let minimumBuffer: TimeInterval
+    let schedule: ReviewSchedule
     let onSlotsChanged: () -> Void
 
     @State private var showBufferWarning: Bool = false
@@ -140,11 +108,11 @@ struct NotificationSlotsEditor: View {
 
             // Buffer validation message
             if showBufferWarning {
-                Text("⚠️ Times must be at least \(NotificationSlotValidator.formatHours(minimumBuffer)) apart")
+                Text("⚠️ Times must be at least \(schedule.formattedMinimumBuffer()) apart")
                     .font(.caption)
                     .foregroundColor(.orange)
             } else {
-                Text("Times must be at least \(NotificationSlotValidator.formatHours(minimumBuffer)) apart")
+                Text("Times must be at least \(schedule.formattedMinimumBuffer()) apart")
                     .font(.caption)
                     .foregroundColor(.gray)
             }
@@ -169,7 +137,7 @@ struct NotificationSlotsEditor: View {
     }
 
     private func validateAndNotify() {
-        showBufferWarning = !NotificationSlotValidator.validate(slots: slots, minimumBuffer: minimumBuffer)
+        showBufferWarning = !schedule.validateSlots(slots)
 
         if !showBufferWarning {
             onSlotsChanged()
@@ -196,10 +164,10 @@ struct NewScheduleControls: View {
                 if notificationsEnabled {
                     schedulePicker
 
-                    if let minimumBuffer = currentMinimumBuffer() {
+                    if let schedule = currentSchedule() {
                         NotificationSlotsEditor(
                             slots: $customSlots,
-                            minimumBuffer: minimumBuffer,
+                            schedule: schedule,
                             onSlotsChanged: { secretsVm.notificationSlots = customSlots }
                         )
                     }
@@ -256,10 +224,8 @@ struct NewScheduleControls: View {
         // Initialize custom slots
         if let slots = secretsVm.notificationSlots {
             customSlots = slots
-        } else if let scheduleId = selectedScheduleId,
-                  let schedule = secretsVm.availableSchedules.first(where: { $0.id == scheduleId }),
-                  case .expanding(let expandingSchedule) = schedule {
-            customSlots = expandingSchedule.defaultSlots
+        } else if let schedule = currentSchedule() {
+            customSlots = schedule.defaultSlots
         }
     }
 
@@ -267,21 +233,15 @@ struct NewScheduleControls: View {
         secretsVm.activeScheduleId = newScheduleId
 
         // Reset notification slots to schedule defaults when schedule changes
-        if let scheduleId = newScheduleId,
-           let schedule = secretsVm.availableSchedules.first(where: { $0.id == scheduleId }),
-           case .expanding(let expandingSchedule) = schedule {
-            customSlots = expandingSchedule.defaultSlots
+        if let schedule = secretsVm.availableSchedules.first(where: { $0.id == newScheduleId }) {
+            customSlots = schedule.defaultSlots
             secretsVm.notificationSlots = nil // Use schedule defaults
         }
     }
 
-    private func currentMinimumBuffer() -> TimeInterval? {
-        guard let scheduleId = selectedScheduleId,
-              let schedule = secretsVm.availableSchedules.first(where: { $0.id == scheduleId }),
-              case .expanding(let expandingSchedule) = schedule else {
-            return nil
-        }
-        return expandingSchedule.minimumSlotBuffer
+    private func currentSchedule() -> ReviewSchedule? {
+        guard let scheduleId = selectedScheduleId else { return nil }
+        return secretsVm.availableSchedules.first(where: { $0.id == scheduleId })
     }
 }
 
