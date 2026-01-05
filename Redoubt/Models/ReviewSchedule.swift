@@ -82,6 +82,7 @@ struct ExpandingIntervalSchedule: Codable {
     // Notification configuration (schedule provides defaults, user can customize)
     let defaultSlots: [DateComponents]    // e.g., [9am, 6pm]
     let minimumSlotBuffer: TimeInterval   // e.g., 6 hours (21600 seconds)
+    let slotLabels: [String]              // e.g., ["Morning", "Evening"]
 
     /// Calculate the next review date based on quiz history
     /// - Parameters:
@@ -133,11 +134,9 @@ struct ExpandingIntervalSchedule: Codable {
 
     /// Get a human-readable label for a notification slot
     /// - Parameter index: The index of the slot (0-based)
-    /// - Returns: A label appropriate for the time of day, or a generic "Slot N" for undefined indices
+    /// - Returns: A label from the configured slot labels, or a generic "Slot N" for undefined indices
     func labelForSlot(at index: Int) -> String {
-        // Labels for the 2-slot configuration (9am, 6pm)
-        let labels = ["Morning", "Evening"]
-        return index < labels.count ? labels[index] : "Slot \(index + 1)"
+        return index < slotLabels.count ? slotLabels[index] : "Slot \(index + 1)"
     }
 
     /// Default expanding interval schedule with Fibonacci-like intervals
@@ -149,6 +148,7 @@ struct ExpandingIntervalSchedule: Codable {
             DateComponents(hour: 9, minute: 0),   // 9:00 AM
             DateComponents(hour: 18, minute: 0)   // 6:00 PM
         ],
-        minimumSlotBuffer: 6 * 60 * 60  // 6 hours in seconds
+        minimumSlotBuffer: 6 * 60 * 60,  // 6 hours in seconds
+        slotLabels: ["Morning", "Evening"]
     )
 }
