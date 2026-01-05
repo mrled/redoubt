@@ -83,8 +83,6 @@ struct NotificationSlotsEditor: View {
     let schedule: ReviewSchedule
     let onSlotsChanged: () -> Void
 
-    @State private var showBufferWarning: Bool = false
-
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Notification Times")
@@ -95,26 +93,74 @@ struct NotificationSlotsEditor: View {
                     Text(schedule.labelForSlot(at: index))
                         .frame(width: 80, alignment: .leading)
 
-                    DatePicker(
-                        "",
-                        selection: binding(for: index),
-                        displayedComponents: .hourAndMinute
-                    )
-                    .labelsHidden()
+                    if let range = allowedRange(for: index) {
+                        DatePicker(
+                            "",
+                            selection: binding(for: index),
+                            in: range,
+                            displayedComponents: .hourAndMinute
+                        )
+                        .labelsHidden()
+                    } else {
+                        DatePicker(
+                            "",
+                            selection: binding(for: index),
+                            displayedComponents: .hourAndMinute
+                        )
+                        .labelsHidden()
+                    }
                 }
             }
 
-            // Buffer validation message
-            if showBufferWarning {
-                Text("⚠️ Times must be at least \(schedule.formattedMinimumBuffer()) apart")
-                    .font(.caption)
-                    .foregroundColor(.orange)
-            } else {
-                Text("Times must be at least \(schedule.formattedMinimumBuffer()) apart")
-                    .font(.caption)
-                    .foregroundColor(.gray)
-            }
+            Text("Times must be at least \(schedule.formattedMinimumBuffer()) apart")
+                .font(.caption)
+                .foregroundColor(.gray)
         }
+    }
+
+    private func allowedRange(for index: Int) -> ClosedRange<Date>? {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let buffer = schedule.minimumSlotBuffer
+
+        // For the first slot, constrain based on what comes after
+        if index == 0, slots.count > 1 {
+            // Morning must leave enough time for Evening (and wrap-around)
+            let nextSlotTime = calendar.date(from: slots[index + 1]) ?? today
+            let maxTime = calendar.date(byAdding: .second, value: -Int(buffer), to: nextSlotTime) ?? today
+
+            // Allow from start of day to (nextSlot - buffer)
+            return today...maxTime
+        }
+
+        // For subsequent slots, constrain based on what came before
+        if index > 0 {
+            let prevSlotTime = calendar.date(from: slots[index - 1]) ?? today
+            let minTime = calendar.date(byAdding: .second, value: Int(buffer), to: prevSlotTime) ?? today
+
+            // For the last slot, also check wrap-around to first slot
+            if index == slots.count - 1 {
+                let firstSlotTime = calendar.date(from: slots[0]) ?? today
+                let endOfDay = calendar.date(byAdding: .day, value: 1, to: today) ?? today
+                let maxTimeBeforeWrap = calendar.date(byAdding: .second, value: -Int(buffer), to: endOfDay.addingTimeInterval(firstSlotTime.timeIntervalSince(today))) ?? endOfDay
+
+                return minTime...maxTimeBeforeWrap
+            }
+
+            // For middle slots, constrain by next slot too
+            if index < slots.count - 1 {
+                let nextSlotTime = calendar.date(from: slots[index + 1]) ?? today
+                let maxTime = calendar.date(byAdding: .second, value: -Int(buffer), to: nextSlotTime) ?? today
+
+                return minTime...maxTime
+            }
+
+            // Last slot only constrained by previous
+            let endOfDay = calendar.date(byAdding: .day, value: 1, to: today) ?? today
+            return minTime...endOfDay
+        }
+
+        return nil // First slot with no others, no constraint
     }
 
     private func binding(for index: Int) -> Binding<Date> {
@@ -125,17 +171,9 @@ struct NotificationSlotsEditor: View {
             set: { newDate in
                 let components = Calendar.current.dateComponents([.hour, .minute], from: newDate)
                 slots[index] = components
-                validateAndNotify()
+                onSlotsChanged()
             }
         )
-    }
-
-    private func validateAndNotify() {
-        showBufferWarning = !schedule.validateSlots(slots)
-
-        if !showBufferWarning {
-            onSlotsChanged()
-        }
     }
 }
 
