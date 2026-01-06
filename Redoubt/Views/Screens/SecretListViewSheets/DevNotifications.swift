@@ -69,7 +69,7 @@ struct DevNotifications: View {
 }
 
 struct DevNotifications_Previews: PreviewProvider {
-    static let exampleEmptyCollection = SecretCollection(secrets: [], regularIntervalNotifications: [], oneTimeNotifications: [], spacedRepetitionCategories: [])
+    static let exampleEmptyCollection = SecretCollection(secrets: [], regularIntervalNotifications: [], oneTimeNotifications: [])
     static let secretsPreviewVm = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleEmptyCollection))
     static var previews: some View {
         Text("Root view")

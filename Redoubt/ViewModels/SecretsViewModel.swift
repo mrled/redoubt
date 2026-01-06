@@ -3,9 +3,6 @@ import Combine
 
 
 class SecretsViewModel: ObservableObject {
-    /// The type of notification schedule
-    @Published var scheduleType: ScheduleType = .daily
-
     /// All secrets that the user has entered
     @Published var secrets: [Secret] = [] {
         didSet {
@@ -25,20 +22,6 @@ class SecretsViewModel: ObservableObject {
     @Published var oneTimeNotifications: [DateComponents] = [] {
         didSet {
             dataManager.saveItems()
-        }
-    }
-    
-    /// Categories for spaced repetition
-    @Published var spacedRepetitionCategories: [SpacedRepetitionCategory] = [
-        SpacedRepetitionCategory(name: "Daily", description: "", duration: 60 * 60 * 24),
-        SpacedRepetitionCategory(name: "Every 3 days", description: "", duration: 60 * 60 * 24 * 3),
-        SpacedRepetitionCategory(name: "Weekly", description: "", duration: 60 * 60 * 24 * 7),
-        SpacedRepetitionCategory(name: "Every 2 weeks", description: "", duration: 60 * 60 * 24 * 7 * 2),
-        SpacedRepetitionCategory(name: "Monthly", description: "", duration: 60 * 60 * 24 * 31),
-    ] {
-        didSet {
-            dataManager.saveItems()
-            publisherManager.setupPublishers()
         }
     }
 
@@ -115,18 +98,6 @@ class SecretsViewModel: ObservableObject {
         if let index = secrets.firstIndex(of: secret) {
             secrets.remove(at: index)
             publisherManager.removeSecretPublisher(secret)
-        }
-    }
-    
-    func addSpacedRepCategory(_ category: SpacedRepetitionCategory) {
-        spacedRepetitionCategories.append(category)
-        publisherManager.addSpacedRepCategoryPublisher(category)
-    }
-
-    func removeSpacedRepCategory(_ category: SpacedRepetitionCategory) {
-        if let index = spacedRepetitionCategories.firstIndex(of: category) {
-            spacedRepetitionCategories.remove(at: index)
-            publisherManager.removeSpacedRepCategoryPublisher(category)
         }
     }
 

@@ -23,7 +23,7 @@ class SecretsPublisherManager: ObservableObject {
     }
     
     /// Set a publisher for each observable.
-    /// Whenever any items in the secrets or spacedRepetitionCategories changes, it triggers saveItems().
+    /// Whenever any items in the secrets changes, it triggers saveItems().
     ///
     /// Note the difference between the @Published property wrapper and what we do here.
     /// @Published will allow observation of any changes to the property itself,
@@ -42,7 +42,7 @@ class SecretsPublisherManager: ObservableObject {
     /// For arrays of reference types like class instances,
     /// mutation of an item in the array can be done in place, without making a new copy of the array,
     /// which means that @Published cannot see that there was a change.
-    /// Therefore, this function needs to iterate through each class instance in our secrets and spacedRepetitionCategories properties,
+    /// Therefore, this function needs to iterate through each class instance in our secrets property,
     /// and set up publishers on each instance individually in order to be notified when they are changed.
     ///
     /// We keep track of the cancellables so that we can throw away publishers for items we no longer need.
@@ -67,14 +67,6 @@ class SecretsPublisherManager: ObservableObject {
                 }
             cancellables[ObjectIdentifier(secret)] = secretCancellable
         }
-        
-        viewModel.spacedRepetitionCategories.forEach { category in
-            let categoryCancellable = category.objectWillChange
-                .sink { [weak self] _ in
-                    self?.secretsViewModel?.dataManager.saveItems()
-                }
-            cancellables[ObjectIdentifier(category)] = categoryCancellable
-        }
     }
     
     func addSecretPublisher(_ secret: Secret) {
@@ -88,18 +80,5 @@ class SecretsPublisherManager: ObservableObject {
     func removeSecretPublisher(_ secret: Secret) {
         cancellables[ObjectIdentifier(secret)]?.cancel()
         cancellables[ObjectIdentifier(secret)] = nil
-    }
-    
-    func addSpacedRepCategoryPublisher(_ category: SpacedRepetitionCategory) {
-        let cancellable = category.objectWillChange
-            .sink { [weak self] _ in
-                self?.secretsViewModel?.dataManager.saveItems()
-            }
-        cancellables[ObjectIdentifier(category)] = cancellable
-    }
-    
-    func removeSpacedRepCategoryPublisher(_ category: SpacedRepetitionCategory) {
-        cancellables[ObjectIdentifier(category)]?.cancel()
-        cancellables[ObjectIdentifier(category)] = nil
     }
 }

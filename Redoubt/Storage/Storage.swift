@@ -8,7 +8,6 @@ struct MFAStorage {
     struct K {
         static let enableEasterEggs = "enableEasterEggs"
         static let showDeveloperOptions = "showDeveloperOptions"
-        static let scheduleType = "scheduleType"
         static let showOnboarding = "showOnboarding"
         static let onboardingHasShownOnce = "onboardingHasShownOnce"
         static let visualizationMode = "visualizationMode"
@@ -19,7 +18,6 @@ struct MFAStorage {
     struct D {
         static let enableEasterEggs = false
         static let showDeveloperOptions = false
-        static let scheduleType = ScheduleType.daily
         static let showOnboarding = true
         static let onboardingHasShownOnce = false
         static let visualizationMode = VisualizationMode.Sha512

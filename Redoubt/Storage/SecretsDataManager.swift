@@ -86,7 +86,6 @@ class SecretsDataManager: ObservableObject {
             secrets: viewModel.secrets,
             regularIntervalNotifications: viewModel.regularIntervalNotifications,
             oneTimeNotifications: viewModel.oneTimeNotifications,
-            spacedRepetitionCategories: viewModel.spacedRepetitionCategories,
             availableSchedules: viewModel.availableSchedules,
             activeScheduleId: viewModel.activeScheduleId,
             notificationSlots: viewModel.notificationSlots
@@ -101,15 +100,6 @@ class SecretsDataManager: ObservableObject {
         viewModel.regularIntervalNotifications = collection.regularIntervalNotifications
         viewModel.oneTimeNotifications = collection.oneTimeNotifications
 
-        // If loaded spaced repetition categories are empty, populate with defaults
-        if collection.spacedRepetitionCategories.isEmpty {
-            viewModel.spacedRepetitionCategories = getDefaultSpacedRepetitionCategories()
-            // Save the updated collection with default categories
-            saveItems()
-        } else {
-            viewModel.spacedRepetitionCategories = collection.spacedRepetitionCategories
-        }
-
         // Load new schedule system fields
         viewModel.availableSchedules = collection.availableSchedules
         viewModel.activeScheduleId = collection.activeScheduleId
@@ -123,22 +113,10 @@ class SecretsDataManager: ObservableObject {
         viewModel.secrets = []
         viewModel.regularIntervalNotifications = []
         viewModel.oneTimeNotifications = []
-        viewModel.spacedRepetitionCategories = []
-        
+
         dataLoader.deleteAllData()
         viewModel.publisherManager.setupPublishers()
-        
+
         viewModel.notificationManager.reregisterAllNotifications()
-    }
-    
-    /// Creates the default spaced repetition categories
-    private func getDefaultSpacedRepetitionCategories() -> [SpacedRepetitionCategory] {
-        return [
-            SpacedRepetitionCategory(name: "Daily", description: "", duration: 60 * 60 * 24),
-            SpacedRepetitionCategory(name: "Every 3 days", description: "", duration: 60 * 60 * 24 * 3),
-            SpacedRepetitionCategory(name: "Weekly", description: "", duration: 60 * 60 * 24 * 7),
-            SpacedRepetitionCategory(name: "Every 2 weeks", description: "", duration: 60 * 60 * 24 * 7 * 2),
-            SpacedRepetitionCategory(name: "Monthly", description: "", duration: 60 * 60 * 24 * 31),
-        ]
     }
 }
