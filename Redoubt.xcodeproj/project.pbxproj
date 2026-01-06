@@ -35,6 +35,8 @@
 		30BD74ED2F0DA27D00405AE3 /* VisualizationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BD74EC2F0DA27D00405AE3 /* VisualizationMode.swift */; };
 		30BD74F02F0DA33B00405AE3 /* DeveloperOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BD74EF2F0DA33800405AE3 /* DeveloperOptions.swift */; };
 		30BD74F22F0DA49D00405AE3 /* SettingsControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BD74F12F0DA49D00405AE3 /* SettingsControls.swift */; };
+		30BD74F62F0DA9BE00405AE3 /* NewScheduleControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BD74F52F0DA9BE00405AE3 /* NewScheduleControls.swift */; };
+		30BD74F82F0DAA3100405AE3 /* NotificationSlotsEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BD74F72F0DAA3100405AE3 /* NotificationSlotsEditor.swift */; };
 		30C3DDA92A3121940095CB37 /* Hashes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDA82A3121940095CB37 /* Hashes.swift */; };
 		30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */; };
 		30DC65E02A32D07E00EDB001 /* Clibsodium in Frameworks */ = {isa = PBXBuildFile; productRef = 30DC65DF2A32D07E00EDB001 /* Clibsodium */; };
@@ -117,6 +119,8 @@
 		30BD74EC2F0DA27D00405AE3 /* VisualizationMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizationMode.swift; sourceTree = "<group>"; };
 		30BD74EF2F0DA33800405AE3 /* DeveloperOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperOptions.swift; sourceTree = "<group>"; };
 		30BD74F12F0DA49D00405AE3 /* SettingsControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsControls.swift; sourceTree = "<group>"; };
+		30BD74F52F0DA9BE00405AE3 /* NewScheduleControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewScheduleControls.swift; sourceTree = "<group>"; };
+		30BD74F72F0DAA3100405AE3 /* NotificationSlotsEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSlotsEditor.swift; sourceTree = "<group>"; };
 		30C3DDA82A3121940095CB37 /* Hashes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hashes.swift; sourceTree = "<group>"; };
 		30C3DDB02A31442C0095CB37 /* CryptographyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		30DC65E32A32DB0900EDB001 /* BinaryDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDisplay.swift; sourceTree = "<group>"; };
@@ -294,6 +298,8 @@
 		30BD74EE2F0DA33200405AE3 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				30BD74F72F0DAA3100405AE3 /* NotificationSlotsEditor.swift */,
+				30BD74F52F0DA9BE00405AE3 /* NewScheduleControls.swift */,
 				30BD74F12F0DA49D00405AE3 /* SettingsControls.swift */,
 				30BD74EF2F0DA33800405AE3 /* DeveloperOptions.swift */,
 			);
@@ -570,6 +576,7 @@
 				30FD05B52A1C23CF006AB9CC /* Secret.swift in Sources */,
 				30BD74F02F0DA33B00405AE3 /* DeveloperOptions.swift in Sources */,
 				30E3FD1B2A2AF581002BFE60 /* SecretQuizFinishedView.swift in Sources */,
+				30BD74F62F0DA9BE00405AE3 /* NewScheduleControls.swift in Sources */,
 				30E8165E2A2C57F7002CDD75 /* ShimmeringSystemImage.swift in Sources */,
 				30BD74F22F0DA49D00405AE3 /* SettingsControls.swift in Sources */,
 				30EB50C02A246D96007550D3 /* SettingsSheet.swift in Sources */,
@@ -599,6 +606,7 @@
 				30E3FD192A2AF538002BFE60 /* SecretQuizInnerView.swift in Sources */,
 				30DE2D862DFB032C00F9E465 /* SecretsDataManager.swift in Sources */,
 				30DC65E42A32DB0900EDB001 /* BinaryDisplay.swift in Sources */,
+				30BD74F82F0DAA3100405AE3 /* NotificationSlotsEditor.swift in Sources */,
 				30FD05B92A1C2DC9006AB9CC /* RedoubtUtilities.swift in Sources */,
 				30BD74ED2F0DA27D00405AE3 /* VisualizationMode.swift in Sources */,
 				30286CCD2A25C08B00456CA5 /* CreateSecretSheet.swift in Sources */,
