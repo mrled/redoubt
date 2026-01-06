@@ -112,9 +112,11 @@ struct NotificationSlotsEditor: View {
                 }
             }
 
-            Text("Times must be at least \(schedule.formattedMinimumBuffer()) apart")
-                .font(.caption)
-                .foregroundColor(.gray)
+            if schedule.requiresSlotSpacing {
+                Text("Times must be at least \(schedule.formattedMinimumBuffer()) apart")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
         }
     }
 
@@ -123,11 +125,19 @@ struct NotificationSlotsEditor: View {
         let today = calendar.startOfDay(for: Date())
         let buffer = schedule.minimumSlotBuffer
 
+        // For single-slot schedules, no constraint needed
+        if slots.count == 1 {
+            return nil
+        }
+
         // For the first slot, constrain based on what comes after
         if index == 0, slots.count > 1 {
             // Morning must leave enough time for Evening (and wrap-around)
             let nextSlotTime = calendar.date(from: slots[index + 1]) ?? today
             let maxTime = calendar.date(byAdding: .second, value: -Int(buffer), to: nextSlotTime) ?? today
+
+            // Ensure valid range (maxTime must be >= today)
+            guard maxTime >= today else { return nil }
 
             // Allow from start of day to (nextSlot - buffer)
             return today...maxTime
@@ -144,6 +154,9 @@ struct NotificationSlotsEditor: View {
                 let endOfDay = calendar.date(byAdding: .day, value: 1, to: today) ?? today
                 let maxTimeBeforeWrap = calendar.date(byAdding: .second, value: -Int(buffer), to: endOfDay.addingTimeInterval(firstSlotTime.timeIntervalSince(today))) ?? endOfDay
 
+                // Ensure valid range
+                guard maxTimeBeforeWrap >= minTime else { return nil }
+
                 return minTime...maxTimeBeforeWrap
             }
 
@@ -151,6 +164,9 @@ struct NotificationSlotsEditor: View {
             if index < slots.count - 1 {
                 let nextSlotTime = calendar.date(from: slots[index + 1]) ?? today
                 let maxTime = calendar.date(byAdding: .second, value: -Int(buffer), to: nextSlotTime) ?? today
+
+                // Ensure valid range
+                guard maxTime >= minTime else { return nil }
 
                 return minTime...maxTime
             }

@@ -161,4 +161,27 @@ final class ReviewScheduleTests: XCTestCase {
         XCTAssertEqual(schedule.labelForSlot(at: 0), "Daily", "First slot should have correct label")
         XCTAssertEqual(schedule.labelForSlot(at: 1), "Slot 2", "Out of bounds slot should return generic label")
     }
+
+    // Test Case: requiresSlotSpacing is true for multi-slot schedules with buffer
+    func testDefaultScheduleRequiresSlotSpacing() throws {
+        let defaultSchedule = ExpandingIntervalSchedule.default
+
+        XCTAssertTrue(defaultSchedule.requiresSlotSpacing, "Default schedule with 2 slots and 6-hour buffer should require spacing")
+    }
+
+    // Test Case: requiresSlotSpacing is false for single-slot schedules
+    func testOnceDailyScheduleDoesNotRequireSlotSpacing() throws {
+        let onceDailySchedule = ExpandingIntervalSchedule.onceDaily
+
+        XCTAssertFalse(onceDailySchedule.requiresSlotSpacing, "Once daily schedule with 1 slot should not require spacing")
+    }
+
+    // Test Case: ReviewSchedule enum exposes requiresSlotSpacing
+    func testReviewScheduleExposesSlotSpacingRequirement() throws {
+        let twiceDaily = ReviewSchedule.expanding(.default)
+        let onceDaily = ReviewSchedule.expanding(.onceDaily)
+
+        XCTAssertTrue(twiceDaily.requiresSlotSpacing, "Twice daily schedule should require spacing")
+        XCTAssertFalse(onceDaily.requiresSlotSpacing, "Once daily schedule should not require spacing")
+    }
 }

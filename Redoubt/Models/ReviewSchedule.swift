@@ -30,6 +30,13 @@ enum ReviewSchedule: Codable, Identifiable {
         }
     }
 
+    /// Whether this schedule requires slot spacing validation
+    var requiresSlotSpacing: Bool {
+        switch self {
+        case .expanding(let schedule): return schedule.requiresSlotSpacing
+        }
+    }
+
     /// Calculate the next review date for a secret based on its history
     /// - Parameters:
     ///   - lastQuizzed: The last time the secret was quizzed (nil if never quizzed)
@@ -137,6 +144,12 @@ struct ExpandingIntervalSchedule: Codable {
     /// - Returns: A label from the configured slot labels, or a generic "Slot N" for undefined indices
     func labelForSlot(at index: Int) -> String {
         return index < slotLabels.count ? slotLabels[index] : "Slot \(index + 1)"
+    }
+
+    /// Whether this schedule requires slot spacing validation
+    /// Only needed for schedules with multiple slots and a minimum buffer
+    var requiresSlotSpacing: Bool {
+        return defaultSlots.count > 1 && minimumSlotBuffer > 0
     }
 
     /// Default expanding interval schedule with Fibonacci-like intervals (twice daily)
