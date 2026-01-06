@@ -281,51 +281,6 @@ struct NewScheduleControls: View {
 }
 
 
-struct ScheduleControls: View {
-    @Binding var notificationsAllowed: Bool
-    @AppStorage(MFAStorage.K.scheduleType) var scheduleType: ScheduleType = MFAStorage.D.scheduleType
-
-    var body: some View {
-        Section("Schedule") {
-            if notificationsAllowed {
-                Picker(selection: $scheduleType, label: Text("Schedule type")) {
-                    ForEach(ScheduleType.allCases) { schedType in
-                        Text(schedType.description).tag(schedType)
-                    }
-                }
-                .onChange(of: scheduleType) { newValue in
-                    // TODO: cancel all notifications from previous selection, add notifications from new selection
-                    switch newValue {
-                    case .disabled:
-                        break
-                    case .daily:
-                        break
-                    case .spacedRepetition:
-                        break
-                    }
-                }
-
-                switch scheduleType {
-                case .disabled:
-                    EmptyView()
-                case .daily:
-                    RegularIntervalScheduleControls()
-                case .spacedRepetition:
-                    SpacedRepetitionScheduleControls()
-                }
-            } else {
-                Text("To schedule reminders, please enable notifications in Settings.")
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    if UIApplication.shared.canOpenURL(url) {
-                        RowItemUrlWithIcon(title: "Open Settings", systemImageName: "gear", destination: url)
-                    }
-                }
-            }
-        }
-    }
-}
-
-
 struct SettingsSheet: View {
     @Binding var notificationsAllowed: Bool
     @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
