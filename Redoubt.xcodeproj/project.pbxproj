@@ -131,7 +131,6 @@
 		30E3FD1A2A2AF581002BFE60 /* SecretQuizFinishedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretQuizFinishedView.swift; sourceTree = "<group>"; };
 		30E8165D2A2C57F7002CDD75 /* ShimmeringSystemImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmeringSystemImage.swift; sourceTree = "<group>"; };
 		30E8165F2A2CDA59002CDD75 /* ReadSizeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadSizeModifier.swift; sourceTree = "<group>"; };
-		30E816652A2EEE64002CDD75 /* Encryption.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Encryption.md; sourceTree = "<group>"; };
 		30EB50BF2A246D96007550D3 /* SettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSheet.swift; sourceTree = "<group>"; };
 		30EB50C22A24E534007550D3 /* AboutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSheet.swift; sourceTree = "<group>"; };
 		30EB50C52A24E978007550D3 /* RowItemWithIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowItemWithIcon.swift; sourceTree = "<group>"; };
@@ -311,7 +310,6 @@
 			isa = PBXGroup;
 			children = (
 				30DE2D7A2DFAFCE700F9E465 /* NOTES.md */,
-				30E816652A2EEE64002CDD75 /* Encryption.md */,
 			);
 			path = Docs;
 			sourceTree = "<group>";
