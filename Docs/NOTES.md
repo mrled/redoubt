@@ -97,11 +97,66 @@ Redoubt/
 - **Slot Validation**: `validateSlots(_:)` ensures minimum buffer time between notification slots
 
 ### Data Storage
+
+#### Storage Architecture
+- **Protocol-Based Design**: `SecretsVmDataLoader` protocol enables pluggable storage backends
 - **Data Manager**: `SecretsDataManager` handles loading, saving, and demo mode switching
-- **Data Loading**: `SecretsVmDataLoaders.swift` - `SecretsVmDataLoaderFromPlist.load()`
-- **Data Saving**: Automatic persistence via `saveItems()` triggered by published property changes
-- **Storage Configuration**: `Storage.swift` - `MFAStorage` keys and defaults (legacy naming)
-- **Demo Mode**: Separate plists (`SecretsUser.plist` vs `SecretsDemo.plist`) managed by `SecretsDataManager`
+- **Automatic Persistence**: Changes to `@Published` properties trigger `saveItems()` via Combine publishers
+- **Storage Configuration**: `Storage.swift` defines `MFAStorage`, `MFFStorage`, `MFUDStorage` (legacy naming)
+
+#### Data Loaders (Strategy Pattern)
+1. **SecretsVmDataLoaderFromPlist**: Production/demo plist file storage
+   - Implements `SecretsVmDataLoader` protocol
+   - Loads/saves `SecretCollection` to property list files
+   - Handles serialization/deserialization with Codable
+2. **SecretsVmDataLoaderFromArray**: In-memory storage for previews and tests
+   - No file I/O, stores secrets in memory array
+   - Enables SwiftUI preview functionality
+
+#### Storage Locations
+All files stored in app's **Documents directory** (`.documentDirectory` in user domain):
+- **User Secrets**: `SecretsUser.plist` - production secret data
+- **Demo Secrets**: `SecretsDemo.plist` - demo mode secret data (3 example passwords)
+- **Legacy Notifications** (deprecated but retained): `RegularIntervalNotifications.plist`, `OneTimeNotifications.plist`
+
+**Backup & Sync Behavior**:
+- ✅ **Included in device backups**: Files in Documents directory are backed up to iCloud Backup and iTunes/Finder backups (encrypted)
+- ❌ **NOT synced via iCloud**: No iCloud Drive or CloudKit integration - data does not sync between devices
+- ⚠️ **No backup exclusion**: Files are not marked with `NSURLIsExcludedFromBackupKey` (standard iOS behavior for Documents directory)
+
+#### Storage Format
+**Property List (Plist) Structure**:
+- Root: `SecretCollection` (Codable struct)
+- Contains:
+  - Array of `Secret` objects with encrypted digests
+  - Notification settings (legacy and new schedule-based)
+  - Active schedule ID and custom time slots
+
+**What's Stored**:
+- Secret `name` (plaintext)
+- Secret `digest` (Argon2 or SHA512 hash - NOT plaintext password)
+- Secret `digestType` (hash algorithm identifier)
+- Quiz tracking: `lastQuizzed`, `lastQuizPassed`, `consecutiveSuccesses`
+- Schedule configuration: `availableSchedules`, `activeScheduleId`, `notificationSlots`
+
+**What's NOT Stored**:
+- Plaintext passwords (only exist in memory during creation/validation)
+- User's master password or key material
+- Decryption keys (app uses one-way hashing, not encryption)
+
+#### UserDefaults
+**MFUDStorage** manages app preferences:
+- `demoMode`: Boolean toggle for demo/production data
+- `enableEasterEggs`: Feature flag
+- `showDeveloperOptions`: Dev tools visibility
+- `showOnboarding`: Onboarding state
+- `notificationAction`: Pending notification action state
+
+#### Demo Mode Storage
+- Automatic in simulator builds
+- Completely separate plist file from production data
+- Toggle switches data source without data loss
+- `SecretsDataManager.userDefaultsDidChange()` monitors mode changes
 
 ### User Interface
 - **Main List**: `SecretListView.swift` - displays all secrets and quiz options
@@ -124,9 +179,20 @@ Redoubt/
 ## Important Implementation Details
 
 ### Security
-- **Argon2 Hashing**: Secrets are hashed using Argon2 with interactive parameters
+
+#### Cryptography
+- **Argon2 Hashing**: Secrets are hashed using Argon2 with interactive parameters (memory-hard, GPU-resistant)
 - **Hash Migration**: Automatically upgrades old SHA512 hashes to Argon2 on validation
-- **No Plaintext Storage**: Only encrypted digests are persisted
+- **No Plaintext Storage**: Only one-way hashes are persisted, never plaintext passwords
+- **No Master Password**: App uses one-way hashing, not encryption (no key material to protect)
+
+#### Data Protection
+- **iOS App Sandbox**: App data isolated from other apps (standard iOS security)
+- **Backup Inclusion**: Data files ARE included in device backups (iCloud Backup, iTunes/Finder)
+  - Backups are encrypted by Apple's backup system
+  - Hashes are stored, not plaintext passwords
+  - Users should be aware data persists in backups
+- **No Cloud Sync**: No iCloud Drive or CloudKit - data stays on device (except backups)
 
 ### Demo Mode
 - **Automatic Demo**: Simulator builds automatically enable demo mode
