@@ -9,6 +9,7 @@ struct PermissionButton: View {
 
     @State private var isEnabled: Bool = false
     @State private var isCheckingStatus: Bool = true
+    @State private var canRequestDirectly: Bool = true // For notifications: can we show system prompt or must go to Settings?
 
     enum PermissionType {
         case notifications
@@ -27,7 +28,7 @@ struct PermissionButton: View {
                         .font(.system(size: 40))
                         .frame(width: 60, height: 60)
 
-                    Text(isEnabled ? "Enabled" : "Enable")
+                    Text(buttonText)
                         .font(.caption)
                 }
                 .frame(maxWidth: .infinity)
@@ -47,12 +48,23 @@ struct PermissionButton: View {
         }
     }
 
+    private var buttonText: String {
+        if isEnabled {
+            return "Enabled"
+        } else if permissionType == .notifications && !canRequestDirectly {
+            return "Open Settings"
+        } else {
+            return "Enable"
+        }
+    }
+
     private func checkPermissionStatus() {
         switch permissionType {
         case .notifications:
             UNUserNotificationCenter.current().getNotificationSettings { settings in
                 DispatchQueue.main.async {
                     self.isEnabled = settings.authorizationStatus == .authorized
+                    self.canRequestDirectly = settings.authorizationStatus == .notDetermined
                     self.isCheckingStatus = false
                 }
             }
@@ -69,17 +81,29 @@ struct PermissionButton: View {
     private func requestPermission() {
         switch permissionType {
         case .notifications:
-            NotificationManager.shared.requestPermission { success in
-                DispatchQueue.main.async {
-                    self.isEnabled = success
+            if canRequestDirectly {
+                // User hasn't been asked yet, show system permission prompt
+                NotificationManager.shared.requestPermission { success in
+                    DispatchQueue.main.async {
+                        self.isEnabled = success
+                        // After requesting, check status again to update UI properly
+                        self.checkPermissionStatus()
+                    }
                 }
+            } else {
+                // User previously denied, must go to Settings to enable
+                openSettings()
             }
         case .biometrics:
             // For biometrics, we can only check if it's available, not request it
             // This opens Settings if biometrics is not set up
-            if let url = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(url)
-            }
+            openSettings()
+        }
+    }
+
+    private func openSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
         }
     }
 }

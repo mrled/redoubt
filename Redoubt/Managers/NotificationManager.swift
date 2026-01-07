@@ -17,6 +17,15 @@ class NotificationManager {
         }
     }
 
+    /// Checks if we can request notification permission directly, or if user must go to Settings
+    /// Returns true if we can show the system permission prompt (status is .notDetermined)
+    /// Returns false if user must go to Settings (status is .denied or other)
+    func canRequestPermissionDirectly(completion: @escaping (Bool) -> Void) {
+        getAuthorizationStatus { status in
+            completion(status == .notDetermined)
+        }
+    }
+
     func requestPermission(completion: @escaping (Bool) -> Void) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             DispatchQueue.main.async {
