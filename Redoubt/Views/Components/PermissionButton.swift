@@ -24,9 +24,19 @@ struct PermissionButton: View {
                 }
             }) {
                 VStack(spacing: 8) {
-                    Image(systemName: systemImageName)
-                        .font(.system(size: 40))
-                        .frame(width: 60, height: 60)
+                    ZStack {
+                        Image(systemName: systemImageName)
+                            .font(.system(size: 40))
+                            .frame(width: 60, height: 60)
+
+                        if isEnabled {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(.green)
+                                .background(Circle().fill(Color.white).frame(width: 26, height: 26))
+                                .offset(x: 20, y: -20)
+                        }
+                    }
 
                     Text(buttonText)
                         .font(.caption)
@@ -34,7 +44,7 @@ struct PermissionButton: View {
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(isEnabled ? Color.gray.opacity(0.3) : Color.blue)
-                .foregroundColor(isEnabled ? .gray : .white)
+                .foregroundColor(isEnabled ? .primary : .white)
                 .cornerRadius(12)
             }
             .disabled(isEnabled)
@@ -111,6 +121,8 @@ struct PermissionButton: View {
 struct PermissionButton_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 20) {
+            Text("Active State")
+                .font(.headline)
             HStack(spacing: 20) {
                 PermissionButton(
                     title: "Notifications",
@@ -123,7 +135,61 @@ struct PermissionButton_Previews: PreviewProvider {
                     permissionType: .biometrics
                 )
             }
-            .padding()
+
+            Divider()
+                .padding(.vertical)
+
+            Text("Done + Disabled State")
+                .font(.headline)
+            HStack(spacing: 20) {
+                PermissionButtonMockEnabled(
+                    title: "Notifications",
+                    systemImageName: "bell.fill"
+                )
+                PermissionButtonMockEnabled(
+                    title: "Face ID / Touch ID",
+                    systemImageName: "faceid"
+                )
+            }
+        }
+        .padding()
+    }
+}
+
+struct PermissionButtonMockEnabled: View {
+    let title: String
+    let systemImageName: String
+
+    var body: some View {
+        VStack(spacing: 8) {
+            Button(action: {}) {
+                VStack(spacing: 8) {
+                    ZStack {
+                        Image(systemName: systemImageName)
+                            .font(.system(size: 40))
+                            .frame(width: 60, height: 60)
+
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 24))
+                            .foregroundColor(.green)
+                            .background(Circle().fill(Color.white).frame(width: 26, height: 26))
+                            .offset(x: 20, y: -20)
+                    }
+
+                    Text("Enabled")
+                        .font(.caption)
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.gray.opacity(0.3))
+                .foregroundColor(.primary)
+                .cornerRadius(12)
+            }
+            .disabled(true)
+
+            Text(title)
+                .font(.caption)
+                .multilineTextAlignment(.center)
         }
     }
 }
