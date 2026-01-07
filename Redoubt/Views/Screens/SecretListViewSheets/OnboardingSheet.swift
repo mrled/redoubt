@@ -33,6 +33,7 @@ struct OnboardingSheet: View {
                 // TODO: update this when spaced repetition is added
                 RowItemWithIcon(title: "Enter your passwords correctly and the time until the next quiz increases", systemImageName: "calendar")
             }
+
             Group {
                 Text("Redoubt is secure")
                     .font(.title2)
@@ -41,6 +42,24 @@ struct OnboardingSheet: View {
                     RowItemWithIcon(title: "Passwords are saved with strong hashing via Argon2, not stored in plaintext", systemImageName: "lock.shield")
                     RowItemWithIcon(title: "Hashes live only on your device, not synced or backed up", systemImageName: "lock.iphone")
                 }
+            }
+            Group {
+                Text("Enable permissions")
+                    .font(.title2)
+                    .padding([.top, .bottom])
+                HStack(spacing: 20) {
+                    PermissionButton(
+                        title: "Notifications",
+                        systemImageName: "bell.fill",
+                        permissionType: .notifications
+                    )
+                    PermissionButton(
+                        title: "Face ID / Touch ID",
+                        systemImageName: "faceid",
+                        permissionType: .biometrics
+                    )
+                }
+                .padding([.bottom])
             }
             Spacer()
             Divider()
