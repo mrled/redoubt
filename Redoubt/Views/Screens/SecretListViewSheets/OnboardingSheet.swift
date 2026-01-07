@@ -38,10 +38,8 @@ struct OnboardingSheet: View {
                     .font(.title2)
                     .padding([.top, .bottom])
                 VStack(alignment: .leading) {
-                    RowItemWithIcon(title: "Passwords live only on your device, no syncing", systemImageName: "lock.iphone")
-                    // TODO: need a 'learn more' for password storage
-                    // TODO: update this when we move to PBKDF2 or whatever
-                    RowItemWithIcon(title: "Passwords are saved with strong hashing", systemImageName: "lock.shield")
+                    RowItemWithIcon(title: "Passwords are saved with strong hashing via Argon2, not stored in plaintext", systemImageName: "lock.shield")
+                    RowItemWithIcon(title: "Hashes live only on your device, not synced or backed up", systemImageName: "lock.iphone")
                 }
             }
             Spacer()
