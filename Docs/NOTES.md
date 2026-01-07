@@ -114,15 +114,15 @@ Redoubt/
    - Enables SwiftUI preview functionality
 
 #### Storage Locations
-All files stored in app's **Documents directory** (`.documentDirectory` in user domain):
+All files stored in app's **Application Support directory** (`.applicationSupportDirectory` in user domain):
 - **User Secrets**: `SecretsUser.plist` - production secret data
 - **Demo Secrets**: `SecretsDemo.plist` - demo mode secret data (3 example passwords)
 - **Legacy Notifications** (deprecated but retained): `RegularIntervalNotifications.plist`, `OneTimeNotifications.plist`
 
 **Backup & Sync Behavior**:
-- ✅ **Included in device backups**: Files in Documents directory are backed up to iCloud Backup and iTunes/Finder backups (encrypted)
+- ❌ **Excluded from device backups**: Files are explicitly excluded from iCloud Backup and iTunes/Finder backups using `NSURLIsExcludedFromBackupKey`
 - ❌ **NOT synced via iCloud**: No iCloud Drive or CloudKit integration - data does not sync between devices
-- ⚠️ **No backup exclusion**: Files are not marked with `NSURLIsExcludedFromBackupKey` (standard iOS behavior for Documents directory)
+- ✅ **On-device-only storage**: Hashed secrets remain exclusively on the device and are not backed up or synced
 
 #### Storage Format
 **Property List (Plist) Structure**:
@@ -188,11 +188,12 @@ All files stored in app's **Documents directory** (`.documentDirectory` in user 
 
 #### Data Protection
 - **iOS App Sandbox**: App data isolated from other apps (standard iOS security)
-- **Backup Inclusion**: Data files ARE included in device backups (iCloud Backup, iTunes/Finder)
-  - Backups are encrypted by Apple's backup system
-  - Hashes are stored, not plaintext passwords
-  - Users should be aware data persists in backups
-- **No Cloud Sync**: No iCloud Drive or CloudKit - data stays on device (except backups)
+- **On-Device-Only Storage**: Data files are explicitly excluded from device backups using `NSURLIsExcludedFromBackupKey`
+  - Hashed secrets remain exclusively on the device
+  - Files are stored in Application Support directory
+  - Not backed up to iCloud Backup or iTunes/Finder backups
+  - If user loses device or deletes app, all secret data is permanently lost
+- **No Cloud Sync**: No iCloud Drive or CloudKit - data stays on device only
 
 ### Demo Mode
 - **Automatic Demo**: Simulator builds automatically enable demo mode

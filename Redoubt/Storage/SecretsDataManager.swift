@@ -18,22 +18,39 @@ class SecretsDataManager: ObservableObject {
     
     /// An observer for UserDefaults to track whether we're in demo mode
     private var userDefautlsObserver: Any?
-    
-    /// A URL for the document directory that the initializer ensures exists, just a convenience to not have to deal with optionals
-    let documents: URL
+
+    /// A URL for the application support directory that the initializer ensures exists and is excluded from backups
+    let appSupport: URL
 
     /// Our data is stored here
-    var secretsUserPlist: URL { documents.appendingPathComponent("SecretsUser.plist") }
-    
+    var secretsUserPlist: URL { appSupport.appendingPathComponent("SecretsUser.plist") }
+
     /// In demo mode, our data is stored here
-    var secretsDemoPlist: URL { documents.appendingPathComponent("SecretsDemo.plist") }
-    
+    var secretsDemoPlist: URL { appSupport.appendingPathComponent("SecretsDemo.plist") }
+
     init(dataLoader: SecretsVmDataLoader? = nil) {
-        if let d = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            documents = d
-        } else {
-            fatalError("Unable to access documents directory.")
+        guard let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+            fatalError("Unable to access application support directory.")
         }
+
+        // Create the directory if it doesn't exist
+        do {
+            try FileManager.default.createDirectory(at: appSupportDir, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+            print("Error creating application support directory: \(error)")
+        }
+
+        // Exclude the entire app support directory from backups
+        var appSupportDirMutable = appSupportDir
+        do {
+            var resourceValues = URLResourceValues()
+            resourceValues.isExcludedFromBackup = true
+            try appSupportDirMutable.setResourceValues(resourceValues)
+        } catch {
+            print("Error excluding directory from backup: \(error)")
+        }
+
+        appSupport = appSupportDir
         
         // Why use UserDefaults here, which requires adding the Observer below,
         // when AppStorage is supposed to handle observability for us?

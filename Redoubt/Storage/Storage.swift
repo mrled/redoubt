@@ -29,20 +29,37 @@ struct MFAStorage {
 
 /// Redoubt file storage keys and defaults
 struct MFFStorage {
-    let documents: URL
-    
+    let appSupport: URL
+
     init() {
-        if let d = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            documents = d
-        } else {
-            fatalError("Unable to access documents directory.")
+        guard let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+            fatalError("Unable to access application support directory.")
         }
+
+        // Create the directory if it doesn't exist
+        do {
+            try FileManager.default.createDirectory(at: appSupportDir, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+            print("Error creating application support directory: \(error)")
+        }
+
+        // Exclude the entire app support directory from backups
+        var appSupportDirMutable = appSupportDir
+        do {
+            var resourceValues = URLResourceValues()
+            resourceValues.isExcludedFromBackup = true
+            try appSupportDirMutable.setResourceValues(resourceValues)
+        } catch {
+            print("Error excluding directory from backup: \(error)")
+        }
+
+        appSupport = appSupportDir
     }
-    
-    var secretsUserPlist: URL { documents.appendingPathComponent("SecretsUser.plist") }
-    var secretsDemoPlist: URL { documents.appendingPathComponent("SecretsDemo.plist") }
-    var regularIntervalEntriesPlist: URL { documents.appendingPathComponent("RegularIntervalNotifications.plist") }
-    var oneTimeEntriesPlist: URL { documents.appendingPathComponent("OneTimeNotifications.plist") }
+
+    var secretsUserPlist: URL { appSupport.appendingPathComponent("SecretsUser.plist") }
+    var secretsDemoPlist: URL { appSupport.appendingPathComponent("SecretsDemo.plist") }
+    var regularIntervalEntriesPlist: URL { appSupport.appendingPathComponent("RegularIntervalNotifications.plist") }
+    var oneTimeEntriesPlist: URL { appSupport.appendingPathComponent("OneTimeNotifications.plist") }
 }
 
 
