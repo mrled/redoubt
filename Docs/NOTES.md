@@ -36,6 +36,11 @@ Redoubt/
 │   │   ├── SecretDetailView.swift     # Individual secret details
 │   │   └── SecretQuiz/                # Quiz functionality
 │   ├── Components/                    # Reusable UI components
+│   │   ├── NewScheduleControls.swift  # Schedule selection UI
+│   │   ├── NotificationSlotsEditor.swift # Time slot picker
+│   │   ├── SettingsControls.swift     # General app settings
+│   │   ├── DeveloperOptions.swift     # Dev tool navigation
+│   │   └── [other reusable components]
 │   └── Screens/SecretListViewSheets/  # Modal sheets
 ├── ViewModels/                        # Business logic and state management
 │   ├── SecretsViewModel.swift         # Main view model
@@ -43,8 +48,7 @@ Redoubt/
 ├── Models/                            # Data models
 │   ├── Secret.swift                   # Core secret model with encryption
 │   ├── SecretCollection.swift         # Collection wrapper
-│   ├── SpacedRepetitionCategory.swift # Spaced repetition intervals
-│   ├── ScheduleType.swift             # Notification schedule types
+│   ├── ReviewSchedule.swift           # New schedule-based notification system
 │   ├── Hashes.swift                   # Hash/digest types and utilities
 │   ├── BinaryDisplay.swift            # Binary data visualization
 │   └── BinaryDisplayConstants.swift   # Binary display configuration
@@ -73,16 +77,24 @@ Redoubt/
 > Note: Line numbers are approximate and may change as the codebase evolves. Use them as guidance for locating functionality.
 
 ### Secret Management
-- **Secret Creation**: `Secret.swift:96` - `init(name:plaintext:spacedRepetitionCategory:)`
-- **Secret Validation**: `Secret.swift:122` - `validate(plaintextIn:)` method
-- **Encryption**: Uses Argon2 via libsodium (`Secret.swift:101`)
-- **Add/Remove Secrets**: `SecretsViewModel.swift:69` and `SecretsViewModel.swift:74`
+- **Secret Creation**: `Secret.swift` - `init(name:plaintext:)` creates new secret with Argon2 hash
+- **Secret Validation**: `Secret.swift` - `validate(plaintextIn:)` method verifies plaintext and updates tracking
+- **Quiz Tracking Properties**:
+  - `lastQuizzed`: Date - tracks when secret was last validated
+  - `lastQuizPassed`: Bool - whether the last quiz attempt succeeded
+  - `consecutiveSuccesses`: Int - count of successful validations (resets on failure)
+- **Encryption**: Uses Argon2 via libsodium with interactive parameters
+- **Hash Migration**: Automatically upgrades legacy SHA512 hashes to Argon2 on validation
+- **Add/Remove Secrets**: `SecretsViewModel` methods for secret lifecycle management
 
 ### Notifications & Scheduling
-- **Notification Manager**: `SecretsNotificationManager` handles scheduled quiz notifications
+- **Review Schedule System**: `ReviewSchedule.swift` defines expanding interval schedules with configurable notification slots
+- **Schedule Calculation**: `nextReviewDate(lastQuizzed:consecutiveSuccesses:)` computes next quiz time based on Fibonacci-like intervals
+- **Notification Manager**: `SecretsNotificationManager` handles scheduled quiz notifications and registration
 - **Notification Handling**: `NotificationDelegate.swift` processes tapped notifications
 - **Action Handler**: `NotificationActionHandler` singleton coordinates notification actions
 - **Base Manager**: `NotificationManager.swift` provides low-level notification APIs
+- **Slot Validation**: `validateSlots(_:)` ensures minimum buffer time between notification slots
 
 ### Data Storage
 - **Data Manager**: `SecretsDataManager` handles loading, saving, and demo mode switching
@@ -93,10 +105,16 @@ Redoubt/
 
 ### User Interface
 - **Main List**: `SecretListView.swift` - displays all secrets and quiz options
-- **Quiz Interface**: `Views/Screens/SecretQuiz/` - handles secret validation quizzes
-- **Settings**: `Views/Screens/SecretListViewSheets/SettingsSheet.swift`
+- **Quiz Interface**: `Views/Screens/SecretQuiz/` - handles secret validation quizzes with focus management
+- **Settings**: `Views/Screens/SecretListViewSheets/SettingsSheet.swift` - main settings container
+- **Settings Components** (extracted from main SettingsSheet):
+  - `NewScheduleControls.swift` - schedule selection and notification toggle UI
+  - `NotificationSlotsEditor.swift` - time slot picker with buffer validation
+  - `SettingsControls.swift` - general app toggles and preferences
+  - `DeveloperOptions.swift` - developer tool navigation
 - **Secret Details**: `SecretDetailView.swift` - individual secret management
-- **Dev Tools**: Various Dev* sheets for testing (haptics, text fields, notifications)
+- **Modal Sheets**: CreateSecretSheet, OnboardingSheet, DemoModeSheet, AboutSheet
+- **Dev Tools**: DevNotifications, DevHapticPlayground, DevTextFieldPlayground
 
 ### State Management
 - **Publisher Manager**: `SecretsPublisherManager` coordinates Combine publishers and cancellables
@@ -115,10 +133,14 @@ Redoubt/
 - **Separate Storage**: Demo and production data stored in different plist files
 - **Dynamic Switching**: Can toggle between modes with data reloading
 
-### Spaced Repetition
-- **Categories**: Pre-defined time intervals (daily, weekly, monthly, etc.)
-- **Quiz Tracking**: `lastQuizzed` property tracks when secrets were last validated
-- **Schedule Types**: `ScheduleType` enum defines notification scheduling strategies
+### Review Scheduling (Spaced Repetition)
+- **ReviewSchedule System**: Enum-based schedule with `ExpandingIntervalSchedule` struct
+- **Pre-configured Schedules**:
+  - "Expanding Intervals (2x daily)": 9 AM & 6 PM with 6-hour minimum buffer
+  - "Expanding Intervals (1x daily)": 9 AM only
+- **Fibonacci-like Intervals**: [1, 2, 3, 5, 8, 13, 21, 34] days based on consecutive successes
+- **Quiz Tracking**: `lastQuizzed`, `lastQuizPassed`, and `consecutiveSuccesses` properties
+- **Notification Slots**: Custom time slots can override schedule defaults with validation
 
 ### Additional Features
 - **Binary Visualization**: `BinaryDisplay` and `BinaryDisplayConstants` for visualizing data as binary
@@ -126,6 +148,17 @@ Redoubt/
 - **Date Formatting**: `Date+Formatting.swift` extension for consistent date display
 - **Logging**: Centralized logging utilities in `Logging.swift`
 - **Context Management**: `RedoubtContext.swift` manages app-wide context and state
+
+### Recent Refactoring (January 2026)
+- **Major Scheduling System Overhaul**: Replaced `ScheduleType` enum and `SpacedRepetitionCategory` class with new `ReviewSchedule` enum and `ExpandingIntervalSchedule` struct
+- **Removed Files**: `ScheduleType.swift`, `SpacedRepetitionCategory.swift` (~180 lines deleted)
+- **Component Extraction**: Separated large SettingsSheet into focused components:
+  - `NewScheduleControls.swift` (270+ lines)
+  - `NotificationSlotsEditor.swift`
+  - `SettingsControls.swift`
+  - `DeveloperOptions.swift`
+- **Backward Compatibility**: Old notification properties (`regularIntervalNotifications`, `oneTimeNotifications`) retained for legacy data but new schedule system is primary
+- **Removed Properties**: `scheduleType`, `spacedRepetitionCategories`, `currentCategory` from `SecretsViewModel` and `SecretCollection`
 
 ### Data Flow
 1. **App Launch**: `RedoubtApp.swift` initializes `SecretsViewModel` with appropriate data loader
@@ -139,9 +172,82 @@ Redoubt/
 6. **Notifications**: State changes trigger notification re-registration via `SecretsNotificationManager`
 
 ## Testing Structure
-- **Unit Tests**: `RedoubtTests/` - includes cryptography tests
+- **Unit Tests**: `RedoubtTests/` - includes cryptography tests and schedule calculation tests
+  - `ReviewScheduleTests.swift` - tests expanding interval calculations, never-quizzed scenarios, success tracking
+  - `CryptographyTests.swift` - hash and encryption validation
+  - `NotificationSchedulingTests.swift` - notification registration logic
 - **UI Tests**: `RedoubtUITests/` - end-to-end interface testing
 - **Preview Support**: `SecretsVmDataLoaderFromArray` enables SwiftUI previews
+
+## Data Models Deep Dive
+
+### Secret Model
+**Type**: Class (reference type for reactive publishing)
+**Protocols**: Identifiable, ObservableObject, Codable
+
+**Key Properties**:
+- `id: UUID` - computed from name + digest hash for stable identity
+- `name: String` - user-visible name
+- `digest: String` - Argon2 or SHA512 hash
+- `digestType: DigestType` - current hash algorithm (Argon2 or SHA512)
+- `lastQuizzed: Date?` - timestamp of last validation
+- `lastQuizPassed: Bool` - success status of last quiz
+- `consecutiveSuccesses: Int` - count for interval calculation (resets on failure)
+
+**Key Methods**:
+- `init(name:plaintext:)` - creates new secret with Argon2 hash
+- `update(newPlaintext:)` - updates hash with new plaintext
+- `validate(plaintextIn:)` - verifies input, updates tracking, auto-migrates SHA512 to Argon2
+
+### SecretCollection Model
+**Type**: Struct (value type)
+**Protocol**: Codable
+
+**Properties**:
+- `secrets: [Secret]` - array of all secrets
+- `regularIntervalNotifications: [DateComponents]` - legacy repeating times
+- `oneTimeNotifications: [DateComponents]` - legacy one-time times
+- `availableSchedules: [ReviewSchedule]` - configured review schedules
+- `activeScheduleId: UUID?` - currently active schedule (nil = disabled)
+- `notificationSlots: [DateComponents]?` - custom time slots (nil = use schedule defaults)
+
+**Features**:
+- Backward-compatible deserialization for old data format
+- Migration support from ScheduleType-based to ReviewSchedule-based system
+
+### ReviewSchedule Enum
+**Type**: Enum with associated value
+**Protocol**: Codable, Identifiable
+
+**Cases**:
+- `.expandingInterval(ExpandingIntervalSchedule)` - wraps expanding interval schedule
+
+**Key Methods**:
+- `nextReviewDate(lastQuizzed:consecutiveSuccesses:)` - calculates next quiz time
+- `validateSlots(_:)` - validates minimum buffer between notification times
+- `formattedMinimumBuffer()` - human-readable buffer description
+- `labelForSlot(at:)` - gets label for slot index (e.g., "Morning", "Evening")
+
+### ExpandingIntervalSchedule Struct
+**Type**: Struct (value type)
+**Protocols**: Codable, Identifiable, Equatable
+
+**Properties**:
+- `id: UUID` - immutable identifier
+- `name: String` - display name (e.g., "Expanding Intervals (2x daily)")
+- `intervals: [Int]` - days between reviews (e.g., [1, 2, 3, 5, 8, 13, 21, 34])
+- `defaultSlots: [DateComponents]` - default notification times (e.g., [9:00, 18:00])
+- `minimumSlotBuffer: TimeInterval` - minimum seconds between slots (e.g., 21600 = 6 hours)
+- `slotLabels: [String]` - labels for each slot (e.g., ["Morning", "Evening"])
+
+**Static Instances**:
+- `.default` - 2x daily (9 AM & 6 PM, 6-hour buffer)
+- `.onceDaily` - 1x daily (9 AM, no buffer)
+
+**Interval Calculation Logic**:
+- Never quizzed: Use first interval (1 day)
+- Consecutive successes: Use corresponding interval index (capped at max)
+- Failed quiz: Resets consecutiveSuccesses to 0, starts over
 
 ## Development Notes
 - **Xcode Project**: Standard iOS app structure with `.xcodeproj`
