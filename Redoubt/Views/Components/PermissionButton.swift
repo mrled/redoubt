@@ -1,6 +1,7 @@
 import SwiftUI
 import UserNotifications
 import LocalAuthentication
+import Combine
 
 struct PermissionButton: View {
     let title: String
@@ -54,6 +55,9 @@ struct PermissionButton: View {
                 .multilineTextAlignment(.center)
         }
         .onAppear {
+            checkPermissionStatus()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
             checkPermissionStatus()
         }
     }
