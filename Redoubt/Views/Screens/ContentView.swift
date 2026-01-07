@@ -20,7 +20,10 @@ struct ContentView: View {
                 // Only re-evaluate notifications when the app becomes active
                 // This prevents unnecessary calls when the app goes to background or becomes inactive
                 if newScenePhase == .active {
-                    NotificationManager.shared.requestPermission { granted in
+                    // Check authorization status without requesting permission
+                    // Only reregister if already authorized, don't prompt if notDetermined
+                    NotificationManager.shared.getAuthorizationStatus { status in
+                        let granted = status == .authorized
                         notificationsAllowed = granted
 
                         // Re-evaluate and update notifications based on current state

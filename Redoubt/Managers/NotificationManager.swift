@@ -7,6 +7,16 @@ class NotificationManager {
 
     private init() {} // Prevents others from creating their own instances.
 
+    /// Check current notification authorization status without requesting permission
+    /// Returns the current authorization status via completion handler
+    func getAuthorizationStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                completion(settings.authorizationStatus)
+            }
+        }
+    }
+
     func requestPermission(completion: @escaping (Bool) -> Void) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             DispatchQueue.main.async {

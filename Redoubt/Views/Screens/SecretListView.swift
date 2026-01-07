@@ -124,8 +124,10 @@ struct SecretListView: View {
             for secret in secretsVm.secrets {
                 CustomLogger.secretIds(message: " - SecretListView onAppear: \(secret.id)")
             }
-            NotificationManager.shared.requestPermission { granted in
-                notificationsAllowed = granted
+            // Check authorization status without requesting permission
+            // Don't prompt if notDetermined - wait for user to press button in onboarding
+            NotificationManager.shared.getAuthorizationStatus { status in
+                notificationsAllowed = status == .authorized
             }
         })
     }

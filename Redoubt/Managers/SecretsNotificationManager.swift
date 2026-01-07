@@ -88,10 +88,11 @@ class SecretsNotificationManager: ObservableObject {
     func reregisterAllNotifications() {
         guard let viewModel = secretsViewModel else { return }
         
-        // Don't do anything if the user hasn't granted us notification permissions
-        NotificationManager.shared.requestPermission { granted in
-            if granted {
-                appLogger.debug("reregisterAllNotifications: granted permission to notify, registering...")
+        // Check authorization status without prompting
+        // Only proceed if already authorized, don't request if notDetermined
+        NotificationManager.shared.getAuthorizationStatus { status in
+            if status == .authorized {
+                appLogger.debug("reregisterAllNotifications: already authorized, registering...")
                 NotificationManager.shared.removeNotifications()
                 
                 for schedule in viewModel.regularIntervalNotifications {
@@ -105,7 +106,7 @@ class SecretsNotificationManager: ObservableObject {
                 // Schedule notifications based on the new schedule system
                 self.scheduleBasedOnActiveSchedule()
             } else {
-                appLogger.debug("reregisterAllNotifications: not granted permission to notify, nothing we can do")
+                appLogger.debug("reregisterAllNotifications: not authorized (status: \(status.rawValue)), skipping notification registration")
             }
         }
     }
