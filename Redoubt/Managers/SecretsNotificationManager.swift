@@ -45,44 +45,6 @@ class SecretsNotificationManager: ObservableObject {
             .store(in: &oneTimeNotificationsCancellables)
     }
     
-    // MARK: - One Time Notifications
-    
-    func addOneTimeNotification(_ dateComponents: DateComponents, completion: @escaping () -> Void) {
-        guard let viewModel = secretsViewModel else { return }
-        viewModel.oneTimeNotifications.append(dateComponents)
-        viewModel.dataManager.saveItems()
-        reregisterAllNotifications()
-        completion()
-    }
-
-    func deleteOneTimeNotification(_ dateComponents: DateComponents) {
-        guard let viewModel = secretsViewModel else { return }
-        if let index = viewModel.oneTimeNotifications.firstIndex(of: dateComponents) {
-            viewModel.oneTimeNotifications.remove(at: index)
-            viewModel.dataManager.saveItems()
-            reregisterAllNotifications()
-        }
-    }
-    
-    // MARK: - Regular Interval Notifications
-    
-    func addRegularIntervalNotification(_ dateComponents: DateComponents, completion: @escaping () -> Void) {
-        guard let viewModel = secretsViewModel else { return }
-        viewModel.regularIntervalNotifications.append(dateComponents)
-        viewModel.dataManager.saveItems()
-        reregisterAllNotifications()
-        completion()
-    }
-
-    func deleteRegularIntervalNotification(_ dateComponents: DateComponents) {
-        guard let viewModel = secretsViewModel else { return }
-        if let index = viewModel.regularIntervalNotifications.firstIndex(of: dateComponents) {
-            viewModel.regularIntervalNotifications.remove(at: index)
-            viewModel.dataManager.saveItems()
-            reregisterAllNotifications()
-        }
-    }
-    
     /// Remove all notifications from the Notification Center for the app, and register all notifications in this view model.
     /// Uses the view model as the source of truth.
     func reregisterAllNotifications() {
@@ -110,8 +72,6 @@ class SecretsNotificationManager: ObservableObject {
             }
         }
     }
-
-    // MARK: - Schedule-Based Notifications
 
     /// Schedule notifications based on the active review schedule.
     /// Evaluates due secrets and schedules notifications at the next appropriate time slot.
