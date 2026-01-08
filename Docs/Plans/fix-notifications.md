@@ -2,13 +2,14 @@
 
 This document describes how notifications currently work in Redoubt as of January 2026.
 
+**Status**: Phase 0 complete (legacy system removed). Ready for Phase 1 implementation.
+
 ## Architecture Overview
 
 The notification system is built on **spaced repetition scheduling** with iOS UserNotifications framework:
 
 - **Three-layer architecture**: Low-level iOS APIs (`NotificationManager`), mid-level orchestration (`SecretsNotificationManager`), and high-level scheduling logic
-- **Legacy system**: Regular interval and one-time notifications (deprecated, to be removed in Phase 0)
-- **New system**: Schedule-based notifications with customizable time slots
+- **Schedule-based system**: Notifications scheduled based on spaced repetition review schedules with customizable time slots
 
 ## Core Components
 
@@ -22,33 +23,41 @@ Singleton wrapper around iOS `UNUserNotificationCenter`. Key methods: `registerN
 
 Coordinates notification scheduling. Core method `reregisterAllNotifications()`:
 1. Check authorization status
-2. If authorized: remove all existing notifications, re-add legacy notifications, call `scheduleBasedOnActiveSchedule()`
+2. If authorized: remove all existing notifications, call `scheduleBasedOnActiveSchedule()`
 3. If not authorized: skip registration
 
-Subscriptions trigger reregistration on `viewModel.$regularIntervalNotifications` and `viewModel.$oneTimeNotifications` changes.
+**After Phase 0**: Legacy notification subscriptions removed. Only schedule-based notifications are registered.
 
 ## Notification Identifiers
 
-- Legacy: `"RegularIntervals-YYYY-MM-DD-HH-MM-SS"` (repeating)
-- Legacy: `"OneTime-YYYY-MM-DD-HH-MM-SS"` (single)
-- New System: `"ScheduleBased-YYYY-MM-DD-HH-MM-SS"` (single from schedule)
+**Legacy (Removed in Phase 0):**
+- ~~`"RegularIntervals-YYYY-MM-DD-HH-MM-SS"` (repeating)~~
+- ~~`"OneTime-YYYY-MM-DD-HH-MM-SS"` (single)~~
+
+**Current (After Phase 0):**
+- `"ScheduleBased-YYYY-MM-DD-HH-MM-SS"` (single from schedule)
+
+**Phase 1 (New prefixed system):**
+- `"quiz.YYYY-MM-DD-HH-MM-SS"` (quiz reminder notifications)
+- `"dev.test-YYYY-MM-DD-HH-MM-SS"` (developer test notifications)
 
 ## Data Storage
 
 **File**: `Redoubt/Models/SecretCollection.swift`
 
+**After Phase 0:**
 ```swift
 struct SecretCollection: Codable {
-    // Legacy notification system (deprecated)
-    let regularIntervalNotifications: [DateComponents]
-    let oneTimeNotifications: [DateComponents]
+    let secrets: [Secret]
 
-    // New schedule-based system
+    // Schedule-based notification system
     let availableSchedules: [ReviewSchedule]      // [Default, OnceDaily]
     let activeScheduleId: UUID?                   // nil = notifications disabled
     let notificationSlots: [DateComponents]?      // nil = use schedule defaults
 }
 ```
+
+**Note**: Legacy `regularIntervalNotifications` and `oneTimeNotifications` fields removed. Existing data with these fields will have them silently dropped on load.
 
 ## Trigger Points for Re-registration
 
@@ -177,7 +186,15 @@ The following are explicitly **out of scope** for this work:
 - Simpler testing surface
 
 ### Phase 1: Slot-Based Scheduling, Prefixes & Badge
-- Update notification naming to use `dev.*`/`quiz.*` prefixes
+
+**Notification Identifier Changes:**
+- Update notification naming to use prefixed identifiers:
+  - `dev.*` - Developer test notifications (ephemeral, not persisted)
+  - `quiz.*` - Quiz reminder notifications (scheduled based on secrets)
+- Replace `"ScheduleBased-YYYY-MM-DD-HH-MM-SS"` with `"quiz.YYYY-MM-DD-HH-MM-SS"`
+- Dev notifications use format: `"dev.test-YYYY-MM-DD-HH-MM-SS"`
+
+**Slot-Based Batch Scheduling:**
 - Implement slot-based batch scheduling:
   - For each configured slot, check if any secret is due before/at that slot (but after the previous slot)
   - Schedule notification at that slot time if so
@@ -188,12 +205,45 @@ The following are explicitly **out of scope** for this work:
   - Update badge based on due secrets (or clear if notifications disabled)
 - Ensure re-scheduling on every app launch/foreground
 
+**Badge Support:**
+- Set badge count to `1` when any quiz is due, `0` when not due
+- Update badge at: app launch/foreground, notification scheduling, quiz completion
+- Clear badge when notifications are disabled
+
+**Developer Tools (DevNotifications UI):**
+- **Test Notification Controls**:
+  - "Notify me in 5 seconds" - registers `dev.*` notification for immediate testing
+  - "Notify me when minute changes" - registers `dev.*` notification at next minute boundary
+  - These call `NotificationManager.shared.registerNotification()` directly (no ViewModel/storage)
+  - Dev notifications are ephemeral - not persisted to disk
+- **Selective Deletion**:
+  - "Delete All Dev Notifications" - removes only `dev.*` notifications
+  - "Delete All Quiz Notifications" - removes only `quiz.*` notifications (for testing)
+  - Support filtering notifications by prefix in removal code
+- **Display Improvements**:
+  - Group registered notifications by type (`dev.*` vs `quiz.*`)
+  - Show count of each notification type
+  - Keep existing "Refresh Notifications" and "Re-register All Notifications" buttons
+
 ## Testing Considerations
 
+**Quiz Notifications:**
 - Test slot-based scheduling (notifications fire at slot times, not due times)
 - Test that a slot gets a notification only when secrets are due before/at it but after the previous slot
 - Test notification limit (ensure ≤15 quiz notifications scheduled)
 - Test re-scheduling on app foreground
 - Test cancellation when notifications are disabled
+- Verify all quiz notifications use `quiz.*` prefix
+
+**Badge Support:**
 - Test badge updates with various due secret states
 - Test badge clears when notifications are disabled
+- Verify badge updates on app launch, quiz completion, and notification scheduling
+
+**Developer Tools:**
+- Test dev notification registration (5 seconds, minute change)
+- Verify dev notifications use `dev.*` prefix
+- Test selective deletion (dev-only, quiz-only)
+- Verify dev notifications are not persisted to storage
+- Test notification list grouping by type
+- Verify notification counts are displayed correctly
