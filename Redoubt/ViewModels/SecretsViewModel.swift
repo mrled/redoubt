@@ -11,21 +11,7 @@ class SecretsViewModel: ObservableObject {
         }
     }
 
-    /// Repeating, user-configured times to send notifications
-    @Published var regularIntervalNotifications: [DateComponents] = [] {
-        didSet {
-            dataManager.saveItems()
-        }
-    }
-    
-    /// Non-repeating, user-configured times to send notifications
-    @Published var oneTimeNotifications: [DateComponents] = [] {
-        didSet {
-            dataManager.saveItems()
-        }
-    }
-
-    // New schedule system properties
+    // Schedule-based notification system properties
     /// Available review schedules
     @Published var availableSchedules: [ReviewSchedule] = [
         .expanding(.default),

@@ -3,69 +3,34 @@ import Combine
 
 /**
  * Manages iOS notification scheduling for quiz reminders.
- * 
- * Automatically re-registers notifications when settings change and handles
- * both regular interval and one-time notification schedules.
+ *
+ * Automatically re-registers notifications when settings change using the
+ * schedule-based notification system.
  */
 class SecretsNotificationManager: ObservableObject {
     weak var secretsViewModel: SecretsViewModel?
-    
-    /// It's easier to keep track of cancellables for regularIntervalsNotifications and oneTimeNotifications in separate arrays
-    private var regularIntervalsNotificationsCancellables = Set<AnyCancellable>()
-    private var oneTimeNotificationsCancellables = Set<AnyCancellable>()
-    
+
     init() {
-        
+
     }
-    
+
     func setSecretsViewModel(_ viewModel: SecretsViewModel) {
         self.secretsViewModel = viewModel
-        setupNotificationSubscriptions()
     }
     
-    private func setupNotificationSubscriptions() {
-        guard let viewModel = secretsViewModel else { return }
-        
-        // These subscritions handle making the change in the Notification Center when we change entries
-        // We store these in the cancellables property, so they are valid for the lifetime of the SecretsNotificationManager.
-        // ([weak self] prevents a memory leak with automatic reference counting.)
-        // These are passed by value so we can just use the simpler @Published and don't need to deal with them in setupPublishers()
-        viewModel.$regularIntervalNotifications
-            .sink { [weak self] _ in
-                appLogger.debug("SecretsNotificationManager $regularIntervalEntries .sink: noticed change, reregistering...")
-                self?.reregisterAllNotifications()
-            }
-            .store(in: &regularIntervalsNotificationsCancellables)
-        
-        viewModel.$oneTimeNotifications
-            .sink { [weak self] _ in
-                appLogger.debug("SecretsNotificationManager $oneTimeEntries .sink: noticed change, reregistering...")
-                self?.reregisterAllNotifications()
-            }
-            .store(in: &oneTimeNotificationsCancellables)
-    }
-    
-    /// Remove all notifications from the Notification Center for the app, and register all notifications in this view model.
+    /// Remove all notifications from the Notification Center for the app, and register schedule-based notifications.
     /// Uses the view model as the source of truth.
     func reregisterAllNotifications() {
         guard let viewModel = secretsViewModel else { return }
-        
+
         // Check authorization status without prompting
         // Only proceed if already authorized, don't request if notDetermined
         NotificationManager.shared.getAuthorizationStatus { status in
             if status == .authorized {
                 appLogger.debug("reregisterAllNotifications: already authorized, registering...")
                 NotificationManager.shared.removeNotifications()
-                
-                for schedule in viewModel.regularIntervalNotifications {
-                    addQuizNotification(components: schedule, prefix: "RegularIntervals-", repeats: true)
-                }
-                
-                for components in viewModel.oneTimeNotifications {
-                    addQuizNotification(components: components, prefix: "OneTime-", repeats: false)
-                }
-                
-                // Schedule notifications based on the new schedule system
+
+                // Schedule notifications based on the schedule system
                 self.scheduleBasedOnActiveSchedule()
             } else {
                 appLogger.debug("reregisterAllNotifications: not authorized (status: \(status.rawValue)), skipping notification registration")
@@ -76,6 +41,9 @@ class SecretsNotificationManager: ObservableObject {
     /// Schedule notifications based on the active review schedule.
     /// Evaluates due secrets and schedules notifications at the next appropriate time slot.
     /// This method implements the new slot-based notification system with buffer enforcement.
+    ///
+    /// **Current notification identifier format**: `"ScheduleBased-YYYY-MM-DD-HH-MM-SS"`
+    /// (Will be replaced with `quiz.*` prefix in Phase 1)
     func scheduleBasedOnActiveSchedule() {
         guard let viewModel = secretsViewModel else { return }
 

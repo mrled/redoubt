@@ -27,7 +27,7 @@ class SecretsVmDataLoaderFromPlist: SecretsVmDataLoader {
             return collection
         } catch {
             print("Error loading items: \(error)")
-            return SecretCollection(secrets: [], regularIntervalNotifications: [], oneTimeNotifications: [])
+            return SecretCollection(secrets: [])
         }
     }
     
@@ -62,6 +62,6 @@ class SecretsVmDataLoaderFromArray: SecretsVmDataLoader {
         self.collection = collection
     }
     func deleteAllData() {
-        collection = SecretCollection(secrets: [], regularIntervalNotifications: [], oneTimeNotifications: [])
+        collection = SecretCollection(secrets: [])
     }
 }

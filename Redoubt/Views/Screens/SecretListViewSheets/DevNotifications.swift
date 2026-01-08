@@ -25,41 +25,15 @@ struct DevNotifications: View {
                     notificationList.refreshNotifications()
                 }
 
-                Section(header: Text("Notifications from ViewModel")) {
-                    if (secretsVm.regularIntervalNotifications + secretsVm.oneTimeNotifications).isEmpty {
-                        Text("No saved notifications")
-                    } else {
-                        ForEach(secretsVm.regularIntervalNotifications, id: \.description) { entry in
-                            Text("Interval: " + entry.description)
-                        }
-                        ForEach(secretsVm.oneTimeNotifications, id: \.description) { entry in
-                            Text("One time: " + entry.description)
-                        }
-                    }
-                }
-                
                 Section(header: Text("Notification actions")) {
                     Button("Refresh Notifications") {
                         secretsVm.dataManager.loadItems()
                         notificationList.refreshNotifications()
                     }
-                    Button("Notify me when minute changes") {
-                        secretsVm.oneTimeNotifications.append(Calendar.current.dateComponents([.hour, .minute], from: Date().addingTimeInterval(60)))
-                        secretsVm.dataManager.loadItems()
+                    Button("Re-register All Notifications") {
+                        secretsVm.notificationManager.reregisterAllNotifications()
                         notificationList.refreshNotifications()
                     }
-                    Button("Notify me in five seconds") {
-                        secretsVm.oneTimeNotifications.append(Calendar.current.dateComponents([.hour, .minute, .second], from: Date().addingTimeInterval(5)))
-                        secretsVm.dataManager.loadItems()
-                        notificationList.refreshNotifications()
-                    }
-                    Button("Delete All Notifications") {
-                        secretsVm.oneTimeNotifications = []
-                        secretsVm.regularIntervalNotifications = []
-                        secretsVm.dataManager.saveItems()
-                        notificationList.refreshNotifications()
-                    }
-                    .foregroundColor(.red)
                 }
                 
             }
@@ -69,7 +43,7 @@ struct DevNotifications: View {
 }
 
 struct DevNotifications_Previews: PreviewProvider {
-    static let exampleEmptyCollection = SecretCollection(secrets: [], regularIntervalNotifications: [], oneTimeNotifications: [])
+    static let exampleEmptyCollection = SecretCollection(secrets: [])
     static let secretsPreviewVm = SecretsViewModel(dataLoader: SecretsVmDataLoaderFromArray(exampleEmptyCollection))
     static var previews: some View {
         Text("Root view")

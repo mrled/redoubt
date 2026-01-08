@@ -36,7 +36,7 @@ class SecretsPublisherManager: ObservableObject {
     /// For arrays of value types like structs,
     /// changes to any item in the array results in a new copy of the array.
     /// In this case, @Published sees the change, and we have nothing to do here.
-    /// That's why this function doesn't need to do anything with our regularIntervalNotifications or oneTimeNotifications properties.
+    /// That's why this function doesn't need to do anything with value-type properties like DateComponents arrays.
     ///
     /// However, class instances are passed by reference.
     /// For arrays of reference types like class instances,

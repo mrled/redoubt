@@ -101,8 +101,6 @@ class SecretsDataManager: ObservableObject {
         guard let viewModel = secretsViewModel else { return }
         let collection = SecretCollection(
             secrets: viewModel.secrets,
-            regularIntervalNotifications: viewModel.regularIntervalNotifications,
-            oneTimeNotifications: viewModel.oneTimeNotifications,
             availableSchedules: viewModel.availableSchedules,
             activeScheduleId: viewModel.activeScheduleId,
             notificationSlots: viewModel.notificationSlots
@@ -114,10 +112,8 @@ class SecretsDataManager: ObservableObject {
         guard let viewModel = secretsViewModel else { return }
         let collection = dataLoader.load()
         viewModel.secrets = collection.secrets
-        viewModel.regularIntervalNotifications = collection.regularIntervalNotifications
-        viewModel.oneTimeNotifications = collection.oneTimeNotifications
 
-        // Load new schedule system fields
+        // Load schedule system fields
         viewModel.availableSchedules = collection.availableSchedules
         viewModel.activeScheduleId = collection.activeScheduleId
         viewModel.notificationSlots = collection.notificationSlots
@@ -128,8 +124,6 @@ class SecretsDataManager: ObservableObject {
     func deleteAllData() {
         guard let viewModel = secretsViewModel else { return }
         viewModel.secrets = []
-        viewModel.regularIntervalNotifications = []
-        viewModel.oneTimeNotifications = []
 
         dataLoader.deleteAllData()
         viewModel.publisherManager.setupPublishers()

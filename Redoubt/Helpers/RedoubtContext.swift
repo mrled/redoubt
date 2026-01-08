@@ -9,9 +9,9 @@ func getDemoModeSecretCollection() -> SecretCollection {
             try Secret(name: "AzureDiamond", plaintext: "hunter2"),
             try Secret(name: "XKCD", plaintext: "correct horse battery staple"),
         ]
-        return SecretCollection(secrets: secrets, regularIntervalNotifications: [], oneTimeNotifications: [])
+        return SecretCollection(secrets: secrets)
     } catch {
-        return SecretCollection(secrets: [], regularIntervalNotifications: [], oneTimeNotifications: [])
+        return SecretCollection(secrets: [])
     }
 
 }
