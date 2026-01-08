@@ -458,6 +458,45 @@ The notification system was refactored to support the new schedule-based approac
 
 ## Implementation Phases
 
+### Phase 0: Remove Legacy System
+
+**Goal**: Clean up deprecated notification code before implementing new architecture
+
+**Tasks**:
+1. **Remove legacy storage fields** from `SecretCollection`:
+   - Delete `regularIntervalNotifications: [DateComponents]`
+   - Delete `oneTimeNotifications: [DateComponents]`
+   - Update Codable implementation if needed
+
+2. **Remove legacy notification registration** from `SecretsNotificationManager`:
+   - Delete code that re-adds regular interval notifications
+   - Delete code that re-adds one-time notifications
+   - Remove subscription handlers for `viewModel.$regularIntervalNotifications`
+   - Remove subscription handlers for `viewModel.$oneTimeNotifications`
+
+3. **Clean up legacy identifiers**:
+   - Remove generation of `"RegularIntervals-*"` identifiers
+   - Remove generation of `"OneTime-*"` identifiers
+   - Document only `"ScheduleBased-*"` identifiers remain (will be replaced in Phase 1)
+
+4. **Update UI**:
+   - Remove any UI controls related to legacy notifications
+   - Ensure settings only show schedule-based notification options
+
+5. **Data migration** (if needed):
+   - If existing users have legacy notification settings, migrate them to the default schedule
+   - Set `activeScheduleId` to Default schedule UUID if user had notifications enabled
+
+6. **Testing**:
+   - Verify app builds and runs without legacy code
+   - Verify existing schedule-based notifications still work
+   - Test fresh install and upgrade scenarios
+
+**Benefits**:
+- Cleaner codebase for implementing new features
+- No confusion between old and new systems
+- Simpler testing surface
+
 ### Phase 1: Foundation
 - Create NotificationScheduleModel
 - Add to SecretCollection for persistence
