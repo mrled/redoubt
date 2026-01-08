@@ -149,68 +149,60 @@ The following are explicitly **out of scope** for this work:
 
 ## Implementation Phases
 
-### Phase 0: Remove Legacy System
+### Phase 0: Remove Legacy System ✓
+
+**Status**: Complete
 
 **Goal**: Clean up deprecated notification code before implementing new architecture
 
-**Tasks**:
-1. **Remove legacy storage fields** from `SecretCollection`:
-   - Delete `regularIntervalNotifications: [DateComponents]`
-   - Delete `oneTimeNotifications: [DateComponents]`
-   - Update Codable implementation if needed
-   - **No migration**: Simply drop any existing legacy data on load
+**Completed Tasks**:
+1. **Removed legacy storage fields** from `SecretCollection`:
+   - Deleted `regularIntervalNotifications: [DateComponents]`
+   - Deleted `oneTimeNotifications: [DateComponents]`
+   - **No migration**: Existing legacy data is silently dropped on load
 
-2. **Remove legacy notification registration** from `SecretsNotificationManager`:
-   - Delete code that re-adds regular interval notifications
-   - Delete code that re-adds one-time notifications
-   - Remove subscription handlers for `viewModel.$regularIntervalNotifications`
-   - Remove subscription handlers for `viewModel.$oneTimeNotifications`
+2. **Removed legacy notification registration** from `SecretsNotificationManager`:
+   - Deleted code that re-added regular interval notifications
+   - Deleted code that re-added one-time notifications
+   - Removed subscription handlers for `viewModel.$regularIntervalNotifications`
+   - Removed subscription handlers for `viewModel.$oneTimeNotifications`
 
-3. **Clean up legacy identifiers**:
-   - Remove generation of `"RegularIntervals-*"` identifiers
-   - Remove generation of `"OneTime-*"` identifiers
-   - Document only `"ScheduleBased-*"` identifiers remain (will be replaced in Phase 1)
-
-4. **Update UI**:
-   - Remove any UI controls related to legacy notifications
-   - Ensure settings only show schedule-based notification options
-
-5. **Testing**:
-   - Verify app builds and runs without legacy code
-   - Verify existing schedule-based notifications still work
-   - Test fresh install scenario
+3. **Cleaned up legacy identifiers**:
+   - Removed generation of `"RegularIntervals-*"` identifiers
+   - Removed generation of `"OneTime-*"` identifiers
+   - Only `"ScheduleBased-*"` identifiers remain (will be replaced in Phase 1)
 
 **Benefits**:
 - Cleaner codebase for implementing new features
 - No confusion between old and new systems
 - Simpler testing surface
 
-### Phase 1: Slot-Based Scheduling, Prefixes & Badge
+---
 
-**Notification Identifier Changes:**
-- Update notification naming to use prefixed identifiers:
-  - `dev.*` - Developer test notifications (ephemeral, not persisted)
-  - `quiz.*` - Quiz reminder notifications (scheduled based on secrets)
-- Replace `"ScheduleBased-YYYY-MM-DD-HH-MM-SS"` with `"quiz.YYYY-MM-DD-HH-MM-SS"`
-- Dev notifications use format: `"dev.test-YYYY-MM-DD-HH-MM-SS"`
+### Phase 1: Notification Prefix System
 
-**Slot-Based Batch Scheduling:**
-- Implement slot-based batch scheduling:
-  - For each configured slot, check if any secret is due before/at that slot (but after the previous slot)
-  - Schedule notification at that slot time if so
-  - Generate up to 15 notifications
-- Update `reregisterAllNotifications()` to:
-  - Cancel all `quiz.*` notifications before re-issuing
-  - Generate notifications for upcoming slots where secrets are due
-  - Update badge based on due secrets (or clear if notifications disabled)
-- Ensure re-scheduling on every app launch/foreground
+**Goal**: Implement consistent, categorized notification naming
 
-**Badge Support:**
-- Set badge count to `1` when any quiz is due, `0` when not due
-- Update badge at: app launch/foreground, notification scheduling, quiz completion
-- Clear badge when notifications are disabled
+**Scope:**
+- Update notification identifiers to use prefixes:
+  - `quiz.YYYY-MM-DD-HH-MM-SS` (replace `ScheduleBased-*`)
+  - `dev.test-YYYY-MM-DD-HH-MM-SS` (for developer tests)
+- Add prefix-based filtering to `NotificationManager.removeNotifications()`
 
-**Developer Tools (DevNotifications UI):**
+**Files changed:** ~2-3 (NotificationManager, SecretsNotificationManager)
+**Risk:** Low (mostly naming changes)
+
+**Testing:**
+- Verify all new notifications use prefixed identifiers
+- Test filtering notifications by prefix
+
+---
+
+### Phase 2: Developer Tools UI
+
+**Goal**: Enhance DevNotifications screen with prefix-based controls
+
+**Scope:**
 - **Test Notification Controls**:
   - "Notify me in 5 seconds" - registers `dev.*` notification for immediate testing
   - "Notify me when minute changes" - registers `dev.*` notification at next minute boundary
@@ -219,15 +211,66 @@ The following are explicitly **out of scope** for this work:
 - **Selective Deletion**:
   - "Delete All Dev Notifications" - removes only `dev.*` notifications
   - "Delete All Quiz Notifications" - removes only `quiz.*` notifications (for testing)
-  - Support filtering notifications by prefix in removal code
 - **Display Improvements**:
   - Group registered notifications by type (`dev.*` vs `quiz.*`)
   - Show count of each notification type
   - Keep existing "Refresh Notifications" and "Re-register All Notifications" buttons
 
-## Testing Considerations
+**Files changed:** ~1-2 (DevNotifications view)
+**Risk:** Very low (UI only, uses Phase 1's filtering)
 
-**Quiz Notifications:**
+**Testing:**
+- Test dev notification registration (5 seconds, minute change)
+- Verify dev notifications use `dev.*` prefix
+- Test selective deletion (dev-only, quiz-only)
+- Verify dev notifications are not persisted to storage
+- Test notification list grouping by type
+- Verify notification counts are displayed correctly
+
+---
+
+### Phase 3: Badge Support
+
+**Goal**: Visual indicator when quizzes are due
+
+**Scope:**
+- Implement badge count logic (1 when any quiz due, 0 otherwise)
+- Update badge at key moments:
+  - App launch/foreground
+  - When notifications are scheduled
+  - After quiz completion
+- Clear badge when notifications disabled
+- Use `UNUserNotificationCenter.current().setBadgeCount()`
+
+**Files changed:** ~2-3 (SecretsNotificationManager, possibly ContentView)
+**Risk:** Low (additive feature)
+
+**Testing:**
+- Test badge updates with various due secret states
+- Test badge clears when notifications are disabled
+- Verify badge updates on app launch, quiz completion, and notification scheduling
+
+---
+
+### Phase 4: Slot-Based Batch Scheduling
+
+**Goal**: Schedule notifications at configured time slots instead of just-in-time
+
+**Scope:**
+- Implement slot-based batch scheduling algorithm:
+  - For each configured slot, check if any secret is due before/at that slot (but after the previous slot)
+  - Schedule notification at that slot time if so
+  - Generate up to 15 notifications at once
+- Update `reregisterAllNotifications()` to:
+  - Cancel all `quiz.*` notifications before re-issuing
+  - Generate notifications for upcoming slots where secrets are due
+  - Update badge based on due secrets (or clear if notifications disabled)
+- Ensure re-scheduling on every app launch/foreground
+
+**Files changed:** ~1-2 (SecretsNotificationManager)
+**Risk:** Medium (complex scheduling logic)
+
+**Testing:**
 - Test slot-based scheduling (notifications fire at slot times, not due times)
 - Test that a slot gets a notification only when secrets are due before/at it but after the previous slot
 - Test notification limit (ensure ≤15 quiz notifications scheduled)
@@ -235,15 +278,16 @@ The following are explicitly **out of scope** for this work:
 - Test cancellation when notifications are disabled
 - Verify all quiz notifications use `quiz.*` prefix
 
-**Badge Support:**
-- Test badge updates with various due secret states
-- Test badge clears when notifications are disabled
-- Verify badge updates on app launch, quiz completion, and notification scheduling
+## General Testing Notes
 
-**Developer Tools:**
-- Test dev notification registration (5 seconds, minute change)
-- Verify dev notifications use `dev.*` prefix
-- Test selective deletion (dev-only, quiz-only)
-- Verify dev notifications are not persisted to storage
-- Test notification list grouping by type
-- Verify notification counts are displayed correctly
+**Cross-Phase Verification:**
+- After each phase, verify existing functionality still works
+- Test fresh install scenario
+- Test upgrade scenario (app with Phase N deployed, upgrading to Phase N+1)
+- Verify no notifications are lost during phase transitions
+
+**End-to-End Testing (After Phase 4):**
+- Full notification lifecycle: schedule → fire → interact → reschedule
+- Time zone changes and DST transitions (known limitation, but verify graceful handling)
+- Notification permissions: authorized → denied → re-authorized flow
+- Multiple secrets with varying schedules and due dates
