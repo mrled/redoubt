@@ -69,34 +69,48 @@ class NotificationManager {
     /// pending: Remove notifications that have been registered, but not delivered to the notification center yet (future notifications)
     /// delivered: Remove notifications that have been delivered to the notification center already (past notifications)
     /// prefix: Optional prefix to filter notifications (e.g., "quiz.", "dev."). If nil, removes all notifications.
-    func removeNotifications(pending: Bool = true, delivered: Bool = true, prefix: String? = nil) {
+    /// completion: Called on main thread after removal completes
+    func removeNotifications(pending: Bool = true, delivered: Bool = true, prefix: String? = nil, completion: (() -> Void)? = nil) {
         let notificationCenter = UNUserNotificationCenter.current()
 
         if let prefix = prefix {
             // Remove only notifications matching the prefix
+            let group = DispatchGroup()
+
             if pending {
+                group.enter()
                 notificationCenter.getPendingNotificationRequests { requests in
                     let identifiersToRemove = requests
                         .filter { $0.identifier.hasPrefix(prefix) }
                         .map { $0.identifier }
                     notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiersToRemove)
+                    group.leave()
                 }
             }
             if delivered {
+                group.enter()
                 notificationCenter.getDeliveredNotifications { notifications in
                     let identifiersToRemove = notifications
                         .filter { $0.request.identifier.hasPrefix(prefix) }
                         .map { $0.request.identifier }
                     notificationCenter.removeDeliveredNotifications(withIdentifiers: identifiersToRemove)
+                    group.leave()
                 }
             }
+
+            group.notify(queue: .main) {
+                completion?()
+            }
         } else {
-            // Remove all notifications
+            // Remove all notifications (synchronous operations)
             if pending {
                 notificationCenter.removeAllPendingNotificationRequests()
             }
             if delivered {
                 notificationCenter.removeAllDeliveredNotifications()
+            }
+            DispatchQueue.main.async {
+                completion?()
             }
         }
     }

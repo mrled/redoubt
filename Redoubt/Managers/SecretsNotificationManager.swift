@@ -27,12 +27,13 @@ class SecretsNotificationManager: ObservableObject {
         // Only proceed if already authorized, don't request if notDetermined
         NotificationManager.shared.getAuthorizationStatus { status in
             if status == .authorized {
-                appLogger.debug("reregisterAllNotifications: already authorized, registering...")
+                appLogger.debug("reregisterAllNotifications: already authorized, removing old quiz notifications...")
                 // Cancel only quiz.* notifications (leave dev.* notifications alone)
-                NotificationManager.shared.removeNotifications(prefix: "quiz.")
-
-                // Schedule notifications based on the schedule system
-                self.scheduleBasedOnActiveSchedule()
+                NotificationManager.shared.removeNotifications(prefix: "quiz.") {
+                    appLogger.debug("reregisterAllNotifications: removal complete, scheduling new notifications...")
+                    // Schedule notifications based on the schedule system after removal completes
+                    self.scheduleBasedOnActiveSchedule()
+                }
             } else {
                 appLogger.debug("reregisterAllNotifications: not authorized (status: \(status.rawValue)), skipping notification registration")
             }
@@ -83,8 +84,15 @@ class SecretsNotificationManager: ObservableObject {
             )
         }
 
+        appLogger.debug("scheduleBasedOnActiveSchedule: found \(viewModel.secrets.count) secrets with \(secretDueDates.count) due dates")
+        if !secretDueDates.isEmpty {
+            let earliestDue = secretDueDates.min()!
+            let latestDue = secretDueDates.max()!
+            appLogger.debug("scheduleBasedOnActiveSchedule: due date range: \(earliestDue) to \(latestDue)")
+        }
+
         guard !secretDueDates.isEmpty else {
-            appLogger.debug("No secrets to schedule notifications for")
+            appLogger.debug("scheduleBasedOnActiveSchedule: No secrets to schedule notifications for")
             return
         }
 
@@ -112,6 +120,8 @@ class SecretsNotificationManager: ObservableObject {
 
         // Sort slots chronologically
         upcomingSlots.sort { $0.date < $1.date }
+
+        appLogger.debug("scheduleBasedOnActiveSchedule: generated \(upcomingSlots.count) upcoming slots")
 
         // For each slot, check if any secret is due at or before that slot (but after the previous slot)
         var previousSlotDate: Date? = nil
