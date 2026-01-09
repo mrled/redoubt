@@ -42,8 +42,7 @@ class SecretsNotificationManager: ObservableObject {
     /// Evaluates due secrets and schedules notifications at the next appropriate time slot.
     /// This method implements the new slot-based notification system with buffer enforcement.
     ///
-    /// **Current notification identifier format**: `"ScheduleBased-YYYY-MM-DD-HH-MM-SS"`
-    /// (Will be replaced with `quiz.*` prefix in Phase 1)
+    /// **Notification identifier format**: `"quiz.YYYY-MM-DD-HH-MM-SS"`
     func scheduleBasedOnActiveSchedule() {
         guard let viewModel = secretsViewModel else { return }
 
@@ -96,7 +95,7 @@ class SecretsNotificationManager: ObservableObject {
             now: now
         ) {
             let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: nextTime)
-            addQuizNotification(components: components, prefix: "ScheduleBased-", repeats: false)
+            addQuizNotification(components: components, prefix: "quiz.", repeats: false)
 
             let dueCount = viewModel.secretsDue.count
             if dueCount > 0 {

@@ -3,7 +3,7 @@ import UserNotifications
 
 
 func notificationIdentifierFromDateComponents(_ components: DateComponents, prefix: String = "") -> String {
-    return "\(components.year ?? 0)-\(components.month ?? 0)-\(components.day ?? 0)-\(components.hour ?? 0)-\(components.minute ?? 0)-\(components.second ?? 0)"
+    return "\(prefix)\(components.year ?? 0)-\(components.month ?? 0)-\(components.day ?? 0)-\(components.hour ?? 0)-\(components.minute ?? 0)-\(components.second ?? 0)"
 }
 
 

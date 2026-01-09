@@ -68,14 +68,36 @@ class NotificationManager {
     /// Remove notifications
     /// pending: Remove notifications that have been registered, but not delivered to the notification center yet (future notifications)
     /// delivered: Remove notifications that have been delivered to the notification center already (past notifications)
-    func removeNotifications(pending: Bool = true, delivered: Bool = true) {
+    /// prefix: Optional prefix to filter notifications (e.g., "quiz.", "dev."). If nil, removes all notifications.
+    func removeNotifications(pending: Bool = true, delivered: Bool = true, prefix: String? = nil) {
         let notificationCenter = UNUserNotificationCenter.current()
-        if pending {
-            notificationCenter.removeAllPendingNotificationRequests()
-        }
-        if delivered {
-            notificationCenter.removeAllDeliveredNotifications()
 
+        if let prefix = prefix {
+            // Remove only notifications matching the prefix
+            if pending {
+                notificationCenter.getPendingNotificationRequests { requests in
+                    let identifiersToRemove = requests
+                        .filter { $0.identifier.hasPrefix(prefix) }
+                        .map { $0.identifier }
+                    notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiersToRemove)
+                }
+            }
+            if delivered {
+                notificationCenter.getDeliveredNotifications { notifications in
+                    let identifiersToRemove = notifications
+                        .filter { $0.request.identifier.hasPrefix(prefix) }
+                        .map { $0.request.identifier }
+                    notificationCenter.removeDeliveredNotifications(withIdentifiers: identifiersToRemove)
+                }
+            }
+        } else {
+            // Remove all notifications
+            if pending {
+                notificationCenter.removeAllPendingNotificationRequests()
+            }
+            if delivered {
+                notificationCenter.removeAllDeliveredNotifications()
+            }
         }
     }
     
