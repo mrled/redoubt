@@ -46,6 +46,7 @@ class SecretsNotificationManager: ObservableObject {
     /// - Schedules up to 15 notifications at once (iOS allows 64 total per app)
     /// - For each upcoming slot, checks if any secret is due at or before that slot (but after the previous slot)
     /// - Schedules a notification at that slot time if secrets are due
+    /// - Notifications repeat daily so users get reminded even if they miss the initial notification
     /// - No buffer enforcement during scheduling (buffer is only enforced in UI when setting slots)
     ///
     /// **Notification identifier format**: `"quiz.YYYY-MM-DD-HH-MM-SS"`
@@ -143,7 +144,7 @@ class SecretsNotificationManager: ObservableObject {
             }
 
             if hasSecretDue {
-                addQuizNotification(components: slot.components, prefix: "quiz.", repeats: false)
+                addQuizNotification(components: slot.components, prefix: "quiz.", repeats: true)
                 scheduledCount += 1
                 appLogger.debug("Scheduled quiz notification #\(scheduledCount) at \(slot.date)")
             }

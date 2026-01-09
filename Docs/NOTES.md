@@ -88,8 +88,22 @@ Redoubt/
 - **Add/Remove Secrets**: `SecretsViewModel` methods for secret lifecycle management
 
 ### Notifications & Scheduling
-- **Review Schedule System**: `ReviewSchedule.swift` defines expanding interval schedules with configurable notification slots
+
+#### Review Schedule System
+- **Schedule Definition**: `ReviewSchedule.swift` defines expanding interval schedules with configurable notification slots
 - **Schedule Calculation**: `nextReviewDate(lastQuizzed:consecutiveSuccesses:)` computes next quiz time based on Fibonacci-like intervals
+
+#### Notification Scheduling Strategy
+- **Slot-Based Batch Scheduling**: `SecretsNotificationManager.scheduleBasedOnActiveSchedule()` implements intelligent notification scheduling
+  - Schedules up to 15 notifications at once (iOS allows 64 total per app)
+  - Looks ahead up to 30 days, checking each configured notification slot
+  - For each upcoming slot, checks if any secret is due at or before that slot
+  - Only schedules a notification if secrets are due in that time window
+  - **Daily Repeating**: All scheduled notifications repeat daily so users get reminded even if they miss the initial notification (e.g., phone off, focus mode)
+  - When app launches or user completes a quiz, all notifications are re-registered based on current secret states
+- **Notification Identifier Format**: `"quiz.YYYY-MM-DD-HH-MM-SS"` for scheduled quiz notifications
+
+#### Notification Components
 - **Notification Manager**: `SecretsNotificationManager` handles scheduled quiz notifications and registration
 - **Notification Handling**: `NotificationDelegate.swift` processes tapped notifications
 - **Action Handler**: `NotificationActionHandler` singleton coordinates notification actions
