@@ -70,6 +70,8 @@
 		30FD61812F0AF93700EF1F9B /* ReviewSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD61802F0AF93700EF1F9B /* ReviewSchedule.swift */; };
 		30FD61842F0AFBD500EF1F9B /* ReviewScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD61832F0AFBD500EF1F9B /* ReviewScheduleTests.swift */; };
 		30FD61852F0AFBD500EF1F9B /* NotificationSchedulingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD61822F0AFBD500EF1F9B /* NotificationSchedulingTests.swift */; };
+		30C9D0512F44C8A5000D1234 /* DeviceOwnerAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C9D0502F44C8A5000D1234 /* DeviceOwnerAuthHelper.swift */; };
+		30C9D0532F44C8B9000D1234 /* DeviceOwnerAuthHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C9D0522F44C8B9000D1234 /* DeviceOwnerAuthHelperTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,6 +158,8 @@
 		30FD61802F0AF93700EF1F9B /* ReviewSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSchedule.swift; sourceTree = "<group>"; };
 		30FD61822F0AFBD500EF1F9B /* NotificationSchedulingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSchedulingTests.swift; sourceTree = "<group>"; };
 		30FD61832F0AFBD500EF1F9B /* ReviewScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewScheduleTests.swift; sourceTree = "<group>"; };
+		30C9D0502F44C8A5000D1234 /* DeviceOwnerAuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOwnerAuthHelper.swift; sourceTree = "<group>"; };
+		30C9D0522F44C8B9000D1234 /* DeviceOwnerAuthHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOwnerAuthHelperTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -282,6 +286,7 @@
 		30A814872A3EB26B0032456C /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				30C9D0502F44C8A5000D1234 /* DeviceOwnerAuthHelper.swift */,
 				30FD05B82A1C2DC9006AB9CC /* RedoubtUtilities.swift */,
 				302877FD2A2B917A0065FD0C /* Logging.swift */,
 				30A8147B2A3E1EFC0032456C /* RedoubtContext.swift */,
@@ -400,6 +405,7 @@
 		30FD058C2A1BDD5F006AB9CC /* RedoubtTests */ = {
 			isa = PBXGroup;
 			children = (
+				30C9D0522F44C8B9000D1234 /* DeviceOwnerAuthHelperTests.swift */,
 				30FD61822F0AFBD500EF1F9B /* NotificationSchedulingTests.swift */,
 				30FD61832F0AFBD500EF1F9B /* ReviewScheduleTests.swift */,
 				30FD058D2A1BDD5F006AB9CC /* RedoubtTests.swift */,
@@ -615,6 +621,7 @@
 				30286CD92A26A59E00456CA5 /* NotificationList.swift in Sources */,
 				30E3FD172A2AD6EF002BFE60 /* H4XX0RC0D3.swift in Sources */,
 				30C3DDA92A3121940095CB37 /* Hashes.swift in Sources */,
+				30C9D0512F44C8A5000D1234 /* DeviceOwnerAuthHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,6 +633,7 @@
 				30C3DDB12A31442C0095CB37 /* CryptographyTests.swift in Sources */,
 				30FD61842F0AFBD500EF1F9B /* ReviewScheduleTests.swift in Sources */,
 				30FD61852F0AFBD500EF1F9B /* NotificationSchedulingTests.swift in Sources */,
+				30C9D0532F44C8B9000D1234 /* DeviceOwnerAuthHelperTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
