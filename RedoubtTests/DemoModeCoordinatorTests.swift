@@ -39,24 +39,6 @@ final class DemoModeCoordinatorTests: XCTestCase {
         XCTAssertEqual(receivedAlert, .ownerAuthUnavailable)
     }
 
-    func testLockoutShowsLockoutAlert() {
-        let coordinator = DemoModeCoordinator(
-            authHelper: DeviceOwnerAuthHelperStub(availability: .init(isSimulator: false, ownerAuthAvailable: true, isLockedOut: true, unavailableReason: nil)),
-            contextProvider: { LAContextStub() }
-        )
-
-        var toggleCount = 0
-        var receivedAlert: DemoModeAlertType?
-
-        coordinator.performToggleIfAllowed(
-            onToggle: { toggleCount += 1 },
-            onAlert: { receivedAlert = $0 }
-        )
-
-        XCTAssertEqual(toggleCount, 0)
-        XCTAssertEqual(receivedAlert, .ownerAuthLockedOut)
-    }
-
     func testAuthSuccessToggles() {
         let expectation = expectation(description: "toggle succeeds")
         let coordinator = DemoModeCoordinator(
@@ -64,6 +46,37 @@ final class DemoModeCoordinatorTests: XCTestCase {
             contextProvider: {
                 let context = LAContextStub()
                 context.canEvaluatePolicyResult = (true, nil)
+                context.evaluatePolicyResult = true
+                return context
+            }
+        )
+
+        var toggleCount = 0
+        var receivedAlert: DemoModeAlertType?
+
+        coordinator.performToggleIfAllowed(
+            onToggle: {
+                toggleCount += 1
+                expectation.fulfill()
+            },
+            onAlert: { alert in
+                receivedAlert = alert
+                expectation.fulfill()
+            }
+        )
+
+        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(toggleCount, 1)
+        XCTAssertNil(receivedAlert)
+    }
+
+    func testBiometricLockoutStillAllowsPasscodeAuthAndToggle() {
+        let expectation = expectation(description: "passcode auth succeeds after lockout")
+        let coordinator = DemoModeCoordinator(
+            authHelper: DeviceOwnerAuthHelperStub(availability: .init(isSimulator: false, ownerAuthAvailable: true, isLockedOut: true, unavailableReason: .biometryLockout)),
+            contextProvider: {
+                let context = LAContextStub()
+                context.canEvaluatePolicyResult = (true, NSError(domain: LAError.errorDomain, code: LAError.biometryLockout.rawValue))
                 context.evaluatePolicyResult = true
                 return context
             }

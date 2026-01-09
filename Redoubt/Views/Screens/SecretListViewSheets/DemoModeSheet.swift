@@ -6,7 +6,6 @@ enum DemoModeAlertType {
     case none
     case ownerAuthUnavailable
     case ownerAuthFailed
-    case ownerAuthLockedOut
 }
 
 
@@ -19,13 +18,13 @@ struct DemoModeSheet: View {
     @State private var alertType: DemoModeAlertType = .none
     @State private var availability: DeviceOwnerAuthAvailability
 
-    private let authHelper: DeviceOwnerAuthHelper
+    private let authHelper: DeviceOwnerAuthHelperProtocol
     private let demoModeCoordinator: DemoModeCoordinator
 
     init(
         isPresentingDemoMode: Binding<Bool>,
         demoModeCoordinator: DemoModeCoordinator? = nil,
-        authHelper: DeviceOwnerAuthHelper = DeviceOwnerAuthHelper()
+        authHelper: DeviceOwnerAuthHelperProtocol = DeviceOwnerAuthHelper()
     ) {
         self._isPresentingDemoMode = isPresentingDemoMode
         self.demoModeCoordinator = demoModeCoordinator ?? DemoModeCoordinator(authHelper: authHelper)
@@ -53,10 +52,9 @@ struct DemoModeSheet: View {
             Group {
                 VStack(alignment: .leading) {
                     Text("Let someone else try the app with example password entries.")
-                        .padding(.bottom, 4)
-                    Text("Entering/exiting demo mode requires device owner authentication (passcode/biometrics).")
-                        .padding(.bottom, 4)
+                        .padding(.bottom, 8)
                     availabilityNotice
+                        .padding(.bottom, 8)
                 }
                 Button(action: performDemoModeToggleIfAllowed) {
                     HStack {
@@ -95,12 +93,6 @@ struct DemoModeSheet: View {
                     message: Text("Could not verify device owner."),
                     dismissButton: .default(Text("OK"))
                 )
-            case .ownerAuthLockedOut:
-                return Alert (
-                    title: Text("Authentication locked"),
-                    message: Text("Too many failed attempts. Unlock with your passcode to try again."),
-                    dismissButton: .default(Text("OK"))
-                )
             }
         }
         .onAppear(perform: refreshAvailability)
@@ -123,9 +115,9 @@ struct DemoModeSheet: View {
     private var availabilityNotice: some View {
         VStack(alignment: .leading, spacing: 8) {
             if availability.isSimulator {
-                label(text: "Simulator: demo mode can be entered/exited without authentication.", color: .blue)
+                Text("In the simulator, demo mode can be entered/exited without authentication.")
             } else if availability.ownerAuthAvailable {
-                label(text: "Device owner authentication will be required to enter or exit demo mode.", color: .green)
+                Text("Authentication will be required to enter or exit demo mode.")
             } else {
                 warningBox(reason: availability.unavailableReason)
             }
@@ -181,6 +173,49 @@ struct DemoModeSheet: View {
 
 struct DemoModeSheet_Previews: PreviewProvider {
     static var previews: some View {
-        DemoModeSheet(isPresentingDemoMode: .constant(true))
+        Group {
+            DemoModeSheet(
+                isPresentingDemoMode: .constant(true),
+                demoModeCoordinator: DemoModeCoordinator(authHelper: DeviceOwnerAuthHelperStub(.init(isSimulator: true, ownerAuthAvailable: false, isLockedOut: false, unavailableReason: nil))),
+                authHelper: DeviceOwnerAuthHelperStub(.init(isSimulator: true, ownerAuthAvailable: false, isLockedOut: false, unavailableReason: nil))
+            )
+            .previewDisplayName("Simulator - no auth needed")
+
+            DemoModeSheet(
+                isPresentingDemoMode: .constant(true),
+                demoModeCoordinator: DemoModeCoordinator(authHelper: DeviceOwnerAuthHelperStub(.init(isSimulator: false, ownerAuthAvailable: true, isLockedOut: false, unavailableReason: nil))),
+                authHelper: DeviceOwnerAuthHelperStub(.init(isSimulator: false, ownerAuthAvailable: true, isLockedOut: false, unavailableReason: nil))
+            )
+            .previewDisplayName("Device - auth available")
+
+            DemoModeSheet(
+                isPresentingDemoMode: .constant(true),
+                demoModeCoordinator: DemoModeCoordinator(authHelper: DeviceOwnerAuthHelperStub(.init(isSimulator: false, ownerAuthAvailable: false, isLockedOut: false, unavailableReason: .passcodeNotSet))),
+                authHelper: DeviceOwnerAuthHelperStub(.init(isSimulator: false, ownerAuthAvailable: false, isLockedOut: false, unavailableReason: .passcodeNotSet))
+            )
+            .previewDisplayName("Device - auth unavailable (no passcode)")
+
+            // We expect this to work the same as if not locked out.
+            // The system will propmt the user for a passcode,
+            // but that doesn't have to change what we display.
+            DemoModeSheet(
+                isPresentingDemoMode: .constant(true),
+                demoModeCoordinator: DemoModeCoordinator(authHelper: DeviceOwnerAuthHelperStub(.init(isSimulator: false, ownerAuthAvailable: true, isLockedOut: true, unavailableReason: .biometryLockout))),
+                authHelper: DeviceOwnerAuthHelperStub(.init(isSimulator: false, ownerAuthAvailable: true, isLockedOut: true, unavailableReason: .biometryLockout))
+            )
+            .previewDisplayName("Device - lockout")
+        }
+    }
+}
+
+private struct DeviceOwnerAuthHelperStub: DeviceOwnerAuthHelperProtocol {
+    let availabilityToReturn: DeviceOwnerAuthAvailability
+
+    init(_ availability: DeviceOwnerAuthAvailability) {
+        self.availabilityToReturn = availability
+    }
+
+    func availability(context: DeviceOwnerAuthContexting) -> DeviceOwnerAuthAvailability {
+        availabilityToReturn
     }
 }

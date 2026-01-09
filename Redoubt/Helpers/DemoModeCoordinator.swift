@@ -25,11 +25,6 @@ struct DemoModeCoordinator {
             return
         }
 
-        if availability.isLockedOut {
-            onAlert(.ownerAuthLockedOut)
-            return
-        }
-
         guard availability.ownerAuthAvailable else {
             onAlert(.ownerAuthUnavailable)
             return
