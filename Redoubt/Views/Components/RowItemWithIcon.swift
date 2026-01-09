@@ -20,8 +20,10 @@ struct RowItemWithIcon: View{
     
     var body: some View {
         HStack(spacing: 15) {
-            self.icon().frame(width: 32, height: 32)
+            self.icon()
+                .frame(width: 32, height: 32)
             Text(title)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 }
