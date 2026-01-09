@@ -229,7 +229,9 @@ The following are explicitly **out of scope** for this work:
 
 ---
 
-### Phase 3: Badge Support
+### Phase 3: Badge Support - SKIP FOR NOW
+
+UPDATE: Do not implement this phase yet, it's been broken out into issue #32.
 
 **Goal**: Visual indicator when quizzes are due
 
