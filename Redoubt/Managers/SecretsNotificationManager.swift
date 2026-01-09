@@ -56,6 +56,7 @@ class SecretsNotificationManager: ObservableObject {
         guard let scheduleId = viewModel.activeScheduleId,
               let schedule = viewModel.availableSchedules.first(where: { $0.id == scheduleId }) else {
             appLogger.debug("No active schedule configured, skipping schedule-based notifications")
+            NotificationManager.shared.setBadgeCount(0)
             return
         }
 
@@ -73,6 +74,7 @@ class SecretsNotificationManager: ObservableObject {
 
         guard !slots.isEmpty else {
             appLogger.debug("No notification slots configured, skipping schedule-based notifications")
+            NotificationManager.shared.setBadgeCount(0)
             return
         }
 
@@ -154,5 +156,9 @@ class SecretsNotificationManager: ObservableObject {
         } else {
             appLogger.debug("No notifications scheduled (no secrets due in upcoming slots)")
         }
+
+        // Update badge based on current due status
+        let badgeCount = viewModel.secretsDue.isEmpty ? 0 : 1
+        NotificationManager.shared.setBadgeCount(badgeCount)
     }
 }

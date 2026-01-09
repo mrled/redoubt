@@ -39,6 +39,21 @@ class NotificationManager {
         }
     }
 
+    /// Update the app badge count based on quiz due status
+    /// Pass 1 to show a badge when quizzes are due, 0 to clear the badge
+    func setBadgeCount(_ count: Int, completion: @escaping () -> Void = {}) {
+        UNUserNotificationCenter.current().setBadgeCount(count) { error in
+            if let error = error {
+                appLogger.error("Failed to set badge count: \(error.localizedDescription)")
+            } else {
+                appLogger.debug("Badge count updated to \(count)")
+            }
+            DispatchQueue.main.async {
+                completion()
+            }
+        }
+    }
+
     /// Register a notification to be presented by any trigger
     /// Arguments:
     /// title:              Title to display to user

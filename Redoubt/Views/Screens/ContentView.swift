@@ -30,6 +30,10 @@ struct ContentView: View {
                         // This handles cases where secrets may have become due while the app was inactive
                         if granted {
                             secretsVm.notificationManager.reregisterAllNotifications()
+
+                            // Update badge when app becomes active
+                            let badgeCount = secretsVm.secretsDue.isEmpty ? 0 : 1
+                            NotificationManager.shared.setBadgeCount(badgeCount)
                         }
                     }
                 }
