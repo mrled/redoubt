@@ -1,6 +1,5 @@
 import SwiftUI
 import UserNotifications
-import LocalAuthentication
 import Combine
 
 struct PermissionButton: View {
@@ -8,15 +7,13 @@ struct PermissionButton: View {
     let systemImageName: String
     let permissionType: PermissionType
 
-    @State private var isEnabled: Bool = false
-    @State private var isCheckingStatus: Bool = true
-    @State private var canRequestDirectly: Bool = true // For notifications: can we show system prompt or must go to Settings?
-    @State private var biometryType: LABiometryType = .none // For biometrics: which type is available
-
     enum PermissionType {
         case notifications
         case biometrics
     }
+
+    @State private var isEnabled: Bool = false
+    @State private var canRequestDirectly: Bool = true // For notifications: can we show system prompt or must go to Settings?
 
     var body: some View {
         VStack(spacing: 8) {
@@ -27,7 +24,7 @@ struct PermissionButton: View {
             }) {
                 VStack(spacing: 8) {
                     ZStack {
-                        Image(systemName: displayIconName)
+                        Image(systemName: systemImageName)
                             .font(.system(size: 40))
                             .frame(width: 60, height: 60)
 
@@ -51,7 +48,7 @@ struct PermissionButton: View {
             }
             .disabled(isButtonDisabled)
 
-            Text(displayTitle)
+            Text(title)
                 .font(.caption)
                 .multilineTextAlignment(.center)
         }
@@ -63,63 +60,22 @@ struct PermissionButton: View {
         }
     }
 
-    private var displayIconName: String {
-        if permissionType == .biometrics {
-            switch biometryType {
-            case .faceID:
-                return "faceid"
-            case .touchID:
-                return "touchid"
-            case .none, .opticID:
-                return "faceid"
-            @unknown default:
-                return "faceid"
-            }
-        }
-        return systemImageName
-    }
-
-    private var displayTitle: String {
-        if permissionType == .biometrics {
-            switch biometryType {
-            case .faceID:
-                return "Face ID"
-            case .touchID:
-                return "Touch ID"
-            case .none, .opticID:
-                return "No Biometrics"
-            @unknown default:
-                return "No Biometrics"
-            }
-        }
-        return title
-    }
-
     private var buttonBackgroundColor: Color {
-        if permissionType == .biometrics && biometryType == .none {
-            return Color.gray.opacity(0.3)
-        }
         return isEnabled ? Color.gray.opacity(0.3) : Color.blue
     }
 
     private var buttonForegroundColor: Color {
-        if permissionType == .biometrics && biometryType == .none {
-            return .gray
-        }
         return isEnabled ? .primary : .white
     }
 
     private var isButtonDisabled: Bool {
-        if permissionType == .biometrics && biometryType == .none {
-            return true
-        }
         return isEnabled
     }
 
     private var buttonText: String {
         if isEnabled {
             return "Enabled"
-        } else if permissionType == .notifications && !canRequestDirectly {
+        } else if !canRequestDirectly {
             return "Open Settings"
         } else {
             return "Enable"
@@ -133,18 +89,12 @@ struct PermissionButton: View {
                 DispatchQueue.main.async {
                     self.isEnabled = settings.authorizationStatus == .authorized
                     self.canRequestDirectly = settings.authorizationStatus == .notDetermined
-                    self.isCheckingStatus = false
                 }
             }
         case .biometrics:
-            let context = LAContext()
-            var error: NSError?
-            let canUseBiometrics = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
-            DispatchQueue.main.async {
-                self.biometryType = context.biometryType
-                self.isEnabled = canUseBiometrics
-                self.isCheckingStatus = false
-            }
+            // Placeholder for future biometrics handling; intentionally does not preflight auth.
+            isEnabled = false
+            canRequestDirectly = false
         }
     }
 
@@ -165,9 +115,8 @@ struct PermissionButton: View {
                 openSettings()
             }
         case .biometrics:
-            // For biometrics, we can only check if it's available, not request it
-            // This opens Settings if biometrics is not set up
-            openSettings()
+            // No-op for now; biometrics is not requested during onboarding.
+            break
         }
     }
 
@@ -194,27 +143,14 @@ struct PermissionButton_Previews: PreviewProvider {
             }
 
             HStack(spacing: 20) {
-                PermissionButton(
-                    title: "Face ID",
-                    systemImageName: "faceid",
-                    permissionType: .biometrics
-                )
-                PermissionButtonMockUnavailable(
-                    title: "No Biometrics",
-                    systemImageName: "faceid"
-                )
-            }
-
-            HStack(spacing: 20) {
                 PermissionButtonMockEnabled(
-                    title: "Face ID",
-                    systemImageName: "faceid"
+                    title: "Notifications",
+                    systemImageName: "bell.fill"
                 )
                 PermissionButtonMockEnabled(
-                    title: "Touch ID",
-                    systemImageName: "touchid"
+                    title: "Notifications (Settings)",
+                    systemImageName: "bell.badge.fill"
                 )
-
             }
         }
         .padding()
@@ -248,38 +184,6 @@ struct PermissionButtonMockEnabled: View {
                 .padding()
                 .background(Color.gray.opacity(0.3))
                 .foregroundColor(.primary)
-                .cornerRadius(12)
-            }
-            .disabled(true)
-
-            Text(title)
-                .font(.caption)
-                .multilineTextAlignment(.center)
-        }
-    }
-}
-
-struct PermissionButtonMockUnavailable: View {
-    let title: String
-    let systemImageName: String
-
-    var body: some View {
-        VStack(spacing: 8) {
-            Button(action: {}) {
-                VStack(spacing: 8) {
-                    ZStack {
-                        Image(systemName: systemImageName)
-                            .font(.system(size: 40))
-                            .frame(width: 60, height: 60)
-                    }
-
-                    Text("Enable")
-                        .font(.caption)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.gray.opacity(0.3))
-                .foregroundColor(.gray)
                 .cornerRadius(12)
             }
             .disabled(true)

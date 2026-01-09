@@ -53,11 +53,6 @@ struct OnboardingSheet: View {
                         systemImageName: "bell.fill",
                         permissionType: .notifications
                     )
-                    PermissionButton(
-                        title: "Face ID / Touch ID",
-                        systemImageName: "faceid",
-                        permissionType: .biometrics
-                    )
                 }
                 .padding([.bottom])
             }
