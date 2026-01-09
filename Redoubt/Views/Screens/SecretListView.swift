@@ -28,7 +28,16 @@ struct SecretListView: View {
                             tag: OpenAction.startQuiz,
                             selection: $openAction
                         ) {
-                            Text("Quiz now")
+                            HStack {
+                                Text("Quiz now")
+                                Spacer()
+                                /// Show a badge if any quiz is due
+                                if !secretsVm.secretsDue.isEmpty {
+                                    Circle()
+                                        .frame(width: 10, height: 10)
+                                        .foregroundColor(Color.red)
+                                }
+                            }
                         }
                     }
                     Section() {
