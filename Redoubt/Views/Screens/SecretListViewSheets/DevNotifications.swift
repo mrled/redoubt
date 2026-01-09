@@ -58,9 +58,15 @@ struct DevNotifications: View {
                                 Text(item.id)
                                     .font(.caption)
                                     .foregroundColor(.secondary)
-                                Text("Next trigger: \(item.trigger?.nextTriggerDate()?.description ?? "Never")")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
+                                if let triggerDate = item.trigger?.nextTriggerDate() {
+                                    Text("Next trigger: \(triggerDate.formatted(date: .numeric, time: .standard))")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                } else {
+                                    Text("Next trigger: Never")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
                             }
                             .padding(.vertical, 4)
                         }
@@ -81,9 +87,15 @@ struct DevNotifications: View {
                                 Text(item.id)
                                     .font(.caption)
                                     .foregroundColor(.secondary)
-                                Text("Next trigger: \(item.trigger?.nextTriggerDate()?.description ?? "Never")")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
+                                if let triggerDate = item.trigger?.nextTriggerDate() {
+                                    Text("Next trigger: \(triggerDate.formatted(date: .numeric, time: .standard))")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                } else {
+                                    Text("Next trigger: Never")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
                             }
                             .padding(.vertical, 4)
                         }
