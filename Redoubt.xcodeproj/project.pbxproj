@@ -19,6 +19,7 @@
 		307BEFF32A2950EB004D21AC /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307BEFF22A2950EB004D21AC /* NotificationDelegate.swift */; };
 		3080250A2A23B32300491DEA /* SecretDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308025092A23B32300491DEA /* SecretDetailView.swift */; };
 		308B6D0C2AD34DB0008A5857 /* NotificationHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308B6D0B2AD34DB0008A5857 /* NotificationHelpers.swift */; };
+		30C9D0562F44D7DB000D1234 /* DemoModeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C9D0552F44D7DB000D1234 /* DemoModeCoordinator.swift */; };
 		30A8146D2A365D5F0032456C /* UIKitTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A8146C2A365D5F0032456C /* UIKitTextField.swift */; };
 		30A814702A3665EB0032456C /* DevNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A8146F2A3665EB0032456C /* DevNotifications.swift */; };
 		30A814722A3665F80032456C /* DevHapticPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A814712A3665F80032456C /* DevHapticPlayground.swift */; };
@@ -72,6 +73,7 @@
 		30FD61852F0AFBD500EF1F9B /* NotificationSchedulingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FD61822F0AFBD500EF1F9B /* NotificationSchedulingTests.swift */; };
 		30C9D0512F44C8A5000D1234 /* DeviceOwnerAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C9D0502F44C8A5000D1234 /* DeviceOwnerAuthHelper.swift */; };
 		30C9D0532F44C8B9000D1234 /* DeviceOwnerAuthHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C9D0522F44C8B9000D1234 /* DeviceOwnerAuthHelperTests.swift */; };
+		30C9D0582F44E23C000D1234 /* DemoModeCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C9D0572F44E23C000D1234 /* DemoModeCoordinatorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,7 +161,9 @@
 		30FD61822F0AFBD500EF1F9B /* NotificationSchedulingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSchedulingTests.swift; sourceTree = "<group>"; };
 		30FD61832F0AFBD500EF1F9B /* ReviewScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewScheduleTests.swift; sourceTree = "<group>"; };
 		30C9D0502F44C8A5000D1234 /* DeviceOwnerAuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOwnerAuthHelper.swift; sourceTree = "<group>"; };
+		30C9D0552F44D7DB000D1234 /* DemoModeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoModeCoordinator.swift; sourceTree = "<group>"; };
 		30C9D0522F44C8B9000D1234 /* DeviceOwnerAuthHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOwnerAuthHelperTests.swift; sourceTree = "<group>"; };
+		30C9D0572F44E23C000D1234 /* DemoModeCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoModeCoordinatorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,6 +290,7 @@
 		30A814872A3EB26B0032456C /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				30C9D0552F44D7DB000D1234 /* DemoModeCoordinator.swift */,
 				30C9D0502F44C8A5000D1234 /* DeviceOwnerAuthHelper.swift */,
 				30FD05B82A1C2DC9006AB9CC /* RedoubtUtilities.swift */,
 				302877FD2A2B917A0065FD0C /* Logging.swift */,
@@ -406,6 +411,7 @@
 			isa = PBXGroup;
 			children = (
 				30C9D0522F44C8B9000D1234 /* DeviceOwnerAuthHelperTests.swift */,
+				30C9D0572F44E23C000D1234 /* DemoModeCoordinatorTests.swift */,
 				30FD61822F0AFBD500EF1F9B /* NotificationSchedulingTests.swift */,
 				30FD61832F0AFBD500EF1F9B /* ReviewScheduleTests.swift */,
 				30FD058D2A1BDD5F006AB9CC /* RedoubtTests.swift */,
@@ -621,6 +627,7 @@
 				30286CD92A26A59E00456CA5 /* NotificationList.swift in Sources */,
 				30E3FD172A2AD6EF002BFE60 /* H4XX0RC0D3.swift in Sources */,
 				30C3DDA92A3121940095CB37 /* Hashes.swift in Sources */,
+				30C9D0562F44D7DB000D1234 /* DemoModeCoordinator.swift in Sources */,
 				30C9D0512F44C8A5000D1234 /* DeviceOwnerAuthHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -634,6 +641,7 @@
 				30FD61842F0AFBD500EF1F9B /* ReviewScheduleTests.swift in Sources */,
 				30FD61852F0AFBD500EF1F9B /* NotificationSchedulingTests.swift in Sources */,
 				30C9D0532F44C8B9000D1234 /* DeviceOwnerAuthHelperTests.swift in Sources */,
+				30C9D0582F44E23C000D1234 /* DemoModeCoordinatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

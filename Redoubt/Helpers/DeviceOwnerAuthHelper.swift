@@ -1,6 +1,16 @@
 import Foundation
 import LocalAuthentication
 
+protocol DeviceOwnerAuthHelperProtocol {
+    func availability(context: DeviceOwnerAuthContexting) -> DeviceOwnerAuthAvailability
+}
+
+extension DeviceOwnerAuthHelperProtocol {
+    func availability() -> DeviceOwnerAuthAvailability {
+        availability(context: LAContext())
+    }
+}
+
 protocol DeviceOwnerAuthContexting {
     func canEvaluatePolicy(_ policy: LAPolicy, error: NSErrorPointer) -> Bool
 }
@@ -22,7 +32,7 @@ struct DeviceOwnerAuthAvailability: Equatable {
     let unavailableReason: UnavailableReason?
 }
 
-struct DeviceOwnerAuthHelper {
+struct DeviceOwnerAuthHelper: DeviceOwnerAuthHelperProtocol {
     func availability(context: DeviceOwnerAuthContexting = LAContext()) -> DeviceOwnerAuthAvailability {
         var deviceOwnerError: NSError?
         let ownerAuthAvailable = context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &deviceOwnerError)

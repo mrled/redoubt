@@ -1,5 +1,4 @@
 import SwiftUI
-import LocalAuthentication
 
 
 /// Possible alerts the Settings sheet can show
@@ -18,6 +17,7 @@ struct DemoModeSheet: View {
     
     @State private var showAlert: Bool = false
     @State private var alertType: DemoModeAlertType = .none
+    private let demoModeCoordinator = DemoModeCoordinator()
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -40,7 +40,7 @@ struct DemoModeSheet: View {
                 VStack(alignment: .leading) {
                     Text("Let someone else try the app with example password entries. Entering/exiting demo mode requires authentication.")
                 }
-                Button(action: toggleDemoModeWithAuthentication) {
+                Button(action: performDemoModeToggleIfAllowed) {
                     HStack {
                         Image(systemName: "tv")
                             .frame(width: 32, height: 32)
@@ -87,44 +87,19 @@ struct DemoModeSheet: View {
         }
     }
     
-    func toggleDemoModeWithAuthentication() {
-        let context = LAContext()
-        var error: NSError?
-
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            let reason = "Please authenticate to change the setting."
-
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
-                DispatchQueue.main.async {
-                    if success {
-                        self.toggleDemoModeState()
-                    } else {
-                        self.alertType = .biometricsFailed
-                        self.showAlert = true
-                    }
-                }
+    /// Single entry point for demo mode toggling: checks availability and handles alerts.
+    func performDemoModeToggleIfAllowed() {
+        demoModeCoordinator.performToggleIfAllowed(
+            onToggle: {
+                toggleDemoModeState()
+            },
+            onAlert: { alert in
+                alertType = alert
+                showAlert = true
             }
-        } else {
-            if let laError = error as? LAError, laError.code == .biometryLockout {
-                let reason = "You've attempted too many times! Enter your passcode to enable biometrics."
-                
-                context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
-                    DispatchQueue.main.async {
-                        if success {
-                            self.toggleDemoModeState()
-                        } else {
-                            self.alertType = .biometricsFailed
-                            self.showAlert = true
-                        }
-                    }
-                }
-            } else {
-                self.alertType = .biometricsUnavailable
-                self.showAlert = true
-            }
-        }
+        )
     }
-    
+
     func toggleDemoModeState() {
         demoMode.toggle()
         isPresentingDemoMode = false
