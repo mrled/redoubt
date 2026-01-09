@@ -50,7 +50,6 @@ struct AboutSheet: View {
                         .padding()
                     Text(try! AttributedString(markdown: """
                 Thanks to Twitter for their excellent [Twemoji](https://blog.glyph.im/2023/04/post-pycon-us-2023-notes.html) open source emoji graphics, which I have used in this and many other projects.
-                    .linelimit(nil)
                 """))
                     .lineLimit(nil)
                     .padding([.top, .bottom])
