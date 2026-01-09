@@ -8,6 +8,7 @@ class SecretsViewModel: ObservableObject {
         didSet {
             dataManager.saveItems()
             publisherManager.setupPublishers()
+            notificationManager.reregisterAllNotifications()
         }
     }
 
@@ -26,6 +27,7 @@ class SecretsViewModel: ObservableObject {
     @Published var activeScheduleId: UUID? = nil {
         didSet {
             dataManager.saveItems()
+            notificationManager.reregisterAllNotifications()
         }
     }
 
@@ -33,6 +35,7 @@ class SecretsViewModel: ObservableObject {
     @Published var notificationSlots: [DateComponents]? = nil {
         didSet {
             dataManager.saveItems()
+            notificationManager.reregisterAllNotifications()
         }
     }
 
