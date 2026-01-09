@@ -4,9 +4,9 @@ import SwiftUI
 /// Possible alerts the Settings sheet can show
 enum DemoModeAlertType {
     case none
-    case biometricsUnavailable
-    case biometricsFailed
-    case biometricsLockedOut
+    case ownerAuthUnavailable
+    case ownerAuthFailed
+    case ownerAuthLockedOut
 }
 
 
@@ -17,7 +17,21 @@ struct DemoModeSheet: View {
     
     @State private var showAlert: Bool = false
     @State private var alertType: DemoModeAlertType = .none
-    private let demoModeCoordinator = DemoModeCoordinator()
+    @State private var availability: DeviceOwnerAuthAvailability
+
+    private let authHelper: DeviceOwnerAuthHelper
+    private let demoModeCoordinator: DemoModeCoordinator
+
+    init(
+        isPresentingDemoMode: Binding<Bool>,
+        demoModeCoordinator: DemoModeCoordinator? = nil,
+        authHelper: DeviceOwnerAuthHelper = DeviceOwnerAuthHelper()
+    ) {
+        self._isPresentingDemoMode = isPresentingDemoMode
+        self.demoModeCoordinator = demoModeCoordinator ?? DemoModeCoordinator(authHelper: authHelper)
+        self.authHelper = authHelper
+        self._availability = State(initialValue: authHelper.availability())
+    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -38,7 +52,11 @@ struct DemoModeSheet: View {
             }
             Group {
                 VStack(alignment: .leading) {
-                    Text("Let someone else try the app with example password entries. Entering/exiting demo mode requires authentication.")
+                    Text("Let someone else try the app with example password entries.")
+                        .padding(.bottom, 4)
+                    Text("Entering/exiting demo mode requires device owner authentication (passcode/biometrics).")
+                        .padding(.bottom, 4)
+                    availabilityNotice
                 }
                 Button(action: performDemoModeToggleIfAllowed) {
                     HStack {
@@ -65,26 +83,27 @@ struct DemoModeSheet: View {
                     message: Text("This should never happen"),
                     dismissButton: .default(Text("OK"))
                 )
-            case .biometricsUnavailable:
+            case .ownerAuthUnavailable:
                 return Alert(
-                    title: Text("Biometrics unavailable"),
-                    message: Text("Please set up Face ID or Touch ID in your device settings"),
+                    title: Text("Device owner authentication required"),
+                    message: Text("Enable a passcode or biometrics in Settings to enter or exit demo mode."),
                     dismissButton: .default(Text("OK"))
                 )
-            case .biometricsFailed:
+            case .ownerAuthFailed:
                 return Alert (
-                    title: Text("Biometrics failed"),
-                    message: Text("Could not authenticate with Face ID or Touch ID"),
+                    title: Text("Authentication failed"),
+                    message: Text("Could not verify device owner."),
                     dismissButton: .default(Text("OK"))
                 )
-            case .biometricsLockedOut:
+            case .ownerAuthLockedOut:
                 return Alert (
-                    title: Text("Biometrics locked out"),
-                    message: Text("Too many Face ID or Touch ID failures"),
+                    title: Text("Authentication locked"),
+                    message: Text("Too many failed attempts. Unlock with your passcode to try again."),
                     dismissButton: .default(Text("OK"))
                 )
             }
         }
+        .onAppear(perform: refreshAvailability)
     }
     
     /// Single entry point for demo mode toggling: checks availability and handles alerts.
@@ -92,12 +111,66 @@ struct DemoModeSheet: View {
         demoModeCoordinator.performToggleIfAllowed(
             onToggle: {
                 toggleDemoModeState()
+                refreshAvailability()
             },
             onAlert: { alert in
                 alertType = alert
                 showAlert = true
             }
         )
+    }
+
+    private var availabilityNotice: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if availability.isSimulator {
+                label(text: "Simulator: demo mode can be entered/exited without authentication.", color: .blue)
+            } else if availability.ownerAuthAvailable {
+                label(text: "Device owner authentication will be required to enter or exit demo mode.", color: .green)
+            } else {
+                warningBox(reason: availability.unavailableReason)
+            }
+        }
+    }
+
+    private func warningBox(reason: DeviceOwnerAuthAvailability.UnavailableReason?) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Owner authentication unavailable. Entry/exit is blocked until a passcode is enabled.")
+                .bold()
+            if let reasonText = unavailableReasonText(from: reason) {
+                Text(reasonText)
+            }
+        }
+        .padding()
+        .background(Color.red.opacity(0.1))
+        .cornerRadius(8)
+    }
+
+    private func label(text: String, color: Color) -> some View {
+        HStack {
+            Image(systemName: "info.circle.fill")
+            Text(text)
+        }
+        .foregroundColor(color)
+    }
+
+    private func refreshAvailability() {
+        availability = authHelper.availability()
+    }
+
+    private func unavailableReasonText(from reason: DeviceOwnerAuthAvailability.UnavailableReason?) -> String? {
+        guard let reason = reason else { return nil }
+        switch reason {
+        case .passcodeNotSet:
+            return "Set a device passcode to enable authentication."
+        case .biometryNotEnrolled:
+            return "Enroll Face ID or Touch ID, or set a passcode."
+        case .biometryNotAvailable:
+            return "Biometrics are not available on this device. Use a passcode."
+        case .biometryLockout:
+            return "Too many failed attempts. Unlock your device with passcode."
+        case .unknown:
+            return nil
+        }
     }
 
     func toggleDemoModeState() {

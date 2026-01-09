@@ -26,27 +26,27 @@ struct DemoModeCoordinator {
         }
 
         if availability.isLockedOut {
-            onAlert(.biometricsLockedOut)
+            onAlert(.ownerAuthLockedOut)
             return
         }
 
         guard availability.ownerAuthAvailable else {
-            onAlert(.biometricsUnavailable)
+            onAlert(.ownerAuthUnavailable)
             return
         }
 
         let context = contextProvider()
         var error: NSError?
 
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
             let reason = "Please authenticate to change the setting."
 
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, _ in
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
                 DispatchQueue.main.async {
                     if success {
                         onToggle()
                     } else {
-                        onAlert(.biometricsFailed)
+                        onAlert(.ownerAuthFailed)
                     }
                 }
             }
@@ -58,12 +58,12 @@ struct DemoModeCoordinator {
                     if success {
                         onToggle()
                     } else {
-                        onAlert(.biometricsFailed)
+                        onAlert(.ownerAuthFailed)
                     }
                 }
             }
         } else {
-            onAlert(.biometricsUnavailable)
+            onAlert(.ownerAuthUnavailable)
         }
     }
 }

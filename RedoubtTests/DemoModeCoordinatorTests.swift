@@ -36,7 +36,7 @@ final class DemoModeCoordinatorTests: XCTestCase {
         )
 
         XCTAssertEqual(toggleCount, 0)
-        XCTAssertEqual(receivedAlert, .biometricsUnavailable)
+        XCTAssertEqual(receivedAlert, .ownerAuthUnavailable)
     }
 
     func testLockoutShowsLockoutAlert() {
@@ -54,7 +54,7 @@ final class DemoModeCoordinatorTests: XCTestCase {
         )
 
         XCTAssertEqual(toggleCount, 0)
-        XCTAssertEqual(receivedAlert, .biometricsLockedOut)
+        XCTAssertEqual(receivedAlert, .ownerAuthLockedOut)
     }
 
     func testAuthSuccessToggles() {
@@ -116,7 +116,7 @@ final class DemoModeCoordinatorTests: XCTestCase {
 
         wait(for: [expectation], timeout: 1.0)
         XCTAssertEqual(toggleCount, 0)
-        XCTAssertEqual(receivedAlert, .biometricsFailed)
+        XCTAssertEqual(receivedAlert, .ownerAuthFailed)
     }
 }
 
