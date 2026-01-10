@@ -25,13 +25,11 @@ struct SettingsControls: View {
                     Text("Enable easter eggs")
                 }
             }
-            HStack {
-                Image(systemName: "sparkles.tv")
-                    .frame(width: 32, height: 32)
-                Picker(selection: $visualizationMode, label: Text("Visualization type")) {
-                    ForEach(VisualizationMode.allCases) { possibleVizMode in
-                        Text(possibleVizMode.description).tag(possibleVizMode)
-                    }
+            NavigationLink(destination: VizTypeSheet(visualizationMode: $visualizationMode)) {
+                HStack {
+                    Image(systemName: "sparkles.tv")
+                        .frame(width: 32, height: 32)
+                    Text("Visualization type")
                 }
             }
             NavigationLink(destination: DemoModeSheet(isPresentingDemoMode: .constant(false))) {
