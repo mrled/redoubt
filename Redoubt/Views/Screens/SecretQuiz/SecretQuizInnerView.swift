@@ -131,9 +131,9 @@ struct SecretQuizInnerView_Previews: PreviewProvider {
                     activeView: $activeView,
                     onCorrectPassword: {}
                 )
-                .environmentObject(secretsPreviewVm)
             }
             .previewDisplayName("Invalid secret")
         }
+        .environmentObject(secretsPreviewVm)
     }
 }
