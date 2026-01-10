@@ -23,8 +23,8 @@ struct SecretQuizView: View {
             ForEach(secretsVm.secrets.indices, id: \.self) { index in
                 let secret = self.$secretsVm.secrets[index]
                 SecretQuizInnerView(secret: secret, currentSecretId: $currentSecretId, activeView: $activeView) {
-                    /// This is a callback function that the child view will run when the passphrase is entered successfully
-                    /// Note that it's only run AFTER the passphrase is entered correctly, meaning that we have to use the .onAppear below to set INITIAL values.
+                    /// This is a callback function that the child view will run when it should advance to the next quiz card
+                    /// Note that it's only run AFTER the passphrase is entered correctly or the user opts to skip, meaning that we have to use the .onAppear below to set INITIAL values.
                     if let nextSecretId = getNextSecretId() {
                         currentSecretId = nextSecretId
                         activeView = nextSecretId

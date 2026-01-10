@@ -10,8 +10,8 @@ struct SecretQuizInnerView: View {
     /// A FocusState managed by the parent view, see there for documentation
     var activeView: FocusState<UUID?>.Binding
 
-    /// A callback to execute when the correct passphrase is entered
-    var onCorrectPassword: () -> Void
+    /// A callback to execute when the quiz should advance to the next secret
+    var onAdvance: () -> Void
     
     @State private var passphraseValid = false
     @State private var passphrase = ""
@@ -43,6 +43,13 @@ struct SecretQuizInnerView: View {
                 )
                 .animation(.default, value: boxColor)
                 .padding()
+            Button(action: handleForgotPassword) {
+                Text("I forgot this passphrase")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.bordered)
+            .tint(.red)
+            .padding(.horizontal)
             Spacer()
         }
         .padding()
@@ -73,11 +80,22 @@ struct SecretQuizInnerView: View {
         if !passphraseWasValid && passphraseValid {
             let feedbackGenerator = UINotificationFeedbackGenerator()
             feedbackGenerator.notificationOccurred(.success)
-            onCorrectPassword()
+            onAdvance()
         } else if passphraseWasValid && !passphraseValid {
             let feedbackGenerator = UINotificationFeedbackGenerator()
             feedbackGenerator.notificationOccurred(.error)
         }
+    }
+
+    private func handleForgotPassword() {
+        secret.lastQuizPassed = false
+        secret.lastQuizzed = Date()
+        secret.consecutiveSuccesses = 0
+        passphraseValid = false
+        passphrase = ""
+        let feedbackGenerator = UINotificationFeedbackGenerator()
+        feedbackGenerator.notificationOccurred(.warning)
+        onAdvance()
     }
     
     private var boxColor: Color {
@@ -119,7 +137,7 @@ struct SecretQuizInnerView_Previews: PreviewProvider {
                     secret: .constant(exampleSecrets[0]),
                     currentSecretId: .constant(secretsPreviewVm.secrets[0].id),
                     activeView: $activeView,
-                    onCorrectPassword: {}
+                    onAdvance: {}
                 )
             }
             .previewDisplayName("Secret 1/2")
@@ -129,7 +147,7 @@ struct SecretQuizInnerView_Previews: PreviewProvider {
                     secret: .constant(exampleSecrets[0]),
                     currentSecretId: .constant(nil),
                     activeView: $activeView,
-                    onCorrectPassword: {}
+                    onAdvance: {}
                 )
             }
             .previewDisplayName("Invalid secret")
