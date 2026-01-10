@@ -32,6 +32,9 @@ struct SecretQuizView: View {
                         finished = true
                         currentSecretId = nil
                         activeView = nil
+                        NotificationManager.shared.removeNotifications(pending: false, delivered: true, prefix: "quiz.") {
+                            NotificationManager.shared.setBadgeCount(0)
+                        }
                         let feedbackGenerator = UINotificationFeedbackGenerator()
                         DispatchQueue.global(qos: .userInitiated).async {
                             for _ in 0..<3 {
