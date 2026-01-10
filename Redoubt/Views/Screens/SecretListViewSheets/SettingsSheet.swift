@@ -5,7 +5,6 @@ import Foundation
 struct SettingsSheet: View {
     @Binding var notificationsAllowed: Bool
     @AppStorage(MFAStorage.K.enableEasterEggs) var enableEasterEggs: Bool = MFAStorage.D.enableEasterEggs
-    @AppStorage(MFAStorage.K.showDeveloperOptions) var showDeveloperOptions: Bool = MFAStorage.D.showDeveloperOptions
     @AppStorage(MFAStorage.K.showOnboarding) var showOnboarding: Bool = MFAStorage.D.showOnboarding
     @AppStorage(MFAStorage.K.visualizationMode) var visualizationMode: VisualizationMode = MFAStorage.D.visualizationMode
     @AppStorage(MFAStorage.K.demoMode) var demoMode: Bool = MFAStorage.D.demoMode
@@ -18,7 +17,6 @@ struct SettingsSheet: View {
                     NewScheduleControls(notificationsAllowed: $notificationsAllowed)
                     SettingsControls(
                         showOnboarding: $showOnboarding,
-                        showDeveloperOptions: $showDeveloperOptions,
                         enableEasterEggs: $enableEasterEggs,
                         visualizationMode: $visualizationMode,
                         demoMode: $demoMode
@@ -28,8 +26,10 @@ struct SettingsSheet: View {
                             Text("About Redoubt")
                         }
                     }
-                    if showDeveloperOptions {
-                        DeveloperOptions()
+                    Section("Developer") {
+                        NavigationLink(destination: DevControls()) {
+                            Text("Developer options")
+                        }
                     }
                 }
                 .navigationBarTitle("Settings", displayMode: .inline)

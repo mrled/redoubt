@@ -3,7 +3,6 @@ import Foundation
 
 struct SettingsControls: View {
     @Binding var showOnboarding: Bool
-    @Binding var showDeveloperOptions: Bool
     @Binding var enableEasterEggs: Bool
     @Binding var visualizationMode: VisualizationMode
     @Binding var demoMode: Bool
@@ -35,13 +34,6 @@ struct SettingsControls: View {
                     }
                 }
             }
-            Toggle(isOn: $showDeveloperOptions) {
-                HStack {
-                    Image(systemName: "slider.horizontal.3")
-                        .frame(width: 32, height: 32)
-                    Text("Show developer options")
-                }
-            }
             NavigationLink(destination: DemoModeSheet(isPresentingDemoMode: .constant(false))) {
                 HStack {
                     Image(systemName: "tv")
@@ -62,7 +54,6 @@ struct SettingsControls: View {
         List {
             SettingsControls(
                 showOnboarding: .constant(true),
-                showDeveloperOptions: .constant(false),
                 enableEasterEggs: .constant(true),
                 visualizationMode: .constant(.Sha512),
                 demoMode: .constant(false)
